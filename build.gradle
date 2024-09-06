@@ -1,0 +1,172 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+
+    dependencies {
+        classpath "net.serenity-bdd:serenity-gradle-plugin:3.6.7"
+        classpath("com.diffplug.spotless:spotless-plugin-gradle:6.19.0") {
+            exclude group: 'com.google.guava', module: 'guava-jdk17'
+        }
+    }
+}
+
+plugins {
+    id 'java'
+    id 'org.sonarqube' version '5.0.0.4638'
+    id 'org.gradle.test-retry' version '1.5.9'
+}
+
+// Set the build directory to "target"
+buildDir = file('target')
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'com.diffplug.spotless'
+apply plugin: 'net.serenity-bdd.serenity-gradle-plugin'
+apply plugin: 'org.sonarqube'
+apply from: "$rootDir/gradle/libraries.gradle"
+
+sourceCompatibility = 17
+targetCompatibility = 17
+
+group 'net.alexandrade'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+/**
+ * This is needed to make sure there are no Cucumber 2 dependencies in the classpath.
+ */
+configurations.all {
+    resolutionStrategy {
+        force libs.cucumber.core
+    }
+}
+
+dependencies {
+    implementation libs.aeonbits,
+            libs.cucumber.java,
+            libs.cucumber.junit,
+            libs.slf4j.api,
+            libs.slf4j.simple,
+            libs.sonarqube,
+            libs.appium
+
+    compileOnly libs.gson
+
+    testImplementation libs.test.serenity.core,
+            libs.test.serenity.ensure,
+            libs.test.serenity.screenplay,
+            libs.test.serenity.screenplayWebdriver,
+            libs.test.serenity.cucumber6,
+            libs.test.junit.junit,
+            libs.test.junit.jupiter
+
+    testRuntimeOnly libs.test.junit.vintage
+}
+
+serenity {
+    generateOutcomes = true     // generate report
+}
+
+test {
+    testLogging {
+        showStandardStreams = true
+        //events "passed", "skipped", "failed"
+    }
+    systemProperties System.getProperties()
+    // useJUnitPlatform()
+    retry {
+        maxRetries = 0 // Disables test retries
+    }
+    finalizedBy 'aggregate'
+    finalizedBy 'spotlessApply'
+}
+
+/* tasks.withType(Test).configureEach {
+    maxParallelForks = Runtime.runtime.availableProcessors().intdiv(2) ?: 1
+}*/
+
+spotless {
+    encoding 'UTF-8'
+    // Set the encoding, replace 'UTF-8' with `${encoding}` if it's dynamically defined
+
+    java {
+        targetExclude('/target/**/*', 'build/**/*') // Exclude specific folder
+
+        // Apply Google Java Format with a specific style and options
+        googleJavaFormat('1.22.0').aosp().reflowLongStrings(true)
+
+        // License header configuration
+        licenseHeaderFile 'LICENSE', 'package '
+    }
+
+    groovyGradle {
+        target '*.gradle', 'gradle/*.gradle'
+    }
+
+    format 'dotfiles', {
+        target '.gitignore', '.gitattributes', '.editorconfig'
+        indentWithSpaces(2)
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
+
+    // Format SQL files
+    sql {
+        target '**/*.sql' // Define which files to include
+        targetExclude('/target/**/*', 'build/**/*') // Exclude specific folder
+        dbeaver()         // Apply DBeaver formatting conventions
+    }
+
+    // Format JSON files
+    json {
+        target '**/*.json'
+        targetExclude('/target/**/*', 'build/**/*') // Exclude specific folder
+        gson() // Apply Gson-based formatting
+    }
+}
+
+gradle.startParameter.continueOnFailure = true
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+tasks.withType(Javadoc) {
+    options.encoding = 'UTF-8'
+}
+
+// Tasks for checking and applying formats
+tasks.named('spotlessApply') {
+    group = 'formatting'
+}
+
+tasks.named('spotlessCheck') {
+    group = 'verification'
+}
+
+sonar {
+    properties {
+        property "sonar.coverage.exclusions", "src/**/*.java"
+        property "sonar.sources", "src"
+        property "sonar.test.exclusions", "src/test/**/*.java"
+    }
+}
+
+tasks.register('installLocalGitHook', Copy) {
+    from new File(rootProject.rootDir, 'scripts/pre-commit')
+    into { new File(rootProject.rootDir, '.git/hooks') }
+    fileMode 0775
+}
+
+build.dependsOn installLocalGitHook

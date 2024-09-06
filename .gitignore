@@ -1,0 +1,51 @@
+# IntelliJ IDEA files
+# Ignore everything in the folder .idea except .idea/externalDependencies.xml
+**/.idea/*
+!**/.idea/externalDependencies.xml
+*.iml
+*.iws
+*.ipr
+
+# IntelliJ IDEA files
+# Ignore everything in the folder .idea except .idea/externalDependencies.xml
+**/.vscode/*
+!**/.vscode/extensions.json
+!**/.vscode/settings.json
+
+# Eclipse files
+.classpath
+.project
+.settings/
+
+# Compiled class files
+*.class
+
+# Maven target directory
+target/
+
+# Gradle build directory
+build/
+out/
+.gradle
+
+# Log files
+logs/
+*.log
+
+# Application properties (optional)
+#src/main/resources/application.properties
+#src/main/resources/application.yml
+
+# Temporary files
+*.tmp
+*.swp
+*~
+
+# macOS specific files
+.DS_Store
+
+# Windows thumbnail cache files
+Thumbs.db
+
+# Gradle wrapper jar files
+gradle/wrapper/gradle-wrapper.jar

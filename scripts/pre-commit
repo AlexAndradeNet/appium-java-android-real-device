@@ -1,0 +1,23 @@
+#!/bin/sh
+
+echo "Running pre-commit checks..."
+
+# Run gherkin-lint
+./scripts/gherkin-lint.sh
+
+# Run linters (e.g., Spotless, ESLint, etc.)
+./gradlew spotlessApply
+# Or, if using a different linter:
+# eslint src/**/*.js
+
+# Run unit tests
+#./gradlew test
+
+status=$?
+
+if [[ $status -ne 0 ]]; then
+    echo "Pre-commit checks failed. Please fix the issues before committing."
+    exit 1
+fi
+
+echo "Pre-commit checks passed successfully."
