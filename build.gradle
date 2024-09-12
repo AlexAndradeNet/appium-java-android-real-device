@@ -163,10 +163,16 @@ sonar {
     }
 }
 
+tasks.register('npmInstall', Exec) {
+    commandLine 'npm', 'install'
+}
+
 tasks.register('installLocalGitHook', Copy) {
     from new File(rootProject.rootDir, 'scripts/pre-commit')
     into { new File(rootProject.rootDir, '.git/hooks') }
     fileMode 0775
 }
 
-build.dependsOn installLocalGitHook
+tasks.named('build') {
+    dependsOn npmInstall, installLocalGitHook
+}

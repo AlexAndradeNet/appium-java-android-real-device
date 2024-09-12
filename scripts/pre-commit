@@ -1,23 +1,41 @@
 #!/bin/sh
 
+function checkIfError() {
+    if [ "$1" -ne 0 ] || [ "$2" -ne 0 ]; then
+        return 1
+    fi
+
+    return 0
+}
+
+./gradlew clean # Clean the stage before all
+
 echo "Running pre-commit checks..."
 
 # Run gherkin-lint
-./scripts/gherkin-lint.sh
+npm run lint
+gherkinstatus=$? # Save the exit status of the previous command
+
+checkIfError $gherkinstatus 0 # Accumulate way to check if the previous command was successful
+gherkinstatus=$? # Save the exit of the function
+
 
 # Run linters (e.g., Spotless, ESLint, etc.)
 ./gradlew spotlessApply
-# Or, if using a different linter:
-# eslint src/**/*.js
+checkIfError $gherkinstatus $? # Accumulate way to check if the previous command was successful
+spotlessstatus=$? # Save the exit of the function
 
 # Run unit tests
 #./gradlew test
 
-status=$?
+echo ""
 
-if [[ $status -ne 0 ]]; then
-    echo "Pre-commit checks failed. Please fix the issues before committing."
+if [[ $spotlessstatus -ne 0 ]]; then
+    echo "RESULT: Pre-commit checks failed. Please fix the issues before committing."
+    echo ""
     exit 1
 fi
 
-echo "Pre-commit checks passed successfully."
+echo "RESULT: Pre-commit checks passed successfully."
+echo ""
+exit 0

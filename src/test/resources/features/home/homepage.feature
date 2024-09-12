@@ -4,7 +4,7 @@ Feature: Solve course exercises
   I want to test all the exercises
   So that I can practice the new knowledge
 
-  Background: 
+  Background:
     Given Jacob is in the Home Page
 
   # @ignore
