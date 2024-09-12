@@ -1,5 +1,9 @@
 {
     "devDependencies": {
         "gherkin-lint": "^4.2.2"
+    },
+    "scripts": {
+        "lintFix:feature": "npx gherkin-lint --ignore .gitignore --config .gherkin-lintrc.json",
+        "lint": "npm run lintFix:feature"
     }
 }

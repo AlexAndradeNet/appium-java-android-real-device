@@ -101,7 +101,7 @@ spotless {
     // Set the encoding, replace 'UTF-8' with `${encoding}` if it's dynamically defined
 
     java {
-        targetExclude('/target/**/*', 'build/**/*') // Exclude specific folder
+        targetExclude('/target/**/*', 'build/**/*', 'node_modules/**/*') // Exclude specific folder
 
         // Apply Google Java Format with a specific style and options
         googleJavaFormat('1.22.0').aosp().reflowLongStrings(true)
@@ -124,14 +124,14 @@ spotless {
     // Format SQL files
     sql {
         target '**/*.sql' // Define which files to include
-        targetExclude('/target/**/*', 'build/**/*') // Exclude specific folder
+        targetExclude('/target/**/*', 'build/**/*', 'node_modules/**/*') // Exclude specific folder
         dbeaver()         // Apply DBeaver formatting conventions
     }
 
     // Format JSON files
     json {
         target '**/*.json'
-        targetExclude('/target/**/*', 'build/**/*') // Exclude specific folder
+        targetExclude('/target/**/*', 'build/**/*', 'node_modules/**/*') // Exclude specific folder
         gson() // Apply Gson-based formatting
     }
 }
@@ -163,10 +163,16 @@ sonar {
     }
 }
 
+tasks.register('npmInstall', Exec) {
+    commandLine 'npm', 'install'
+}
+
 tasks.register('installLocalGitHook', Copy) {
     from new File(rootProject.rootDir, 'scripts/pre-commit')
     into { new File(rootProject.rootDir, '.git/hooks') }
     fileMode 0775
 }
 
-build.dependsOn installLocalGitHook
+tasks.named('build') {
+    dependsOn npmInstall, installLocalGitHook
+}
