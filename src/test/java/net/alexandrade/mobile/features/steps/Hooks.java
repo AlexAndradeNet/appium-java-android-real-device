@@ -13,42 +13,44 @@ from Nuvei Inc.
 */
 package net.alexandrade.mobile.features.steps;
 
-import static net.alexandrade.mobile.screenplay.ui.HomePage.saleTransactionButton;
-import static net.serenitybdd.screenplay.actors.OnStage.theActorCalled;
-import static net.serenitybdd.screenplay.actors.OnStage.theActorInTheSpotlight;
-import static net.thucydides.core.webdriver.ThucydidesWebDriverSupport.getDriver;
+import static net.alexandrade.mobile.screenplay.ui.MainTilePage.BUTTON_SALE_TRANSACTION;
+import static net.alexandrade.mobile.screenplay.ui.MainTilePage.SPINNER;
+import static net.serenitybdd.screenplay.matchers.WebElementStateMatchers.isNotPresent;
 
-import io.appium.java_client.android.AndroidDriver;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
+import io.cucumber.java.en.When;
+import net.alexandrade.mobile.screenplay.interactions.Tap;
+import net.serenitybdd.core.Serenity;
+import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.abilities.BrowseTheWeb;
-import net.serenitybdd.screenplay.actions.Click;
 import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.actors.OnlineCast;
-import net.thucydides.core.annotations.Managed;
-import net.thucydides.core.webdriver.WebDriverFacade;
-import org.openqa.selenium.WebDriver;
+import net.serenitybdd.screenplay.waits.WaitUntil;
 
 public class Hooks {
-    @Managed(driver = "Appium")
-    public WebDriver hisMobileDevice;
-
-    String jacob = "Trader";
 
     @Before(order = 1)
     public void setTheStage() {
         OnStage.setTheStage(new OnlineCast());
     }
 
-    @Given("Jacob is in the Home Page")
-    public void theActorIsInTheHomePage() {
-        theActorCalled(jacob).can(BrowseTheWeb.with(hisMobileDevice));
-        theActorInTheSpotlight().attemptsTo(Click.on(saleTransactionButton));
+    @Given("{actor} is in the Main Screen")
+    public void theActorIsInTheHomePage(Actor theActor) {
+        theActor.can(BrowseTheWeb.with(Serenity.getDriver()));
     }
 
     @After
     public void afterAll() {
-        ((AndroidDriver) ((WebDriverFacade) getDriver()).getProxiedDriver()).resetApp();
+        OnStage.drawTheCurtain();
+        Serenity.getDriver().quit();
+    }
+
+    @When("{actor} opens the {string} main tile")
+    public void opensTheMainTile(Actor theActor, String transactionType) {
+        theActor.attemptsTo(
+                WaitUntil.the(SPINNER, isNotPresent()).forNoMoreThan(120).seconds(),
+                Tap.on(BUTTON_SALE_TRANSACTION));
     }
 }
