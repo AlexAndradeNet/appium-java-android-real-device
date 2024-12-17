@@ -3,7 +3,7 @@
         "gherkin-lint": "^4.2.2"
     },
     "scripts": {
-        "lintFix:feature": "npx gherkin-lint --ignore .gitignore --config .gherkin-lintrc.json",
+        "lintFix:feature": "npx gherkin-lint --ignore .gitignore --config .gherkin-lintrc.json src/test/resources/features/**/*.feature",
         "lint": "npm run lintFix:feature"
     }
 }

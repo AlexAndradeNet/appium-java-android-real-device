@@ -19,7 +19,8 @@ the [official Android Studio installation guide](https://developer.android.com/s
 
 > **Note:** The following steps provide a minimal setup to run tests. For a full
 > Android Studio installation, refer to
-> the [Android Studio setup guide](https://developer.android.com/studio/install).
+>
+the [Android Studio setup guide](https://developer.android.com/studio/install).
 
 1. **Install OpenJDK and Android Command Line Tools**
 
@@ -72,7 +73,7 @@ packages.
    Install the latest version of Appium globally using `npm`:
 
    ```bash
-   npm i -g appium@next
+   npm i -g appium
    ```
 
 2. **Install the Required WebDriver**
@@ -83,11 +84,23 @@ packages.
    appium driver install uiautomator2
    ```
 
+   Check the installation by running the following command:
+
+    ```bash
+    appium driver doctor uiautomator2
+    ```
+
 ### Installing Appium Inspector
 
 Appium Inspector is a GUI tool that helps inspect the elements of your app and
 retrieve their locators. You can download it from
 the [Appium Inspector GitHub releases page](https://github.com/appium/appium-inspector/releases).
+
+It's possible you need to grant permission to run the app. Run the following:
+
+```bash
+xattr -d com.apple.quarantine /Applications/Appium\ Inspector.app
+```
 
 ---
 

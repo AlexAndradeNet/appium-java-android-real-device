@@ -1,110 +1,80 @@
-buildscript {
-    repositories {
-        mavenLocal()
-        mavenCentral()
-        maven {
-            url "https://plugins.gradle.org/m2/"
-        }
-    }
-
-    dependencies {
-        classpath "net.serenity-bdd:serenity-gradle-plugin:3.6.7"
-        classpath("com.diffplug.spotless:spotless-plugin-gradle:6.19.0") {
-            exclude group: 'com.google.guava', module: 'guava-jdk17'
-        }
-    }
-}
+import com.diffplug.gradle.spotless.SpotlessCheck
+import com.diffplug.gradle.spotless.SpotlessTask
 
 plugins {
     id 'java'
-    id 'org.sonarqube' version '5.0.0.4638'
-    id 'org.gradle.test-retry' version '1.5.9'
+    id 'eclipse'
+    id 'idea'
+    id 'org.sonarqube' version '6.0.0.5145'
+    id 'net.serenity-bdd.serenity-gradle-plugin' version '4.2.8'
+    id 'com.diffplug.spotless' version '6.25.0'
+    id 'org.gradle.test-retry' version '1.6.0'
 }
 
-// Set the build directory to "target"
-buildDir = file('target')
-
-apply plugin: 'java'
-apply plugin: 'eclipse'
-apply plugin: 'idea'
-apply plugin: 'com.diffplug.spotless'
-apply plugin: 'net.serenity-bdd.serenity-gradle-plugin'
-apply plugin: 'org.sonarqube'
-apply from: "$rootDir/gradle/libraries.gradle"
-
-sourceCompatibility = 17
-targetCompatibility = 17
-
-group 'net.alexandrade'
-version '1.0-SNAPSHOT'
+// Set the build directory to "target" using the new layout property
+layout.buildDirectory = file('target')
 
 repositories {
     mavenLocal()
     mavenCentral()
 }
 
-/**
- * This is needed to make sure there are no Cucumber 2 dependencies in the classpath.
- */
-configurations.all {
-    resolutionStrategy {
-        force libs.cucumber.core
-    }
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+// Set the build directory to "target"
+buildDir = file('target')
+
+group 'net.alexandrade'
+version '1.0-SNAPSHOT'
+
+ext {
+    versions = [
+            serenityCore : '4.2.9',
+            cucumber     : '7.20.1',
+            junit        : '5.11.3',
+            junitPlatform: '1.11.3',
+            aeonbits     : '1.0.12',
+            gson         : '2.10.1',
+            slf4j        : '2.0.13',
+            appium       : '9.3.0',
+            googleFormat : '1.25.2'
+    ]
 }
 
 dependencies {
-    implementation libs.aeonbits,
-            libs.cucumber.java,
-            libs.cucumber.junit,
-            libs.slf4j.api,
-            libs.slf4j.simple,
-            libs.sonarqube,
-            libs.appium
+    implementation "org.aeonbits.owner:owner:${versions.aeonbits}"
+    testImplementation "org.slf4j:slf4j-api:${versions.slf4j}",
+            "org.slf4j:slf4j-simple:${versions.slf4j}",
+            "com.google.code.gson:gson:${versions.gson}",
+            "net.serenity-bdd:serenity-core:${versions.serenityCore}",
+            "net.serenity-bdd:serenity-ensure:${versions.serenityCore}",
+            "net.serenity-bdd:serenity-screenplay:${versions.serenityCore}",
+            "net.serenity-bdd:serenity-screenplay-webdriver:${versions.serenityCore}",
+            "net.serenity-bdd:serenity-cucumber:${versions.serenityCore}",
+            "net.serenity-bdd:serenity-junit:${versions.serenityCore}",
+            "org.junit.jupiter:junit-jupiter-api:${versions.junit}",
+            "org.junit.platform:junit-platform-suite:${versions.junitPlatform}",
+            "io.cucumber:cucumber-java:${versions.cucumber}",
+            "io.cucumber:cucumber-junit-platform-engine:${versions.cucumber}",
+            "io.appium:java-client:${versions.appium}"
 
-    compileOnly libs.gson
-
-    testImplementation libs.test.serenity.core,
-            libs.test.serenity.ensure,
-            libs.test.serenity.screenplay,
-            libs.test.serenity.screenplayWebdriver,
-            libs.test.serenity.cucumber6,
-            libs.test.junit.junit,
-            libs.test.junit.jupiter
-
-    testRuntimeOnly libs.test.junit.vintage
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${versions.junit}"
 }
-
-serenity {
-    generateOutcomes = true     // generate report
-}
-
-test {
-    testLogging {
-        showStandardStreams = true
-        //events "passed", "skipped", "failed"
-    }
-    systemProperties System.getProperties()
-    // useJUnitPlatform()
-    retry {
-        maxRetries = 0 // Disables test retries
-    }
-    finalizedBy 'aggregate'
-    finalizedBy 'spotlessApply'
-}
-
-/* tasks.withType(Test).configureEach {
-    maxParallelForks = Runtime.runtime.availableProcessors().intdiv(2) ?: 1
-}*/
 
 spotless {
     encoding 'UTF-8'
     // Set the encoding, replace 'UTF-8' with `${encoding}` if it's dynamically defined
 
     java {
-        targetExclude('/target/**/*', 'build/**/*', 'node_modules/**/*') // Exclude specific folder
+
+        // Exclude specific folder
+        targetExclude('/target/**/*', 'build/**/*', 'node_modules/**/*')
 
         // Apply Google Java Format with a specific style and options
-        googleJavaFormat('1.22.0').aosp().reflowLongStrings(true)
+        googleJavaFormat("${versions.googleFormat}").aosp().reflowLongStrings(true)
 
         // License header configuration
         licenseHeaderFile 'LICENSE', 'package '
@@ -124,19 +94,39 @@ spotless {
     // Format SQL files
     sql {
         target '**/*.sql' // Define which files to include
-        targetExclude('/target/**/*', 'build/**/*', 'node_modules/**/*') // Exclude specific folder
+        targetExclude('/target/**/*', 'build/**/*', 'node_modules/**/*')
+        // Exclude specific folder
         dbeaver()         // Apply DBeaver formatting conventions
     }
 
     // Format JSON files
     json {
         target '**/*.json'
-        targetExclude('/target/**/*', 'build/**/*', 'node_modules/**/*') // Exclude specific folder
+        targetExclude('/target/**/*', 'build/**/*', 'node_modules/**/*')
+        // Exclude specific folder
         gson() // Apply Gson-based formatting
     }
 }
 
-gradle.startParameter.continueOnFailure = true
+test {
+    testLogging {
+        showStandardStreams = true
+        //events "passed", "skipped", "failed"
+    }
+    systemProperties System.getProperties()
+    useJUnitPlatform()
+    retry {
+        maxRetries = 0 // Disables test retries
+    }
+    finalizedBy 'aggregate'
+    finalizedBy 'spotlessApply'
+}
+
+tasks.withType(Test) {
+    //maxParallelForks = Runtime.runtime.availableProcessors().intdiv(2) ?: 1
+    maxParallelForks = Runtime.runtime.availableProcessors()
+    forkEvery = 1 // This can help with managing test isolation
+}
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
@@ -153,6 +143,7 @@ tasks.named('spotlessApply') {
 
 tasks.named('spotlessCheck') {
     group = 'verification'
+    outputs.dir file("target/tmp/spotless")
 }
 
 sonar {
@@ -160,6 +151,9 @@ sonar {
         property "sonar.coverage.exclusions", "src/**/*.java"
         property "sonar.sources", "src"
         property "sonar.test.exclusions", "src/test/**/*.java"
+        property "sonar.host.url", "http://127.0.0.1:9000"
+        property "sonar.java.binaries", "target/classes"
+        property "sonar.scm.provider", "git"
     }
 }
 
@@ -176,3 +170,6 @@ tasks.register('installLocalGitHook', Copy) {
 tasks.named('build') {
     dependsOn npmInstall, installLocalGitHook
 }
+
+// gradle.startParameter.continueOnFailure = true
+gradle.startParameter.continueOnFailure = false
