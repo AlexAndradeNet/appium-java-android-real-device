@@ -13,9 +13,15 @@ from Nuvei Inc.
 */
 package net.alexandrade.mobile.screenplay.ui;
 
+import io.appium.java_client.AppiumBy;
 import net.serenitybdd.screenplay.targets.Target;
 
-public class HomePage {
-    public static Target saleTransactionButton =
-            Target.the("Apps list Button").locatedBy("(//android.widget.TextView[1])[1]");
+public class SalePage {
+    private SalePage() {
+        // Utility class
+    }
+
+    public static final Target TITLE =
+            Target.the("{0} main tile")
+                    .located(AppiumBy.xpath("//android.widget.TextView[@text=\"SALE\"]"));
 }
