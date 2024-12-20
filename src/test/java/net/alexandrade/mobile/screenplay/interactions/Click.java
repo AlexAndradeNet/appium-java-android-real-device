@@ -22,10 +22,6 @@ import net.serenitybdd.screenplay.actions.Scroll;
 import net.serenitybdd.screenplay.targets.Target;
 import net.serenitybdd.screenplay.waits.WaitUntil;
 
-/**
- * An Interaction that performs a tap action on a given target element using the W3C Pointer Input
- * API.
- */
 public class Click implements Interaction {
     private enum ClickType {
         REGULAR_CLICK,

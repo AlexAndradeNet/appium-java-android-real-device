@@ -1,0 +1,17 @@
+{
+    "server": {
+        "address": "127.0.0.1",
+        "port": 4723,
+        "allow-cors": true,
+        "allow-insecure": [
+            "true"
+        ],
+        "relaxed-security": true,
+        "base-path": "/",
+        "callback-address": "127.0.0.1",
+        "callback-port": 4723,
+        "session-override": true,
+        "log-level": "info",
+        "log-no-colors": true
+    }
+}

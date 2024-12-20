@@ -14,6 +14,7 @@ from Nuvei Inc.
 package net.alexandrade.mobile.screenplay.interactions;
 
 import static net.serenitybdd.screenplay.Tasks.instrumented;
+import static org.awaitility.Awaitility.await;
 
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Performable;
@@ -33,14 +34,7 @@ public class WaitSpecificTime implements Task {
 
     @Override
     public <T extends Actor> void performAs(T actor) {
-        final long NUMBER_OF_MILLISECONDS_IN_A_SECOND = 1000;
-        final long NUMBER_OF_MILLISECONDS_TO_WAIT = seconds * NUMBER_OF_MILLISECONDS_IN_A_SECOND;
-
-        try {
-            Thread.sleep(NUMBER_OF_MILLISECONDS_TO_WAIT);
-        } catch (InterruptedException ignored) {
-            // Restore interrupted state...
-            Thread.currentThread().interrupt();
-        }
+        var duration = java.time.Duration.ofSeconds(seconds);
+        await().atMost(duration).until(() -> true);
     }
 }

@@ -11,13 +11,16 @@ Dissemination of this information or reproduction of this material
 is strictly forbidden unless prior written permission is obtained
 from Nuvei Inc.
 */
-package net.alexandrade.mobile.features;
+package net.alexandrade.mobile.features.steps;
 
-import org.junit.platform.suite.api.*;
+import io.cucumber.java.en.Given;
+import net.alexandrade.mobile.screenplay.tasks.MainScreenTasks;
+import net.serenitybdd.screenplay.Actor;
 
-@Suite
-@IncludeEngines("cucumber")
-@SelectClasspathResource("/features")
-@ConfigurationParameter(key = "cucumber.glue", value = "net.alexandrade.mobile.features.steps")
-@ExcludeTags({"@ignore", "@wip", "@manual", "@skip"})
-public class CucumberTestSuite {}
+public class SharedSteps {
+
+    @Given("{actor} is in the Main Screen")
+    public void theActorIsInTheHomePage(Actor theActor) {
+        theActor.attemptsTo(MainScreenTasks.waitTheAppIsFullyLoaded());
+    }
+}

@@ -13,44 +13,25 @@ from Nuvei Inc.
 */
 package net.alexandrade.mobile.features.steps;
 
-import static net.alexandrade.mobile.screenplay.ui.MainTilePage.BUTTON_SALE_TRANSACTION;
-import static net.alexandrade.mobile.screenplay.ui.MainTilePage.SPINNER;
-import static net.serenitybdd.screenplay.matchers.WebElementStateMatchers.isNotPresent;
-
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
-import io.cucumber.java.en.Given;
-import io.cucumber.java.en.When;
-import net.alexandrade.mobile.screenplay.interactions.Tap;
-import net.serenitybdd.core.Serenity;
-import net.serenitybdd.screenplay.Actor;
-import net.serenitybdd.screenplay.abilities.BrowseTheWeb;
+import net.alexandrade.mobile.screenplay.tasks.MainScreenTasks;
 import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.actors.OnlineCast;
-import net.serenitybdd.screenplay.waits.WaitUntil;
 
 public class Hooks {
 
     @Before(order = 1)
-    public void setTheStage() {
+    public void beforeEach() {
         OnStage.setTheStage(new OnlineCast());
-    }
-
-    @Given("{actor} is in the Main Screen")
-    public void theActorIsInTheHomePage(Actor theActor) {
-        theActor.can(BrowseTheWeb.with(Serenity.getDriver()));
+        System.out.println(
+                "####################### Cucumber Execution Order: "
+                        + System.getProperty("cucumber.execution.order"));
     }
 
     @After
-    public void afterAll() {
+    public void afterEach() {
+        OnStage.theActorInTheSpotlight().attemptsTo(MainScreenTasks.returnToMainScreen());
         OnStage.drawTheCurtain();
-        Serenity.getDriver().quit();
-    }
-
-    @When("{actor} opens the {string} main tile")
-    public void opensTheMainTile(Actor theActor, String transactionType) {
-        theActor.attemptsTo(
-                WaitUntil.the(SPINNER, isNotPresent()).forNoMoreThan(120).seconds(),
-                Tap.on(BUTTON_SALE_TRANSACTION));
     }
 }

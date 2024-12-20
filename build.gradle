@@ -11,9 +11,6 @@ plugins {
     id 'org.gradle.test-retry' version '1.6.0'
 }
 
-// Set the build directory to "target" using the new layout property
-layout.buildDirectory = file('target')
-
 repositories {
     mavenLocal()
     mavenCentral()
@@ -23,9 +20,6 @@ java {
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
 }
-
-// Set the build directory to "target"
-buildDir = file('target')
 
 group 'net.alexandrade'
 version '1.0-SNAPSHOT'
@@ -45,16 +39,15 @@ ext {
 }
 
 dependencies {
-    implementation "org.aeonbits.owner:owner:${versions.aeonbits}"
+    implementation "org.aeonbits.owner:owner:${versions.aeonbits}",
+            "org.slf4j:slf4j-simple:${versions.slf4j}"
     testImplementation "org.slf4j:slf4j-api:${versions.slf4j}",
-            "org.slf4j:slf4j-simple:${versions.slf4j}",
             "com.google.code.gson:gson:${versions.gson}",
             "net.serenity-bdd:serenity-core:${versions.serenityCore}",
             "net.serenity-bdd:serenity-ensure:${versions.serenityCore}",
             "net.serenity-bdd:serenity-screenplay:${versions.serenityCore}",
             "net.serenity-bdd:serenity-screenplay-webdriver:${versions.serenityCore}",
             "net.serenity-bdd:serenity-cucumber:${versions.serenityCore}",
-            "net.serenity-bdd:serenity-junit:${versions.serenityCore}",
             "org.junit.jupiter:junit-jupiter-api:${versions.junit}",
             "org.junit.platform:junit-platform-suite:${versions.junitPlatform}",
             "io.cucumber:cucumber-java:${versions.cucumber}",
@@ -119,7 +112,6 @@ test {
         maxRetries = 0 // Disables test retries
     }
     finalizedBy 'aggregate'
-    finalizedBy 'spotlessApply'
 }
 
 tasks.withType(Test) {
@@ -143,7 +135,6 @@ tasks.named('spotlessApply') {
 
 tasks.named('spotlessCheck') {
     group = 'verification'
-    outputs.dir file("target/tmp/spotless")
 }
 
 sonar {
@@ -152,7 +143,7 @@ sonar {
         property "sonar.sources", "src"
         property "sonar.test.exclusions", "src/test/**/*.java"
         property "sonar.host.url", "http://127.0.0.1:9000"
-        property "sonar.java.binaries", "target/classes"
+        property "sonar.java.binaries", "build/classes"
         property "sonar.scm.provider", "git"
     }
 }
@@ -169,6 +160,14 @@ tasks.register('installLocalGitHook', Copy) {
 
 tasks.named('build') {
     dependsOn npmInstall, installLocalGitHook
+}
+
+tasks.register('aggregateSerenityReports') {
+    dependsOn tasks.named('aggregate')
+}
+
+tasks.named('aggregate') {
+    outputs.dir project.layout.buildDirectory.dir("site/serenity")
 }
 
 // gradle.startParameter.continueOnFailure = true

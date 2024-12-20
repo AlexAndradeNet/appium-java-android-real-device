@@ -1,4 +1,4 @@
-# Appium + Java + Android - 2023
+# Appium + Java + Android - 2024
 
 This project utilizes the **Screenplay Design Pattern** to help maintain the
 SOLID principles, making the code more modular, readable, and maintainable.
@@ -49,7 +49,7 @@ Follow these steps to run the tests on an Android device:
 2. **Start the Appium Server**:
 
    ```bash
-   appium --allow-insecure=true --allow-cors --session-override
+   appium
    ```
 
 3. **Run the Tests**: There are two ways to run the tests. You can choose to run

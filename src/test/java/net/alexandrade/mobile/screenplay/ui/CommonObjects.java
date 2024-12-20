@@ -16,12 +16,14 @@ package net.alexandrade.mobile.screenplay.ui;
 import io.appium.java_client.AppiumBy;
 import net.serenitybdd.screenplay.targets.Target;
 
-public class SalePage {
-    private SalePage() {
+public class CommonObjects {
+    private CommonObjects() {
         throw new IllegalStateException("Utility class - cannot be instantiated");
     }
 
-    public static final Target TITLE =
-            Target.the("{0} main tile")
-                    .located(AppiumBy.xpath("//android.widget.TextView[@text=\"SALE\"]"));
+    public static final Target BUTTON_ARROW_BACK =
+            Target.the("Arrow Back")
+                    .located(
+                            AppiumBy.xpath(
+                                    "//android.widget.RelativeLayout[contains(@resource-id,\"rlBackButton\")]"));
 }
