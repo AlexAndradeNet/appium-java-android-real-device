@@ -1,1 +1,12 @@
-rootProject.name = 'appium-java-android-real-device'
+// Configure Gradle build cache
+buildCache {
+    local {
+        enabled = true
+        directory = file("${rootDir}/.gradle/build-cache")
+    }
+}
+// Add global settings for all subprojects
+gradle.beforeProject {
+    group = 'net.alexandrade' // Set global group
+    version = '1.0-SNAPSHOT' // Set global version
+}

@@ -17,7 +17,7 @@ import org.junit.platform.suite.api.*;
 
 @Suite
 @IncludeEngines("cucumber")
-@SelectClasspathResource("/features")
+@SelectClasspathResource("features")
 @ConfigurationParameter(key = "cucumber.glue", value = "net.alexandrade.mobile.features.steps")
 @ExcludeTags({"@ignore", "@wip", "@manual", "@skip"})
 public class CucumberTestSuite {}
