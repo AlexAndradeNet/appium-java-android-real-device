@@ -11,19 +11,19 @@ Dissemination of this information or reproduction of this material
 is strictly forbidden unless prior written permission is obtained
 from Nuvei Inc.
 */
-package net.alexandrade.mobile.screenplay.ui.settings;
+package net.alexandrade.mobile.screenplay.ui.settings.transactionoptions;
 
 import io.appium.java_client.AppiumBy;
 import net.serenitybdd.screenplay.targets.Target;
 
-public class SettingsPage {
-    private SettingsPage() {
+public class TransactionOptionsScreen {
+    private TransactionOptionsScreen() {
         throw new IllegalStateException("Utility class - cannot be instantiated");
     }
 
     private static final String BASE_XPATH = "//android.widget.TextView[@text=\"%s\"]";
 
-    public static final Target BUTTON_TRANSACTION_OPTIONS =
-            Target.the("Transaction Options")
-                    .located(AppiumBy.xpath(String.format(BASE_XPATH, "Transaction Options")));
+    public static final Target BUTTON_TRANSACTION_FLOW =
+            Target.the("Transaction Flow")
+                    .located(AppiumBy.xpath(String.format(BASE_XPATH, "Transaction Flow")));
 }

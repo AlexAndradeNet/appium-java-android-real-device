@@ -13,9 +13,9 @@ from Nuvei Inc.
 */
 package net.alexandrade.mobile.screenplay.tasks;
 
-import static net.alexandrade.mobile.screenplay.ui.MainTilePage.BUTTON_SETTINGS_TRANSACTION;
-import static net.alexandrade.mobile.screenplay.ui.settings.SettingsPage.BUTTON_TRANSACTION_OPTIONS;
-import static net.alexandrade.mobile.screenplay.ui.settings.transactionoptions.TransactionOptionsPage.BUTTON_TRANSACTION_FLOW;
+import static net.alexandrade.mobile.screenplay.ui.MainTileScreen.BUTTON_SETTINGS_TRANSACTION;
+import static net.alexandrade.mobile.screenplay.ui.settings.SettingsScreen.BUTTON_TRANSACTION_OPTIONS;
+import static net.alexandrade.mobile.screenplay.ui.settings.transactionoptions.TransactionOptionsScreen.BUTTON_TRANSACTION_FLOW;
 
 import net.alexandrade.mobile.screenplay.interactions.Tap;
 import net.serenitybdd.annotations.Step;

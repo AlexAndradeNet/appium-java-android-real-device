@@ -16,7 +16,7 @@ package net.alexandrade.mobile.features.steps;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import net.alexandrade.mobile.screenplay.tasks.MainScreenTasks;
-import net.alexandrade.mobile.screenplay.ui.SalePage;
+import net.alexandrade.mobile.screenplay.ui.SalePageScreen;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.ensure.Ensure;
@@ -33,6 +33,6 @@ public class SaleSteps {
     public void seeTheNumbersOfItemsIs(int items) {
         Actor theActor = OnStage.theActorInTheSpotlight();
         theActor.attemptsTo(
-                Ensure.that(Text.of(SalePage.TITLE).answeredBy(theActor)).isEqualTo("SALE"));
+                Ensure.that(Text.of(SalePageScreen.TITLE).answeredBy(theActor)).isEqualTo("SALE"));
     }
 }

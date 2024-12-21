@@ -13,7 +13,7 @@ from Nuvei Inc.
 */
 package net.alexandrade.mobile.features.steps.settings.transactionoptions.transactionflow;
 
-import static net.alexandrade.mobile.screenplay.ui.settings.transactionoptions.TransactionFlowPage.TOGGLE_ORDER_NUMBER;
+import static net.alexandrade.mobile.screenplay.ui.settings.transactionoptions.TransactionFlowScreen.TOGGLE_ORDER_NUMBER;
 
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;

@@ -14,7 +14,7 @@ from Nuvei Inc.
 package net.alexandrade.mobile.screenplay.tasks;
 
 import static net.alexandrade.mobile.screenplay.ui.CommonObjects.BUTTON_ARROW_BACK;
-import static net.alexandrade.mobile.screenplay.ui.MainTilePage.*;
+import static net.alexandrade.mobile.screenplay.ui.MainTileScreen.*;
 import static net.serenitybdd.screenplay.matchers.WebElementStateMatchers.isNotPresent;
 
 import net.alexandrade.mobile.screenplay.interactions.Tap;

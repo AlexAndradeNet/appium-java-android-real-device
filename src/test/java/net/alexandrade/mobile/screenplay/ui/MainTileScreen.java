@@ -16,12 +16,19 @@ package net.alexandrade.mobile.screenplay.ui;
 import io.appium.java_client.AppiumBy;
 import net.serenitybdd.screenplay.targets.Target;
 
-public class SalePage {
-    private SalePage() {
+public class MainTileScreen {
+    private MainTileScreen() {
         throw new IllegalStateException("Utility class - cannot be instantiated");
     }
 
-    public static final Target TITLE =
-            Target.the("{0} main tile")
-                    .located(AppiumBy.xpath("//android.widget.TextView[@text=\"SALE\"]"));
+    private static final String BASE_XPATH = "//android.widget.TextView[@text=\"%s\"]";
+
+    public static final Target SPINNER =
+            Target.the("Spinner").located(AppiumBy.xpath("//android.widget.ProgressBar"));
+
+    public static final Target BUTTON_SALE_TRANSACTION =
+            Target.the("Sale").located(AppiumBy.xpath(String.format(BASE_XPATH, "Sale")));
+
+    public static final Target BUTTON_SETTINGS_TRANSACTION =
+            Target.the("Settings").located(AppiumBy.xpath(String.format(BASE_XPATH, "Settings")));
 }
