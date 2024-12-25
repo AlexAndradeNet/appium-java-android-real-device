@@ -21,14 +21,16 @@ public class MainTileScreen {
         throw new IllegalStateException("Utility class - cannot be instantiated");
     }
 
-    private static final String BASE_XPATH = "//android.widget.TextView[@text=\"%s\"]";
+    private static final String BASE_SELECTOR = "new UiSelector().text(\"%s\")";
 
     public static final Target SPINNER =
             Target.the("Spinner").located(AppiumBy.xpath("//android.widget.ProgressBar"));
 
     public static final Target BUTTON_SALE_TRANSACTION =
-            Target.the("Sale").located(AppiumBy.xpath(String.format(BASE_XPATH, "Sale")));
+            Target.the("Sale")
+                    .located(AppiumBy.androidUIAutomator(BASE_SELECTOR.formatted("Sale")));
 
     public static final Target BUTTON_SETTINGS_TRANSACTION =
-            Target.the("Settings").located(AppiumBy.xpath(String.format(BASE_XPATH, "Settings")));
+            Target.the("Settings")
+                    .located(AppiumBy.androidUIAutomator(BASE_SELECTOR.formatted("Settings")));
 }

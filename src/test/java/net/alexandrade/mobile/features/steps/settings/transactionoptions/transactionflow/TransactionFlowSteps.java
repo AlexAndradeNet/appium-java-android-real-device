@@ -18,7 +18,7 @@ import static net.alexandrade.mobile.screenplay.ui.settings.transactionoptions.T
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import net.alexandrade.mobile.screenplay.interactions.Toggle;
-import net.alexandrade.mobile.screenplay.tasks.SettingsTasks;
+import net.alexandrade.mobile.screenplay.tasks.settings.MainSettingsTasks;
 import net.serenitybdd.screenplay.actors.OnStage;
 
 public class TransactionFlowSteps {
@@ -27,7 +27,8 @@ public class TransactionFlowSteps {
     public void heEnablesTheOrderNumberPrompt() {
         OnStage.theActorInTheSpotlight()
                 .attemptsTo(
-                        SettingsTasks.openTransactionFlowPage(), Toggle.toOn(TOGGLE_ORDER_NUMBER));
+                        MainSettingsTasks.openTransactionFlowScreen(),
+                        Toggle.toOn(TOGGLE_ORDER_NUMBER));
     }
 
     @Then("he see the Order Number prompt is enabled")

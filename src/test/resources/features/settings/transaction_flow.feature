@@ -1,4 +1,4 @@
-# @ignore
+@ignore
 Feature: Solve course exercises
   As a User
   I want to test all the exercises
@@ -6,12 +6,12 @@ Feature: Solve course exercises
 
   #@ignore
   Scenario: The trader explores the menu
-    Given Jacob is in the Main Screen
+    Given Aureliano is in the Main Screen
     When he opens the Sale main tile
     Then he see the numbers of items is 8
 
-  @ignore
+  #@ignore
   Scenario: The clerk enables the Order Number prompt
-    Given Jacob is in the Main Screen
+    Given Aureliano is in the Main Screen
     When he enables the Order Number prompt
     Then he see the Order Number prompt is enabled

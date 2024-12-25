@@ -16,14 +16,22 @@ package net.alexandrade.mobile.screenplay.ui.settings.transactionoptions;
 import io.appium.java_client.AppiumBy;
 import net.serenitybdd.screenplay.targets.Target;
 
-public class TransactionOptionsScreen {
-    private TransactionOptionsScreen() {
+public class MainTransactionOptionsScreen {
+    private MainTransactionOptionsScreen() {
         throw new IllegalStateException("Utility class - cannot be instantiated");
     }
 
-    private static final String BASE_XPATH = "//android.widget.TextView[@text=\"%s\"]";
+    private static final String BASE_SELECTOR = "new UiSelector().text(\"%s\")";
+
+    public static final Target TITLE =
+            Target.the("Title")
+                    .located(
+                            AppiumBy.androidUIAutomator(
+                                    BASE_SELECTOR.formatted("TRANSACTION OPTIONS")));
 
     public static final Target BUTTON_TRANSACTION_FLOW =
             Target.the("Transaction Flow")
-                    .located(AppiumBy.xpath(String.format(BASE_XPATH, "Transaction Flow")));
+                    .located(
+                            AppiumBy.androidUIAutomator(
+                                    BASE_SELECTOR.formatted("Transaction Flow")));
 }

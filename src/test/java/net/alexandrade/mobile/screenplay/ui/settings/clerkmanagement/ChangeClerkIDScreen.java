@@ -11,26 +11,29 @@ Dissemination of this information or reproduction of this material
 is strictly forbidden unless prior written permission is obtained
 from Nuvei Inc.
 */
-package net.alexandrade.mobile.screenplay.ui.settings.transactionoptions;
+package net.alexandrade.mobile.screenplay.ui.settings.clerkmanagement;
 
 import io.appium.java_client.AppiumBy;
 import net.serenitybdd.screenplay.targets.Target;
 
-public class TransactionFlowScreen {
-    private TransactionFlowScreen() {
+public class ChangeClerkIDScreen {
+    private ChangeClerkIDScreen() {
         throw new IllegalStateException("Utility class - cannot be instantiated");
     }
 
-    private static final String BASE_SELECTOR =
-            "//android.widget.TextView[@text=\"%s\"]/following-sibling::*[1]";
+    private static final String BASE_SELECTOR = "new UiSelector().text(\"%s\")";
 
     public static final Target TITLE =
             Target.the("Title")
                     .located(
                             AppiumBy.androidUIAutomator(
-                                    "new UiSelector().text(\"TRANSACTION FLOW\")"));
+                                    BASE_SELECTOR.formatted("CHANGE CLERK ID")));
 
-    public static final Target TOGGLE_ORDER_NUMBER =
-            Target.the("Order Number")
-                    .located(AppiumBy.xpath(BASE_SELECTOR.formatted("Order Number")));
+    public static final Target TEXTBOX_NEW_CLERK_ID =
+            Target.the("New Clerk ID textbox")
+                    .located(AppiumBy.className("android.widget.TextView"));
+
+    public static final Target BUTTON_CONFIRM =
+            Target.the("Button Confirm")
+                    .located(AppiumBy.androidUIAutomator(BASE_SELECTOR.formatted("CONFIRM")));
 }

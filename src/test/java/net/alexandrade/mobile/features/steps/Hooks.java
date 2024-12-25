@@ -15,7 +15,7 @@ package net.alexandrade.mobile.features.steps;
 
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
-import net.alexandrade.mobile.screenplay.tasks.MainScreenTasks;
+import net.alexandrade.mobile.screenplay.tasks.MainTileScreenTasks;
 import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.actors.OnlineCast;
 
@@ -31,7 +31,7 @@ public class Hooks {
 
     @After
     public void afterEach() {
-        OnStage.theActorInTheSpotlight().attemptsTo(MainScreenTasks.returnToMainScreen());
+        OnStage.theActorInTheSpotlight().attemptsTo(MainTileScreenTasks.returnToMainScreen());
         OnStage.drawTheCurtain();
     }
 }

@@ -18,15 +18,16 @@ import static net.alexandrade.mobile.screenplay.ui.MainTileScreen.*;
 import static net.serenitybdd.screenplay.matchers.WebElementStateMatchers.isNotPresent;
 
 import net.alexandrade.mobile.screenplay.interactions.Tap;
+import net.alexandrade.mobile.screenplay.questions.ElementVisibility;
 import net.serenitybdd.annotations.Step;
 import net.serenitybdd.screenplay.Performable;
 import net.serenitybdd.screenplay.Task;
 import net.serenitybdd.screenplay.waits.WaitUntil;
 import org.openqa.selenium.NoSuchElementException;
 
-public class MainScreenTasks {
+public class MainTileScreenTasks {
 
-    private MainScreenTasks() {
+    private MainTileScreenTasks() {
         throw new IllegalStateException("Utility class - cannot be instantiated");
     }
 
@@ -43,7 +44,9 @@ public class MainScreenTasks {
                 "{0} navigates back to the main screen",
                 actor -> {
                     try {
-                        while (BUTTON_ARROW_BACK.resolveFor(actor).isEnabled()) {
+                        while (ElementVisibility.isPresent(BUTTON_ARROW_BACK)
+                                .answeredBy(actor)
+                                .equals(true)) {
                             actor.attemptsTo(Tap.on(BUTTON_ARROW_BACK));
                         }
                     } catch (NoSuchElementException ignored) {

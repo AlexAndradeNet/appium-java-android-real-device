@@ -14,13 +14,13 @@ from Nuvei Inc.
 package net.alexandrade.mobile.features.steps;
 
 import io.cucumber.java.en.Given;
-import net.alexandrade.mobile.screenplay.tasks.MainScreenTasks;
+import net.alexandrade.mobile.screenplay.tasks.MainTileScreenTasks;
 import net.serenitybdd.screenplay.Actor;
 
 public class SharedSteps {
 
     @Given("{actor} is in the Main Screen")
     public void theActorIsInTheHomePage(Actor theActor) {
-        theActor.attemptsTo(MainScreenTasks.waitTheAppIsFullyLoaded());
+        theActor.attemptsTo(MainTileScreenTasks.waitTheAppIsFullyLoaded());
     }
 }
