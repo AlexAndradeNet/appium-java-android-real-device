@@ -19,12 +19,13 @@
         {
             "tags": [
                 "@watch",
-                "@wip"
+                "@wip",
+                "~@ignore"
             ]
         }
     ],
     "use-and": "on",
-    "no-duplicate-tags": "on",
+    "no-duplicate-tags": "off",
     "no-superfluous-tags": "on",
     "no-homogenous-tags": "on",
     "one-space-between-tags": "on",
