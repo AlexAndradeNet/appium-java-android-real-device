@@ -22,7 +22,7 @@ import net.serenitybdd.screenplay.actions.Scroll;
 import net.serenitybdd.screenplay.targets.Target;
 import net.serenitybdd.screenplay.waits.WaitUntil;
 
-public class Click implements Interaction {
+public class ClickAction implements Interaction {
     private enum ClickType {
         REGULAR_CLICK,
         SCROLL_AND_CLICK,
@@ -33,7 +33,7 @@ public class Click implements Interaction {
     private final Target target;
     private final ClickType clickType;
 
-    protected Click(Target target, ClickType clickType) {
+    protected ClickAction(Target target, ClickType clickType) {
         this.target = target;
         this.clickType = clickType;
     }
@@ -46,14 +46,14 @@ public class Click implements Interaction {
                 break;
             case SCROLL_AND_CLICK:
                 Scroll.to(target).performAs(actor);
-                Click.on(target).performAs(actor);
+                ClickAction.on(target).performAs(actor);
                 break;
             case WAIT_AND_CLICK:
                 waitUntilIsClickable(actor, target);
-                Click.on(target).performAs(actor);
+                ClickAction.on(target).performAs(actor);
                 break;
             default:
-                Click.on(target).performAs(actor);
+                ClickAction.on(target).performAs(actor);
                 break;
         }
     }
@@ -62,19 +62,19 @@ public class Click implements Interaction {
         actor.attemptsTo(WaitUntil.the(target, isClickable()).forNoMoreThan(30).seconds());
     }
 
-    public static Click on(Target target) {
-        return instrumented(Click.class, target, ClickType.REGULAR_CLICK);
+    public static ClickAction on(Target target) {
+        return instrumented(ClickAction.class, target, ClickType.REGULAR_CLICK);
     }
 
-    public static Click usingLegacyMethodOn(Target target) {
-        return instrumented(Click.class, target, ClickType.LEGACY_CLICK);
+    public static ClickAction usingLegacyMethodOn(Target target) {
+        return instrumented(ClickAction.class, target, ClickType.LEGACY_CLICK);
     }
 
-    public static Click afterScrollTo(Target target) {
-        return instrumented(Click.class, target, ClickType.SCROLL_AND_CLICK);
+    public static ClickAction afterScrollTo(Target target) {
+        return instrumented(ClickAction.class, target, ClickType.SCROLL_AND_CLICK);
     }
 
-    public static Click afterWaitIsClickable(Target target) {
-        return instrumented(Click.class, target, ClickType.WAIT_AND_CLICK);
+    public static ClickAction afterWaitIsClickable(Target target) {
+        return instrumented(ClickAction.class, target, ClickType.WAIT_AND_CLICK);
     }
 }

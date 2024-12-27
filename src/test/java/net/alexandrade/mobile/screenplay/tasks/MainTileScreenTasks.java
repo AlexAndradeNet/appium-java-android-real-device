@@ -17,8 +17,8 @@ import static net.alexandrade.mobile.screenplay.ui.CommonObjects.BUTTON_ARROW_BA
 import static net.alexandrade.mobile.screenplay.ui.MainTileScreen.*;
 import static net.serenitybdd.screenplay.matchers.WebElementStateMatchers.isNotPresent;
 
-import net.alexandrade.mobile.screenplay.interactions.Tap;
-import net.alexandrade.mobile.screenplay.questions.ElementVisibility;
+import net.alexandrade.mobile.screenplay.interactions.TapAction;
+import net.alexandrade.mobile.screenplay.questions.VisibilityQuestion;
 import net.serenitybdd.annotations.Step;
 import net.serenitybdd.screenplay.Performable;
 import net.serenitybdd.screenplay.Task;
@@ -44,10 +44,10 @@ public class MainTileScreenTasks {
                 "{0} navigates back to the main screen",
                 actor -> {
                     try {
-                        while (ElementVisibility.isPresent(BUTTON_ARROW_BACK)
+                        while (VisibilityQuestion.isPresent(BUTTON_ARROW_BACK)
                                 .answeredBy(actor)
                                 .equals(true)) {
-                            actor.attemptsTo(Tap.on(BUTTON_ARROW_BACK));
+                            actor.attemptsTo(TapAction.on(BUTTON_ARROW_BACK));
                         }
                     } catch (NoSuchElementException ignored) {
                         // Do nothing
@@ -57,6 +57,6 @@ public class MainTileScreenTasks {
 
     @Step("{0} makes the terminal goes back to the main screen {1}")
     public static Performable openSale() {
-        return Task.where("{0} opens the Sale main tile", Tap.on(BUTTON_SALE_TRANSACTION));
+        return Task.where("{0} opens the Sale main tile", TapAction.on(BUTTON_SALE_TRANSACTION));
     }
 }

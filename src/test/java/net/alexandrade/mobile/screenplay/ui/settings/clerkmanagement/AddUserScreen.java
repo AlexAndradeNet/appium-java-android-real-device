@@ -16,26 +16,26 @@ package net.alexandrade.mobile.screenplay.ui.settings.clerkmanagement;
 import io.appium.java_client.AppiumBy;
 import net.serenitybdd.screenplay.targets.Target;
 
-public class ChangePasswordScreen {
-    private ChangePasswordScreen() {
+public class AddUserScreen {
+    private AddUserScreen() {
         throw new IllegalStateException("Utility class - cannot be instantiated");
     }
 
     private static final String BASE_SELECTOR = "new UiSelector().text(\"%s\")";
 
     public static final Target TITLE =
-            Target.the("Title")
-                    .located(
-                            AppiumBy.androidUIAutomator(
-                                    BASE_SELECTOR.formatted("CHANGE PASSWORD")));
+            Target.the("Title").located(AppiumBy.xpath("(//android.widget.TextView)[1]"));
+
+    public static final Target TEXTBOX_USER_ID =
+            Target.the("User ID textbox").located(AppiumBy.xpath("(//android.widget.EditText)[1]"));
 
     public static final Target TEXTBOX_PASSWORD =
             Target.the("Password textbox")
-                    .located(AppiumBy.xpath("(//android.widget.EditText)[1]"));
+                    .located(AppiumBy.xpath("(//android.widget.EditText)[2]"));
 
     public static final Target TEXTBOX_CONFIRM =
             Target.the("Confirm Password textbox")
-                    .located(AppiumBy.xpath("(//android.widget.EditText)[2]"));
+                    .located(AppiumBy.xpath("(//android.widget.EditText)[3]"));
 
     public static final Target BUTTON_CONFIRM =
             Target.the("Button Confirm")

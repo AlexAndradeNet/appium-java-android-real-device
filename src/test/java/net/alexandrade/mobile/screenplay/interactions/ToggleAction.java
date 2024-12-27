@@ -19,12 +19,12 @@ import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Interaction;
 import net.serenitybdd.screenplay.targets.Target;
 
-public class Toggle implements Interaction {
+public class ToggleAction implements Interaction {
 
     private final Target target;
     private final boolean enabled;
 
-    protected Toggle(Target target, boolean enabled) {
+    protected ToggleAction(Target target, boolean enabled) {
         this.target = target;
         this.enabled = enabled;
     }
@@ -37,15 +37,15 @@ public class Toggle implements Interaction {
                 currentToggleStatus.replaceAll("\\p{C}", ""); // Removes control characters
 
         if (!currentToggleStatus.equals(translatedStatus)) {
-            actor.attemptsTo(Tap.on(target));
+            actor.attemptsTo(TapAction.on(target));
         }
     }
 
-    public static Toggle toOn(Target target) {
-        return instrumented(Toggle.class, target, true);
+    public static ToggleAction toOn(Target target) {
+        return instrumented(ToggleAction.class, target, true);
     }
 
-    public static Toggle toOff(Target target) {
-        return instrumented(Toggle.class, target, false);
+    public static ToggleAction toOff(Target target) {
+        return instrumented(ToggleAction.class, target, false);
     }
 }

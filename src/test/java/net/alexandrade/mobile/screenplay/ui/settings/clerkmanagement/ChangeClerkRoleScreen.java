@@ -21,7 +21,7 @@ public class ChangeClerkRoleScreen {
         throw new IllegalStateException("Utility class - cannot be instantiated");
     }
 
-    private static final String BASE_SELECTOR = "new UiSelector().text(\"#%s\")";
+    private static final String BASE_SELECTOR = "new UiSelector().text(\"%s\")";
 
     public static final Target TITLE =
             Target.the("Title")
@@ -29,15 +29,15 @@ public class ChangeClerkRoleScreen {
                             AppiumBy.androidUIAutomator(
                                     BASE_SELECTOR.formatted("CHANGE CLERK ROLE")));
 
-    public static final Target BUTTON_CHANGE_CLERK_ID =
+    public static final Target BUTTON_ROLE_ADMIN =
             Target.the("Button Admin Role")
                     .located(AppiumBy.androidUIAutomator(BASE_SELECTOR.formatted("Admin")));
 
-    public static final Target BUTTON_CHANGE_PASSWORD =
+    public static final Target BUTTON_ROLE_MANAGER =
             Target.the("Button Manager Role")
                     .located(AppiumBy.androidUIAutomator(BASE_SELECTOR.formatted("Manager")));
 
-    public static final Target BUTTON_CHANGE_CLERK_ROLE =
+    public static final Target BUTTON_ROLE_EMPLOYEE =
             Target.the("Button Employee Role")
                     .located(AppiumBy.androidUIAutomator(BASE_SELECTOR.formatted("Employee")));
 }

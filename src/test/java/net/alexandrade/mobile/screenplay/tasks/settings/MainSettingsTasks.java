@@ -13,7 +13,7 @@ from Nuvei Inc.
 */
 package net.alexandrade.mobile.screenplay.tasks.settings;
 
-import net.alexandrade.mobile.screenplay.interactions.Tap;
+import net.alexandrade.mobile.screenplay.interactions.TapAction;
 import net.alexandrade.mobile.screenplay.ui.MainTileScreen;
 import net.alexandrade.mobile.screenplay.ui.settings.MainSettingsScreen;
 import net.alexandrade.mobile.screenplay.ui.settings.transactionoptions.MainTransactionOptionsScreen;
@@ -31,16 +31,16 @@ public class MainSettingsTasks {
     public static Performable openTransactionFlowScreen() {
         return Task.where(
                 "{0} opens the Transaction Options > Transaction Flow screen",
-                Tap.on(MainTileScreen.BUTTON_SETTINGS_TRANSACTION),
-                Tap.on(MainSettingsScreen.BUTTON_TRANSACTION_OPTIONS),
-                Tap.on(MainTransactionOptionsScreen.BUTTON_TRANSACTION_FLOW));
+                TapAction.on(MainTileScreen.BUTTON_SETTINGS_TRANSACTION),
+                TapAction.on(MainSettingsScreen.BUTTON_TRANSACTION_OPTIONS),
+                TapAction.on(MainTransactionOptionsScreen.BUTTON_TRANSACTION_FLOW));
     }
 
     @Step("{0} opens the Clerk Management Settings {1}")
     public static Performable openClerkManagementScreen() {
         return Task.where(
                 "{0} opens the Sale main tile",
-                Tap.on(MainTileScreen.BUTTON_SETTINGS_TRANSACTION),
-                Tap.on(MainSettingsScreen.BUTTON_CLERK_MANAGEMENT));
+                TapAction.on(MainTileScreen.BUTTON_SETTINGS_TRANSACTION),
+                TapAction.on(MainSettingsScreen.BUTTON_CLERK_MANAGEMENT));
     }
 }

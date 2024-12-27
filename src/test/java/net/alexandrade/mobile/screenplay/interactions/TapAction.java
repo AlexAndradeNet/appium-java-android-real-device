@@ -17,7 +17,7 @@ import static net.serenitybdd.screenplay.Tasks.instrumented;
 
 import java.time.Duration;
 import java.util.Collections;
-import net.serenitybdd.core.Serenity;
+import net.alexandrade.mobile.screenplay.driver.AppiumDriverSingleton;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Interaction;
 import net.serenitybdd.screenplay.targets.Target;
@@ -31,21 +31,26 @@ import org.openqa.selenium.interactions.Sequence;
  * An Interaction that performs a tap action on a given target element using the W3C Pointer Input
  * API.
  */
-public class Tap implements Interaction {
+public class TapAction implements Interaction {
 
     private final Target target;
+    private final WebElement webElement;
     private final int duration;
 
-    protected Tap(Target target, int duration) {
+    protected TapAction(Target target, WebElement webElement, int duration) {
         this.target = target;
+        this.webElement = webElement;
         this.duration = duration;
     }
 
     @Override
     public <T extends Actor> void performAs(T actor) {
-        WebDriverFacade appiumDriver = (WebDriverFacade) Serenity.getDriver();
-
-        WebElement element = target.resolveFor(actor);
+        WebElement element = null;
+        if (webElement != null) {
+            element = webElement;
+        } else {
+            element = target.resolveFor(actor);
+        }
 
         // Calculate the element's center coordinates
         final int centerX = element.getRect().x + (element.getRect().width / 2);
@@ -65,14 +70,23 @@ public class Tap implements Interaction {
                         .addAction(new Pause(finger, Duration.ofMillis(duration)))
                         .addAction(finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
 
+        WebDriverFacade appiumDriver = AppiumDriverSingleton.getInstance().getDriver();
         appiumDriver.perform(Collections.singletonList(tapSequence));
     }
 
-    public static Tap on(Target target) {
-        return instrumented(Tap.class, target, 0);
+    public static TapAction on(Target target) {
+        return instrumented(TapAction.class, target, null, 0);
     }
 
-    public static Tap withLongPressOn(Target target) {
-        return instrumented(Tap.class, target, 100);
+    public static TapAction on(WebElement webElement) {
+        return instrumented(TapAction.class, null, webElement, 0);
+    }
+
+    public static TapAction withLongPressOn(Target target) {
+        return instrumented(TapAction.class, target, null, 100);
+    }
+
+    public static TapAction withLongPressOn(WebElement webElement) {
+        return instrumented(TapAction.class, null, webElement, 100);
     }
 }

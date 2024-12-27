@@ -15,17 +15,23 @@ package net.alexandrade.mobile.screenplay.questions;
 
 import net.serenitybdd.screenplay.Question;
 import net.serenitybdd.screenplay.targets.Target;
-import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebElement;
 
-public class ElementVisibility {
+public class TextQuestion {
 
-    public static Question<Boolean> isPresent(Target target) {
+    public static Question<String> of(Target target) {
+        return actor -> of(target.resolveFor(actor)).answeredBy(actor);
+    }
+
+    public static Question<String> of(WebElement element) {
         return actor -> {
-            try {
-                return target.resolveFor(actor).isEnabled(); // Returns true if not present
-            } catch (NoSuchElementException e) {
-                return false; // Treat NoSuchElementException as "not present"
+            String value = element.getText();
+
+            if (value.isEmpty()) {
+                value = element.getAttribute("value");
             }
+
+            return value;
         };
     }
 }

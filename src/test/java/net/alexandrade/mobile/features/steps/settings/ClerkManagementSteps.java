@@ -119,17 +119,17 @@ public class ClerkManagementSteps {
                 .attemptsTo(
                         Ensure.that(
                                         "Visibility of Password change button",
-                                        ElementVisibility.isPresent(
+                                        VisibilityQuestion.isPresent(
                                                 ViewClerkScreen.BUTTON_CHANGE_PASSWORD))
                                 .isTrue(),
                         Ensure.that(
                                         "Visibility of ID change button",
-                                        ElementVisibility.isPresent(
+                                        VisibilityQuestion.isPresent(
                                                 ViewClerkScreen.BUTTON_CHANGE_CLERK_ID))
                                 .isFalse(),
                         Ensure.that(
                                         "Visibility of Role change button",
-                                        ElementVisibility.isPresent(
+                                        VisibilityQuestion.isPresent(
                                                 ViewClerkScreen.BUTTON_CHANGE_CLERK_ROLE))
                                 .isFalse());
     }
