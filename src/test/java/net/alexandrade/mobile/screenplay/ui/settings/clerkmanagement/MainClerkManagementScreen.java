@@ -40,8 +40,8 @@ public class MainClerkManagementScreen {
             Target.the("List of Profiles IDs")
                     .located(
                             AppiumBy.xpath(
-                                    "(//android.widget.FrameLayout[contains(@resource-id,"
-                                            + " \"cardMenuItem\")])"));
+                                    "(//android.widget.TextView[contains(@resource-id,"
+                                            + " \"txtClerkId\")])"));
 
     public static final Target LABEL_USER_PROFILE_ROLE =
             Target.the("Label User Profile Role")

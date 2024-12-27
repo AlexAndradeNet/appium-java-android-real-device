@@ -19,7 +19,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import net.alexandrade.mobile.screenplay.interactions.ScrollAction;
 import net.alexandrade.mobile.screenplay.interactions.TapAction;
-import net.alexandrade.mobile.screenplay.questions.QuantityQuestion;
+import net.alexandrade.mobile.screenplay.questions.ElementListQuestion;
 import net.alexandrade.mobile.screenplay.questions.TextQuestion;
 import net.alexandrade.mobile.screenplay.questions.VisibilityQuestion;
 import net.alexandrade.mobile.screenplay.tasks.MainTileScreenTasks;
@@ -50,7 +50,13 @@ public class ClerkManagementSteps {
     }
 
     @When("he lists the clerks,")
-    public void listsTheClerks() {}
+    public void listsTheClerks() {
+        OnStage.theActorInTheSpotlight()
+                .remember( // Save the list of clerks for later use
+                        "clerksList",
+                        ElementListQuestion.listOfValues(
+                                MainClerkManagementScreen.LIST_OF_USER_PROFILE_IDS));
+    }
 
     @When("he/she views the clerks list based on his/her role,")
     public void heViewsTheClerkListBasedOnHisRole() {
@@ -118,21 +124,15 @@ public class ClerkManagementSteps {
     @Then("he should see that only his account remains in the clerks list.")
     public void shouldSeeThatOnlyHisAccountRemainsInTheClerksList() {}
 
-    @Then("he should see {int} clerks listed \\(himself and six new clerks).")
-    public void shouldSeeClerksListedHimselfAndSixNewClerks(int numberOfClerks) {
-        OnStage.theActorInTheSpotlight()
-                .attemptsTo(
-                        Ensure.that(
-                                        QuantityQuestion.of(
-                                                MainClerkManagementScreen.LIST_OF_USER_PROFILE_IDS))
-                                .isEqualTo(numberOfClerks));
-    }
-
     @Then(
             "he should see that the clerks list is sorted numerically \\({string}) instead of"
                     + " alphabetically.")
     public void shouldSeeThatTheClerksListIsSortedNumericallyInsteadOfAlphabetically(
-            String clerksList) {}
+            String clerksList) {
+        Actor theActor = OnStage.theActorInTheSpotlight();
+        theActor.attemptsTo(
+                Ensure.that(theActor.recall("clerksList").toString()).isEqualTo(clerksList));
+    }
 
     @Then("he should see that each clerk has the correct role.")
     public void shouldSeeThatEachClerkHasTheCorrectRole() {}

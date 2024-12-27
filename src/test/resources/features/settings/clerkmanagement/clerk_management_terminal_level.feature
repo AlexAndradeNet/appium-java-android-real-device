@@ -45,11 +45,11 @@ Feature: clerk and Role management
       | Elena       | 31       | Employee | 111111   |
       | Escolastica | 100      | Employee | 111111   |
 
-  @ignore
+  #@ignore
   Scenario: 1.2: Verify correct clerks list sorting
     Given Aureliano is managing clerks,
     When he lists the clerks,
-    Then he should see that the clerks list is sorted numerically ("1, 10, 20, 21, 31, 100") instead of alphabetically.
+    Then he should see that the clerks list is sorted numerically ("1, 10, 20, 21, 30, 31, 100") instead of alphabetically.
 
   @ignore
   Scenario: 1.4: Verify correct clerks list roles
