@@ -11,57 +11,45 @@ Feature: clerk and Role management
     When he requests his account details,
     Then he should only have the option to change his password, and no options for Clerk ID or Role.
 
-  @ignore
+  #@ignore
   Scenario: 1.8: Unsuccessful change of their own password using the current password
     Given Aureliano is managing clerks,
     When he attempts to change his password to the current password,
     Then he should receive the error message "New password should not be same as old password!".
     And he should still be able to use his old password to manage clerks.
 
-  @ignore
+  #@ignore
   Scenario: 1.9: Unsuccessful change of their own password due to a mismatch verification
     Given Aureliano is managing clerks,
     When he attempts to change his password failing the verification,
     Then he should receive the error message "Confirm password should be same as password.".
     And he should still be able to use his old password to manage clerks.
 
-  @ignore
+  #@ignore
   Scenario: 1.10: Successful change of their own password
     Given Aureliano is managing clerks,
     When he attempts to change his password for a valid new password,
     Then he should be able to use his new password to manage clerks.
 
-  @ignore
-  Scenario: 1.1: Create new clerks
+  #@ignore
+  Scenario Outline: 1.1: Create new clerks
     Given Aureliano is managing clerks,
-    When he adds new clerks with the required information,
-      | Clerk ID | Role     | Password | Optional Alias |
-      | 10       | Admin    | 111111   | Arcadio        |
-      | 20       | Manager  | 111111   | Melquiades     |
-      | 21       | Manager  | 111111   | Mercedes       |
-      | 30       | Employee | 111111   | Eusebia        |
-      | 31       | Employee | 111111   | Elena          |
-      | 100      | Employee | 111111   | Escolastica    |
-    Then he should see 7 clerks listed (himself and six new clerks).
+    When he adds a new clerk with Alias "<Alias>", ID "<Clerk ID>", Role "<Role>", and Password "<Password>",
+    Then he should see the new clerk is listed as "<Clerk ID>" with the role "<Role>".
+    Examples:
+      | Alias       | Clerk ID | Role     | Password |
+      | Arcadio     | 10       | Admin    | 111111   |
+      | Melquiades  | 20       | Manager  | 111111   |
+      | Mercedes    | 21       | Manager  | 111111   |
+      | Eusebia     | 30       | Employee | 111111   |
+      | Elena       | 31       | Employee | 111111   |
+      | Escolastica | 100      | Employee | 111111   |
 
   @ignore
   Scenario: 1.2: Verify correct clerks list sorting
     Given Aureliano is managing clerks,
     When he lists the clerks,
     Then he should see that the clerks list is sorted numerically ("1, 10, 20, 21, 31, 100") instead of alphabetically.
-
-  @ignore
-  Scenario: 1.3: Verify correct clerks list roles
-    Given Aureliano is managing clerks,
-    When he lists the clerks,
-    Then he should see that each clerk has the correct role.
-      | Clerk ID | Role     | Password | Optional Alias |
-      | 10       | Admin    | 111111   | Arcadio        |
-      | 20       | Manager  | 111111   | Melquiades     |
-      | 21       | Manager  | 111111   | Mercedes       |
-      | 30       | Employee | 111111   | Eusebia        |
-      | 31       | Employee | 111111   | Elena          |
-      | 100      | Employee | 111111   | Escolastica    |
 
   @ignore
   Scenario: 1.4: Verify correct clerks list roles

@@ -36,8 +36,16 @@ public class MainClerkManagementScreen {
     public static final Target BUTTON_USER_PROFILE_ID =
             Target.the("Button profile #{0}").locatedBy(BASE_XPATH);
 
-    public static final Target LABEL_USER_PROFILE_ID =
-            Target.the("Label User Profile ID").locatedBy(BASE_XPATH + "/following-sibling::*[1]");
+    public static final Target LIST_OF_USER_PROFILE_IDS =
+            Target.the("List of Profiles IDs")
+                    .located(
+                            AppiumBy.xpath(
+                                    "(//android.widget.FrameLayout[contains(@resource-id,"
+                                            + " \"cardMenuItem\")])"));
+
+    public static final Target LABEL_USER_PROFILE_ROLE =
+            Target.the("Label User Profile Role")
+                    .locatedBy(BASE_XPATH + "/following-sibling::*[1]");
 
     public static final Target BUTTON_ADD_NEW_USER =
             Target.the("Button Add New User")

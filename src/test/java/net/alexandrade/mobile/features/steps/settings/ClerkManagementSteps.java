@@ -17,20 +17,36 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import net.alexandrade.mobile.screenplay.questions.ElementVisibility;
+import net.alexandrade.mobile.screenplay.interactions.ScrollAction;
+import net.alexandrade.mobile.screenplay.interactions.TapAction;
+import net.alexandrade.mobile.screenplay.questions.QuantityQuestion;
+import net.alexandrade.mobile.screenplay.questions.TextQuestion;
+import net.alexandrade.mobile.screenplay.questions.VisibilityQuestion;
+import net.alexandrade.mobile.screenplay.tasks.MainTileScreenTasks;
 import net.alexandrade.mobile.screenplay.tasks.commons.LoginAsTasks;
 import net.alexandrade.mobile.screenplay.tasks.settings.ClerkManagementTasks;
 import net.alexandrade.mobile.screenplay.tasks.settings.MainSettingsTasks;
+import net.alexandrade.mobile.screenplay.ui.CommonObjects;
+import net.alexandrade.mobile.screenplay.ui.settings.clerkmanagement.MainClerkManagementScreen;
 import net.alexandrade.mobile.screenplay.ui.settings.clerkmanagement.ViewClerkScreen;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.ensure.Ensure;
+import org.openqa.selenium.WebElement;
 
 public class ClerkManagementSteps {
+    private static final String DEFAULT_ID = "1";
+    private static final String DEFAULT_PASSWORD = "111111";
+
     @Given("{actor} is managing clerks,")
     public void isManagingClerks(Actor theActor) {
-        theActor.attemptsTo(MainSettingsTasks.openClerkManagementScreen(), LoginAsTasks.admin());
-        // TODO: Ensure first screen is the clerk management screen
+        managesClerks(theActor, DEFAULT_ID, DEFAULT_PASSWORD);
+    }
+
+    private void managesClerks(Actor theActor, String clerkId, String clerkPassword) {
+        theActor.attemptsTo(
+                MainSettingsTasks.openClerkManagementScreen(),
+                LoginAsTasks.clerk(clerkId, clerkPassword));
     }
 
     @When("he lists the clerks,")
@@ -48,29 +64,41 @@ public class ClerkManagementSteps {
     @When("he attempts delete all clerks except himself,")
     public void attemptsDeleteAllClerksExceptHimself() {}
 
-    @When("he adds new clerks with the required information,")
-    public void addsNewClerksWithTheRequiredInformation() {}
-
     @When("he search for the Clerk ID {int},")
     public void searchForTheClerkID(int clerkId) {}
 
     @When("he requests his account details,")
     public void requestsHisAccountDetails() {
         OnStage.theActorInTheSpotlight()
-                .attemptsTo(ClerkManagementTasks.openAccountDetailsForProfile("1"));
+                .attemptsTo(ClerkManagementTasks.openAccountDetailsForProfile(DEFAULT_ID));
     }
 
     @When("he requests another clerk's account details,")
     public void requestsAnotherClerkSAccountDetails() {}
 
     @When("he attempts to change his password to the current password,")
-    public void attemptsToChangeHisPasswordToTheCurrentPassword() {}
+    public void attemptsToChangeHisPasswordToTheCurrentPassword() {
+        OnStage.theActorInTheSpotlight()
+                .attemptsTo(
+                        ClerkManagementTasks.openAccountDetailsForProfile(DEFAULT_ID),
+                        ClerkManagementTasks.changePassword(DEFAULT_PASSWORD, DEFAULT_PASSWORD));
+    }
 
     @When("he attempts to change his password failing the verification,")
-    public void attemptsToChangeHisPasswordButFailsTheVerification() {}
+    public void attemptsToChangeHisPasswordButFailsTheVerification() {
+        OnStage.theActorInTheSpotlight()
+                .attemptsTo(
+                        ClerkManagementTasks.openAccountDetailsForProfile(DEFAULT_ID),
+                        ClerkManagementTasks.changePassword(DEFAULT_PASSWORD, "222222"));
+    }
 
     @When("he attempts to change his password for a valid new password,")
-    public void attemptsToChangeHisPasswordForAValidNewPassword() {}
+    public void attemptsToChangeHisPasswordForAValidNewPassword() {
+        OnStage.theActorInTheSpotlight()
+                .attemptsTo(
+                        ClerkManagementTasks.openAccountDetailsForProfile(DEFAULT_ID),
+                        ClerkManagementTasks.changePassword("222222", "222222"));
+    }
 
     @When("he attempts to create a new clerk with his own Clerk ID,")
     public void attemptsToCreateANewClerkWithHisOwnClerkID() {}
@@ -91,7 +119,14 @@ public class ClerkManagementSteps {
     public void shouldSeeThatOnlyHisAccountRemainsInTheClerksList() {}
 
     @Then("he should see {int} clerks listed \\(himself and six new clerks).")
-    public void shouldSeeClerksListedHimselfAndSixNewClerks(int numberOfClerks) {}
+    public void shouldSeeClerksListedHimselfAndSixNewClerks(int numberOfClerks) {
+        OnStage.theActorInTheSpotlight()
+                .attemptsTo(
+                        Ensure.that(
+                                        QuantityQuestion.of(
+                                                MainClerkManagementScreen.LIST_OF_USER_PROFILE_IDS))
+                                .isEqualTo(numberOfClerks));
+    }
 
     @Then(
             "he should see that the clerks list is sorted numerically \\({string}) instead of"
@@ -135,22 +170,40 @@ public class ClerkManagementSteps {
     }
 
     @And("he should still be able to use his old password to manage clerks.")
-    public void shouldStillBeAbleToUseHisOldPasswordToManageClerks() {}
+    public void shouldStillBeAbleToUseHisOldPasswordToManageClerks() {
+        OnStage.theActorInTheSpotlight().attemptsTo(MainTileScreenTasks.returnToMainScreen());
+        isManagingClerks(OnStage.theActorInTheSpotlight());
+        Ensure.that(VisibilityQuestion.isPresent(MainClerkManagementScreen.TITLE)).isTrue();
+    }
 
     @Then("he should be able to use his new password to manage clerks.")
-    public void shouldBeAbleToUseHisNewPasswordToManageClerks() {}
+    public void shouldBeAbleToUseHisNewPasswordToManageClerks() {
+        OnStage.theActorInTheSpotlight().attemptsTo(MainTileScreenTasks.returnToMainScreen());
+        managesClerks(OnStage.theActorInTheSpotlight(), DEFAULT_ID, "222222");
+
+        // Reverts previous password
+        requestsHisAccountDetails();
+        OnStage.theActorInTheSpotlight()
+                .attemptsTo(
+                        ClerkManagementTasks.changePassword(DEFAULT_PASSWORD, DEFAULT_PASSWORD));
+    }
 
     @Then("he should receive the error message {string}.")
-    public void shouldReceiveTheErrorMessage(String messageError) {}
+    public void shouldReceiveTheErrorMessage(String messageError) {
+        OnStage.theActorInTheSpotlight()
+                .attemptsTo(
+                        Ensure.that(TextQuestion.of(CommonObjects.POPUP_MESSAGE_TITLE))
+                                .isEqualTo("Alert Message"),
+                        Ensure.that(TextQuestion.of(CommonObjects.POPUP_MESSAGE_CONTENT))
+                                .isEqualTo(messageError),
+                        TapAction.on(CommonObjects.POPUP_MESSAGE_FIRST_OR_UNIQUE_BUTTON));
+    }
 
     @Then("he should receive an error message stating that the Clerk ID is already in use.")
     public void shouldReceiveAnErrorMessageStatingThatTheClerkIDIsAlreadyInUse() {}
 
     @Then("he should see {word} new Clerk ID in the clerks list.")
     public void shouldSeeNewClerkIDInTheClerksList(String clerk) {}
-
-    @Then("{word} should be able to use his new password to manage clerks.")
-    public void shouldBeAbleToUseHisNewPasswordToManageClerks(String clerk) {}
 
     @Then("he should see the clerk still in the clerks list.")
     public void shouldSeeTheClerkStillInTheClerksList() {}
@@ -171,4 +224,24 @@ public class ClerkManagementSteps {
                     + " account, all the Employees' roles, and have the option to add new clerks.")
     public void
             shouldHaveTheVisibilityOfAManagerMeaningSheWouldSeeHisAccountAllTheEmployeesRolesAndHaveTheOptionToAddNewClerks() {}
+
+    @When(
+            "he adds a new clerk with Alias {string}, ID {string}, Role {string}, and Password"
+                    + " {string},")
+    public void heAddsANewClerkWithAliasIDRoleAndPassword(
+            String alias, String clerkId, String role, String password) {
+        Actor theActor = OnStage.theActorInTheSpotlight();
+        theActor.remember("clerkId" + alias, clerkId); // Save the clerkId for later use
+        theActor.attemptsTo(ClerkManagementTasks.addANewUser(clerkId, role, password));
+    }
+
+    @Then("he should see the new clerk is listed as {string} with the role {string}.")
+    public void heShouldSeeTheNewClerkIsListedAsWithTheRole(String clerkId, String role) {
+        Actor theActor = OnStage.theActorInTheSpotlight();
+        WebElement clerkElement =
+                MainClerkManagementScreen.LABEL_USER_PROFILE_ROLE.of(clerkId).resolveFor(theActor);
+        theActor.attemptsTo(
+                ScrollAction.scrollUp(),
+                Ensure.that(TextQuestion.of(clerkElement)).isEqualTo(role));
+    }
 }
