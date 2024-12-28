@@ -6,33 +6,33 @@ Feature: clerk and Role management
 
 
   #@ignore
-  Scenario: 1.6: clerks can only change their own passwords, and there are no options to change Clerk ID or Role.
+  Scenario: 1: clerks can only change their own passwords, and there are no options to change Clerk ID or Role.
     Given Aureliano, with ID 1 and Password 111111, is managing clerks,
     When he requests his account details, which is 1,
     Then he should only have the option to change his password, and no options for Clerk ID or Role.
 
   #@ignore
-  Scenario: 1.8: Unsuccessful change of their own password using the current password
+  Scenario: 2: Unsuccessful change of their own password using the current password
     Given Aureliano, with ID 1 and Password 111111, is managing clerks,
     When he, with ID 1, attempts to change his password to the current password 111111,
     Then he should receive the error message "New password should not be same as old password!".
     And he should still be able to use his ID 1 and old password 111111 to manage clerks.
 
   #@ignore
-  Scenario: 1.9: Unsuccessful change of their own password due to a mismatch verification
+  Scenario: 3: Unsuccessful change of their own password due to a mismatch verification
     Given Aureliano, with ID 1 and Password 111111, is managing clerks,
     When he, with ID 1, attempts to change his password to 222222, failing the verification by entering 333333,
     Then he should receive the error message "Confirm password should be same as password.".
     And he should still be able to use his ID 1 and old password 111111 to manage clerks.
 
   #@ignore
-  Scenario: 1.10: Successful change of their own password
+  Scenario: 4: Successful change of their own password
     Given Aureliano, with ID 1 and Password 111111, is managing clerks,
     When he, with ID 1, attempts to change his password to 222222,
     Then he, with ID 1, should be able to use his new password 222222 to revert it to 111111.
 
   #@ignore
-  Scenario Outline: 1.1: Create new clerks
+  Scenario Outline: 5.<Clerk ID>: Create new clerks
     Given Aureliano, with ID 1 and Password 111111, is managing clerks,
     When he adds a new clerk with Alias <Alias>, ID <Clerk ID>, Role <Role>, and Password <Password>,
     Then he should see the new clerk is listed as "<Clerk ID>" with the role "<Role>".
@@ -46,63 +46,63 @@ Feature: clerk and Role management
       | Escolastica | 100      | Employee | 111111   |
 
   #@ignore
-  Scenario: 1.2: Verify correct clerks list sorting
+  Scenario: 6: Verify correct clerks list sorting
     Given Aureliano, with ID 1 and Password 111111, is managing clerks,
     When he lists the clerks,
     Then he should see that the clerks list is sorted numerically ("1, 10, 20, 21, 30, 31, 100") instead of alphabetically.
 
   #@ignore
-  Scenario: 1.4: Verify correct clerks list roles
+  Scenario: 7: Verify correct clerks list roles
     Given Aureliano, with ID 1 and Password 111111, is managing clerks,
     When he search for the Clerk ID 20,
     Then he should see that the clerk Melquiades, with ID 20, is listed as a Manager.
 
   #@ignore
-  Scenario: 1.5: Verify correct clerks list roles
+  Scenario: 8: Verify correct clerks list roles
     Given Aureliano, with ID 1 and Password 111111, is managing clerks,
     When he search for the Clerk ID 200,
     Then he should that the list is empty.
 
   #@ignore
-  Scenario: 1.7: Admins can change other clerks' account details.
+  Scenario: 9: Admins can change other clerks' account details.
     Given Aureliano, with ID 1 and Password 111111, is managing clerks,
     When he requests another clerk's account details (ex: ID 20),
     Then he should see the options to change password, Clerk ID, and Role.
 
   #@ignore
-  Scenario: 1.11: Prevent creating a new clerk with an existing Clerk ID
+  Scenario: 10: Prevent creating a new clerk with an existing Clerk ID
     Given Aureliano, with ID 1 and Password 111111, is managing clerks,
     When he attempts to create a new clerk with his own Clerk ID 1,
     Then he should receive the error message "Please verify User Id and try again!".
 
   #@ignore
-  Scenario: 1.13: Rename other clerk's Clerk ID.
+  Scenario: 11: Rename other clerk's Clerk ID.
     Given Aureliano, with ID 1 and Password 111111, is managing clerks,
     When he attempts to update Melquiades' Clerk ID from 20 to 22,
     Then he should see Melquiades' new Clerk ID is 22 in the clerks list.
 
   #@ignore
-  Scenario: 1.14: Change other clerk's password.
+  Scenario: 12: Change other clerk's password.
     Given Aureliano, with ID 1 and Password 111111, is managing clerks,
     When he attempts to update Melquiades' (ID 22) password to 222222,
     Then he should use the ID 22 with the new password 222222 to revert it to 111111.
 
   #@ignore
-  Scenario: 1.16: Filter the clerks list as Manager.
+  Scenario: 13: Filter the clerks list as Manager.
     Given Melquiades, with ID 22 and Password 111111, is managing clerks,
     When he lists the clerks,
     Then he should see the list as a Manager, meaning he can see his account and all the Employees' roles ("22, 30, 31, 100"),
     And he should have the option to add new clerks.
 
   #@ignore
-  Scenario: 1.17: Filter the clerks list as Employee.
+  Scenario: 14: Filter the clerks list as Employee.
     Given Eusebia, with ID 30 and Password 111111, is managing clerks,
     When she lists the clerks,
     Then she should see a list as an Employee, meaning she can see only her account, which is 30,
     And she should have no option to add new clerks.
 
   #@ignore
-  Scenario: 1.18: Change a clerk's role from Eusebia to Manager.
+  Scenario: 15: Change a clerk's role from Eusebia to Manager.
     Given Aureliano, with ID 1 and Password 111111, is managing clerks,
     When he changes Eusebia's, with ID 30, role from Employee to Manager,
     And he uses Eusebia's credentials, ID 30 and Password 111111, to list clerks,
@@ -110,7 +110,7 @@ Feature: clerk and Role management
     And he should have the option to add new clerks.
 
   #@ignore
-  Scenario: 1.19: Change a clerk's role from Manager to Admin.
+  Scenario: 16: Change a clerk's role from Manager to Admin.
     Given Aureliano, with ID 1 and Password 111111, is managing clerks,
     When he changes Melquiades', with ID 22, role from Manager to Admin,
     And he uses Melquiades' credentials, ID 22 and Password 111111, to list clerks,
@@ -118,15 +118,21 @@ Feature: clerk and Role management
     And he should have the option to add new clerks.
 
   #@ignore
-  Scenario: 1.20: Change a clerk's role from Admin to Employee.
+  Scenario: 17: Change a clerk's role from Admin to Employee.
     Given Aureliano, with ID 1 and Password 111111, is managing clerks,
     When he changes Arcadio', with ID 10, role from Admin to Employee,
     And he uses Arcadio's credentials, ID 10 and Password 111111, to list clerks,
     Then he should see a list as an Employee, meaning he can see only his account, which is 10,
     And he should have no option to add new clerks.
 
-  @ignore
-  Scenario: 1.21: clerk deletion regret.
+  #@ignore
+  Scenario: 18: clerk deletion regret.
     Given Aureliano, with ID 1 and Password 111111, is managing clerks,
-    When he attempts to delete Melquiades' account (ID 22) but regrets it,
-    Then he should still see Melquiades' account (ID 22) in the clerks list.
+    When he attempts to delete Arcadio's account (ID 10) but regrets it,
+    Then he should still see Arcadio's account (ID 10) in the clerks list.
+
+  #@ignore
+  Scenario: 19: clerk deletion.
+    Given Aureliano, with ID 1 and Password 111111, is managing clerks,
+    When he attempts to delete Arcadio's account (ID 10)
+    Then he should not see Arcadio's account (ID 10) in the clerks list.

@@ -117,4 +117,58 @@ public class ClerkManagementTasks {
                         .isTrue(),
                 TapAction.on(getTargetForRole(newRole)));
     }
+
+    @Step("{0} deletes the clerk")
+    public static Performable deleteClerk(boolean withValidationOfTexts, boolean confirmDeletion) {
+        return Task.where(
+                "{0} deletes the clerk",
+                actor -> {
+                    actor.attemptsTo(
+                            TapAction.on(ViewClerkScreen.BUTTON_DELETE_USER),
+                            WaitSpecificTime.forSeconds(2));
+
+                    if (withValidationOfTexts) {
+                        actor.attemptsTo(
+                                Ensure.that(TextQuestion.of(ConfirmationScreen.TITLE))
+                                        .isEqualTo("DELETE CLERK"),
+                                Ensure.that(TextQuestion.of(ConfirmationScreen.LABEL_MESSAGE_TITLE))
+                                        .isEqualTo("Are you sure you want to delete this clerk?"),
+                                Ensure.that(
+                                                VisibilityQuestion.isPresent(
+                                                        ConfirmationScreen.BUTTON_CANCEL))
+                                        .isTrue(),
+                                Ensure.that(
+                                                VisibilityQuestion.isPresent(
+                                                        ConfirmationScreen.BUTTON_YES))
+                                        .isTrue());
+                    }
+
+                    if (confirmDeletion) {
+                        actor.attemptsTo(TapAction.on(ConfirmationScreen.BUTTON_YES));
+                    } else {
+                        actor.attemptsTo(TapAction.on(ConfirmationScreen.BUTTON_CANCEL));
+                    }
+                });
+    }
+
+    @Step("{0} dismisses the confirmation after deleting a clerk")
+    public static Performable dismissSuccessConfirmationAfterDeletingClerk(
+            boolean withValidationOfTexts) {
+        return Task.where(
+                "{0} dismisses the confirmation after deleting a clerk",
+                actor -> {
+                    if (withValidationOfTexts) {
+                        actor.attemptsTo(
+                                Ensure.that(TextQuestion.of(ConfirmationScreen.TITLE))
+                                        .isEqualTo("DELETE CLERK"),
+                                Ensure.that(TextQuestion.of(ConfirmationScreen.LABEL_MESSAGE_TITLE))
+                                        .isEqualTo("SUCCESS"),
+                                Ensure.that(
+                                                TextQuestion.of(
+                                                        ConfirmationScreen.LABEL_MESSAGE_DETAIL))
+                                        .isEqualTo("Clerk Deleted"));
+                    }
+                    actor.attemptsTo(TapAction.on(ConfirmationScreen.BUTTON_DONE));
+                });
+    }
 }

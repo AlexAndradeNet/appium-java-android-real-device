@@ -45,6 +45,11 @@ public class ClerkManagementSteps {
         theActor.attemptsTo(
                 MainSettingsTasks.openClerkManagementScreen(),
                 LoginAsTasks.clerk(clerkId, clerkPassword));
+
+        theActor.remember( // Save the clerk ID for later use
+                "clerkId", clerkId);
+        theActor.remember( // Save the clerk password for later use
+                "clerkPassword", clerkPassword);
     }
 
     @When("he/she lists the clerks,")
@@ -138,7 +143,11 @@ public class ClerkManagementSteps {
 
     @When("he attempts to delete {word} account \\(ID {word}) but regrets it,")
     public void attemptsToDeleteAClerkButRegretsIt(String alias, String clerkId) {
-        // Pending implementation
+        OnStage.theActorInTheSpotlight()
+                .attemptsTo(
+                        ClerkManagementTasks.openAccountDetailsForProfile(clerkId),
+                        ClerkManagementTasks.deleteClerk(true, false),
+                        MainTileScreenTasks.returnToMainScreen());
     }
 
     @Then(
@@ -279,7 +288,12 @@ public class ClerkManagementSteps {
 
     @Then("he should still see {word} account \\(ID {word}) in the clerks list.")
     public void shouldSeeTheClerkStillInTheClerksList(String alias, String clerkId) {
-        // Pending implementation
+        Actor theActor = OnStage.theActorInTheSpotlight();
+
+        managesClerks( // Re-login
+                theActor, theActor.recall("clerkId"), theActor.recall("clerkPassword"));
+
+        shouldSeeNewClerkIDInTheClerksList(alias, clerkId);
     }
 
     @When(
@@ -364,5 +378,32 @@ public class ClerkManagementSteps {
     public void heShouldSeeTheListAsAManagerMeaningHeCanSeeEusebiaSAccountAndAllTheEmployeesRoles(
             String alias, String clerkList) {
         shouldSeeThatTheClerksListIsSortedNumericallyInsteadOfAlphabetically(alias, clerkList);
+    }
+
+    @When("he attempts to delete {word} account \\(ID {word})")
+    public void heAttemptsToDeleteArcadioSAccountID(String alias, String clerkId) {
+        OnStage.theActorInTheSpotlight()
+                .attemptsTo(
+                        ClerkManagementTasks.openAccountDetailsForProfile(clerkId),
+                        ClerkManagementTasks.deleteClerk(false, true),
+                        ClerkManagementTasks.dismissSuccessConfirmationAfterDeletingClerk(true),
+                        MainTileScreenTasks.returnToMainScreen());
+    }
+
+    @Then("he should not see {word} account \\(ID {word}) in the clerks list.")
+    public void heShouldNotSeeArcadioSAccountIDInTheClerksList(String alias, String clerkId) {
+        Actor theActor = OnStage.theActorInTheSpotlight();
+
+        managesClerks( // Re-login
+                theActor, theActor.recall("clerkId"), theActor.recall("clerkPassword"));
+
+        theActor.attemptsTo(
+                Ensure.that(
+                                "The %s new Clerk %s should not be present"
+                                        .formatted(alias, clerkId),
+                                VisibilityQuestion.isPresent(
+                                        MainClerkManagementScreen.LABEL_USER_PROFILE_ROLE.of(
+                                                clerkId)))
+                        .isFalse());
     }
 }

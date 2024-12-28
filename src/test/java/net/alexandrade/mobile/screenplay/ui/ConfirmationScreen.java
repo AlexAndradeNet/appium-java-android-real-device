@@ -32,6 +32,17 @@ public class ConfirmationScreen {
     public static final Target LABEL_MESSAGE_DETAIL =
             Target.the("Label Clerk Deleted").located(AppiumBy.xpath(BASE_XPATH.formatted("3")));
 
+    private static final String BASE_SELECTOR = "new UiSelector().text(\"%s\")";
+
     public static final Target BUTTON_DONE =
-            Target.the("Button Done").located(AppiumBy.className("android.widget.Button"));
+            Target.the("Button Done")
+                    .located(AppiumBy.androidUIAutomator(BASE_SELECTOR.formatted("DONE")));
+
+    public static final Target BUTTON_CANCEL =
+            Target.the("Button Cancel")
+                    .located(AppiumBy.androidUIAutomator(BASE_SELECTOR.formatted("CANCEL")));
+
+    public static final Target BUTTON_YES =
+            Target.the("Button Yes")
+                    .located(AppiumBy.androidUIAutomator(BASE_SELECTOR.formatted("YES")));
 }
