@@ -16,18 +16,16 @@ package net.alexandrade.mobile.screenplay.driver;
 import net.serenitybdd.core.Serenity;
 import net.thucydides.core.webdriver.WebDriverFacade;
 
-public final class AppiumDriverSingleton {
-    private static AppiumDriverSingleton instance;
-    private static final WebDriverFacade appiumDriver = (WebDriverFacade) Serenity.getDriver();
-
-    public static AppiumDriverSingleton getInstance() {
-        if (instance == null) {
-            instance = new AppiumDriverSingleton();
-        }
-        return instance;
+public class AppiumDriverSingleton {
+    private AppiumDriverSingleton() {
+        throw new IllegalStateException("Utility class - cannot be instantiated");
     }
 
-    public WebDriverFacade getDriver() {
-        return appiumDriver;
+    private static class SingletonHelper {
+        private static final WebDriverFacade INSTANCE = (WebDriverFacade) Serenity.getDriver();
+    }
+
+    public static WebDriverFacade getDriver() {
+        return SingletonHelper.INSTANCE;
     }
 }

@@ -38,7 +38,7 @@ public class ScrollAction implements Interaction {
 
     @Override
     public <T extends Actor> void performAs(T actor) {
-        WebDriverFacade appiumDriver = AppiumDriverSingleton.getInstance().getDriver();
+        WebDriverFacade appiumDriver = AppiumDriverSingleton.getDriver();
 
         Dimension size = appiumDriver.manage().window().getSize();
 

@@ -70,7 +70,7 @@ public class TapAction implements Interaction {
                         .addAction(new Pause(finger, Duration.ofMillis(duration)))
                         .addAction(finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
 
-        WebDriverFacade appiumDriver = AppiumDriverSingleton.getInstance().getDriver();
+        WebDriverFacade appiumDriver = AppiumDriverSingleton.getDriver();
         appiumDriver.perform(Collections.singletonList(tapSequence));
     }
 
