@@ -23,6 +23,10 @@ import org.openqa.selenium.support.ui.FluentWait;
 
 public class VisibilityQuestion {
 
+    private VisibilityQuestion() {
+        throw new IllegalStateException("Utility class - cannot be instantiated");
+    }
+
     public static Question<Boolean> isPresent(Target target) {
         return actor -> {
             try {

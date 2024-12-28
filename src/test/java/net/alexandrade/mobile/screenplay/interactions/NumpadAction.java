@@ -51,8 +51,8 @@ public class NumpadAction implements Interaction {
         }
     }
 
-    private <T extends Actor> void performAndroidNumpadAction() {
         AppiumDriverSingleton.getInstance().getDriver().navigate().back();
+    private void performAndroidNumpadAction() {
     }
 
     private <T extends Actor> void performNuveisNumpadAction(T actor) {

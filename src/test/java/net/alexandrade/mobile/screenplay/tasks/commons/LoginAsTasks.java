@@ -32,33 +32,21 @@ public class LoginAsTasks {
     public static Performable clerk(String clerkId, String clerkPassword) {
         return Task.where(
                 "{0} fills the clerk ID and password",
-                actor -> {
-                    // Tap on each digit of the clerk ID
-                    actor.attemptsTo(
-                            Ensure.that(
-                                            VisibilityQuestion.isPresent(
-                                                    NumericScreen.TITLE.of("CLERK MANAGEMENT")))
-                                    .isTrue(),
-                            Ensure.that(
-                                            VisibilityQuestion.isPresent(
-                                                    NumericScreen.LABEL_REASON.of(
-                                                            "Enter your Clerk ID")))
-                                    .isTrue(),
-                            NumpadAction.onNuveisNumpad(clerkId),
-                            TapAction.on(NumericScreen.BUTTON_CONTINUE),
-                            Ensure.that(
-                                            VisibilityQuestion.isPresent(
-                                                    NumericScreen.LABEL_REASON.of(
-                                                            "Enter your Password")))
-                                    .isTrue(),
-                            NumpadAction.onNuveisNumpad(clerkPassword),
-                            TapAction.on(NumericScreen.BUTTON_CONTINUE));
-                });
-    }
-
-    @Step("{0} fills the Clerk Login Form with Admin credentials")
-    public static Performable defaultAdmin() {
-        return Task.where(
-                "{0} fills the Clerk Login Form with Admin credentials", clerk("1", "111111"));
+                Ensure.that(
+                                VisibilityQuestion.isPresent(
+                                        NumericScreen.TITLE.of("CLERK MANAGEMENT")))
+                        .isTrue(),
+                Ensure.that(
+                                VisibilityQuestion.isPresent(
+                                        NumericScreen.LABEL_REASON.of("Enter your Clerk ID")))
+                        .isTrue(),
+                NumpadAction.onNuveisNumpad(clerkId),
+                TapAction.on(NumericScreen.BUTTON_CONTINUE),
+                Ensure.that(
+                                VisibilityQuestion.isPresent(
+                                        NumericScreen.LABEL_REASON.of("Enter your Password")))
+                        .isTrue(),
+                NumpadAction.onNuveisNumpad(clerkPassword),
+                TapAction.on(NumericScreen.BUTTON_CONTINUE));
     }
 }

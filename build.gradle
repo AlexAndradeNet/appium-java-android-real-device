@@ -96,6 +96,9 @@ spotless {
 }
 
 test {
+    onlyIf { // Run Only When Explicitly Invoked
+        gradle.startParameter.taskNames.contains('test')
+    }
     useJUnitPlatform()
     testLogging {
         //showStandardStreams = true
@@ -160,6 +163,10 @@ tasks.register('installLocalGitHook', Copy) {
 
 tasks.named('build') {
     dependsOn npmInstall, installLocalGitHook
+}
+
+tasks.named('sonar') {
+    dependsOn spotlessApply, build
 }
 
 tasks.named('aggregate') {

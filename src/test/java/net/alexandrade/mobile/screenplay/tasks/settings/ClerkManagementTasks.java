@@ -78,4 +78,10 @@ public class ClerkManagementTasks {
             default -> throw new IllegalArgumentException("Invalid role: " + role);
         };
     }
+
+    public static Performable searchForClerkId(String clerkId) {
+        return Task.where(
+                "{0} searches for the clerk ID",
+                EnterAction.theValue(clerkId).into(MainClerkManagementScreen.TEXTBOX_SEARCH));
+    }
 }

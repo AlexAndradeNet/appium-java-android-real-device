@@ -43,9 +43,9 @@ public class ScrollAction implements Interaction {
         Dimension size = appiumDriver.manage().window().getSize();
 
         int startX = size.width / 2; // Start horizontally in the center
-        int startY, endY;
+        int startY;
 
-        endY =
+        int endY =
                 switch (direction) {
                     case DOWN -> {
                         startY = (int) (size.height * 0.2); // Start near the top

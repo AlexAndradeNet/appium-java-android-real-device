@@ -19,6 +19,10 @@ import org.openqa.selenium.WebElement;
 
 public class TextQuestion {
 
+    private TextQuestion() {
+        throw new IllegalStateException("Utility class - cannot be instantiated");
+    }
+
     public static Question<String> of(Target target) {
         return actor -> of(target.resolveFor(actor)).answeredBy(actor);
     }

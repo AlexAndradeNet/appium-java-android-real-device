@@ -18,20 +18,23 @@ import io.cucumber.java.AfterAll;
 import io.cucumber.java.Before;
 import io.cucumber.java.BeforeAll;
 import net.alexandrade.mobile.screenplay.tasks.MainTileScreenTasks;
+import net.alexandrade.utils.SimpleLogger;
 import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.actors.OnlineCast;
 
 public class Hooks {
 
+    private static final SimpleLogger logger = new SimpleLogger(Hooks.class);
+
     @BeforeAll
     public static void beforeAll() {
         OnStage.setTheStage(new OnlineCast());
-        System.out.println("####################### BEFORE ALL Cucumber");
+        logger.info("####################### BEFORE ALL Cucumber");
     }
 
     @Before(order = 1)
     public void beforeEach() {
-        System.out.println(
+        logger.info(
                 "####################### Cucumber Execution Order: "
                         + System.getProperty("cucumber.execution.order"));
     }
@@ -44,6 +47,6 @@ public class Hooks {
     @AfterAll
     public static void afterAll() {
         OnStage.drawTheCurtain();
-        System.out.println("####################### AFTER ALL Cucumber");
+        logger.info("####################### AFTER ALL Cucumber");
     }
 }

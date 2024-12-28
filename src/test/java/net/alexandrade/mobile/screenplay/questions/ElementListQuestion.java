@@ -21,6 +21,9 @@ import net.serenitybdd.screenplay.targets.Target;
 import org.openqa.selenium.WebElement;
 
 public class ElementListQuestion {
+    private ElementListQuestion() {
+        throw new IllegalStateException("Utility class - cannot be instantiated");
+    }
 
     public static Question<Integer> quantityOf(Target target) {
         return actor -> target.resolveAllFor(actor).size();
