@@ -31,7 +31,7 @@ public class ChangeClerkIDScreen {
 
     public static final Target TEXTBOX_NEW_CLERK_ID =
             Target.the("New Clerk ID textbox")
-                    .located(AppiumBy.className("android.widget.TextView"));
+                    .located(AppiumBy.className("android.widget.EditText"));
 
     public static final Target BUTTON_CONFIRM =
             Target.the("Button Confirm")

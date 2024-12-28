@@ -17,6 +17,7 @@ import net.alexandrade.mobile.screenplay.interactions.EnterAction;
 import net.alexandrade.mobile.screenplay.interactions.TapAction;
 import net.alexandrade.mobile.screenplay.interactions.WaitSpecificTime;
 import net.alexandrade.mobile.screenplay.questions.TextQuestion;
+import net.alexandrade.mobile.screenplay.questions.VisibilityQuestion;
 import net.alexandrade.mobile.screenplay.ui.ConfirmationScreen;
 import net.alexandrade.mobile.screenplay.ui.settings.clerkmanagement.*;
 import net.serenitybdd.annotations.Step;
@@ -55,13 +56,18 @@ public class ClerkManagementTasks {
                 "{0} adds a new user",
                 TapAction.on(MainClerkManagementScreen.BUTTON_ADD_NEW_USER),
                 TapAction.on(getTargetForRole(role)),
-                Ensure.that(TextQuestion.of(AddUserScreen.TITLE))
-                        .isEqualTo("NEW " + role.toUpperCase()),
                 EnterAction.theValue(clerkId).into(AddUserScreen.TEXTBOX_USER_ID),
                 EnterAction.theValue(password).into(AddUserScreen.TEXTBOX_PASSWORD),
                 EnterAction.theValue(password).into(AddUserScreen.TEXTBOX_CONFIRM),
-                TapAction.on(AddUserScreen.BUTTON_CONFIRM),
-                WaitSpecificTime.forSeconds(1),
+                Ensure.that(TextQuestion.of(AddUserScreen.TITLE))
+                        .isEqualTo("NEW " + role.toUpperCase()),
+                TapAction.on(AddUserScreen.BUTTON_CONFIRM));
+    }
+
+    @Step("{0} dismisses the confirmation after adding a new user")
+    public static Performable dismissSuccessConfirmationAfterAddingANewUser() {
+        return Task.where(
+                "{0} dismisses the confirmation after adding a new user",
                 Ensure.that(TextQuestion.of(ConfirmationScreen.TITLE)).isEqualTo("ADD NEW CLERK"),
                 Ensure.that(TextQuestion.of(ConfirmationScreen.LABEL_MESSAGE_TITLE))
                         .isEqualTo("SUCCESS"),
@@ -79,9 +85,36 @@ public class ClerkManagementTasks {
         };
     }
 
+    @Step("{0} searches for the clerk ID {1}")
     public static Performable searchForClerkId(String clerkId) {
         return Task.where(
                 "{0} searches for the clerk ID",
                 EnterAction.theValue(clerkId).into(MainClerkManagementScreen.TEXTBOX_SEARCH));
+    }
+
+    @Step("{0} changes the clerk ID to {1}")
+    public static Performable changeClerkId(String newClerkId) {
+        return Task.where(
+                "{0} changes the clerk ID",
+                TapAction.on(ViewClerkScreen.BUTTON_CHANGE_CLERK_ID),
+                EnterAction.theValue(newClerkId).into(ChangeClerkIDScreen.TEXTBOX_NEW_CLERK_ID),
+                Ensure.that(
+                                "The title should be correct",
+                                VisibilityQuestion.isPresent(ChangeClerkIDScreen.TITLE))
+                        .isTrue(),
+                TapAction.on(ChangeClerkIDScreen.BUTTON_CONFIRM));
+    }
+
+    @Step("{0} changes the role to {1}")
+    public static Performable changeRole(String newRole) {
+        return Task.where(
+                "{0} changes the role",
+                TapAction.on(ViewClerkScreen.BUTTON_CHANGE_CLERK_ROLE),
+                WaitSpecificTime.forSeconds(2),
+                Ensure.that(
+                                "The title should be correct",
+                                VisibilityQuestion.isPresent(ChangeClerkRoleScreen.TITLE))
+                        .isTrue(),
+                TapAction.on(getTargetForRole(newRole)));
     }
 }

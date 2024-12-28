@@ -32,21 +32,32 @@ public class ElementListQuestion {
     public static Question<String> listOfValues(Target target) {
         return actor -> {
             Set<String> uniqueTexts = new LinkedHashSet<>();
+            int previousSize = 0; // Track the previous size of the uniqueTexts set
+
             do {
+                // Resolve all elements for the actor
                 ListOfWebElementFacades elements = target.resolveAllFor(actor);
                 List<String> texts =
                         elements.stream().toList().stream().map(WebElement::getText).toList();
+
+                // Add all new texts to the uniqueTexts set
                 uniqueTexts.addAll(texts);
 
-                if (uniqueTexts.size() < 7) {
+                // Check if the size has grown
+                int currentSize = uniqueTexts.size();
+                if (currentSize > previousSize) {
+                    // Update the previous size and continue scrolling
+                    previousSize = currentSize;
                     ScrollAction.scrollUp().performAs(actor);
                 } else {
+                    // Break if no growth in size
                     break;
                 }
             } while (true);
 
+            // Convert the unique texts set to a comma-separated string
             String result = String.join(", ", uniqueTexts);
-            return result.replace("#", "");
+            return result.replace("#", ""); // Optional: Remove unwanted characters
         };
     }
 }
