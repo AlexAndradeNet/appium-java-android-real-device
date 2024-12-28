@@ -22,7 +22,7 @@ import net.serenitybdd.screenplay.actors.OnStage;
 
 public class ParameterDefinitions {
 
-    @ParameterType("Aureliano|Melquiades|Eusebia|Sebastian")
+    @ParameterType("Aureliano|Arcadio|Melquiades|Eusebia|Sebastian")
     public Actor actor(String actor) {
         Actor theActor = OnStage.theActorCalled(actor);
         theActor.can(BrowseTheWeb.with(Serenity.getDriver()));

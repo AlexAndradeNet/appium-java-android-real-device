@@ -31,7 +31,7 @@ public class MainClerkManagementScreen {
                                     BASE_SELECTOR.formatted("CLERK MANAGEMENT")));
 
     public static final Target TEXTBOX_SEARCH =
-            Target.the("Search textbox").located(AppiumBy.className("android.widget.TextView"));
+            Target.the("Search textbox").located(AppiumBy.className("android.widget.EditText"));
 
     public static final Target BUTTON_USER_PROFILE_ID =
             Target.the("Button profile #{0}").locatedBy(BASE_XPATH);

@@ -7,34 +7,34 @@ Feature: clerk and Role management
 
   #@ignore
   Scenario: 1.6: clerks can only change their own passwords, and there are no options to change Clerk ID or Role.
-    Given Aureliano is managing clerks,
-    When he requests his account details,
+    Given Aureliano, with ID 1 and Password 111111, is managing clerks,
+    When he requests his account details, which is 1,
     Then he should only have the option to change his password, and no options for Clerk ID or Role.
 
   #@ignore
   Scenario: 1.8: Unsuccessful change of their own password using the current password
-    Given Aureliano is managing clerks,
-    When he attempts to change his password to the current password,
+    Given Aureliano, with ID 1 and Password 111111, is managing clerks,
+    When he, with ID 1, attempts to change his password to the current password 111111,
     Then he should receive the error message "New password should not be same as old password!".
-    And he should still be able to use his old password to manage clerks.
+    And he should still be able to use his ID 1 and old password 111111 to manage clerks.
 
   #@ignore
   Scenario: 1.9: Unsuccessful change of their own password due to a mismatch verification
-    Given Aureliano is managing clerks,
-    When he attempts to change his password failing the verification,
+    Given Aureliano, with ID 1 and Password 111111, is managing clerks,
+    When he, with ID 1, attempts to change his password to 222222, failing the verification by entering 333333,
     Then he should receive the error message "Confirm password should be same as password.".
-    And he should still be able to use his old password to manage clerks.
+    And he should still be able to use his ID 1 and old password 111111 to manage clerks.
 
   #@ignore
   Scenario: 1.10: Successful change of their own password
-    Given Aureliano is managing clerks,
-    When he attempts to change his password for a valid new password,
-    Then he should be able to use his new password to manage clerks.
+    Given Aureliano, with ID 1 and Password 111111, is managing clerks,
+    When he, with ID 1, attempts to change his password to 222222,
+    Then he, with ID 1, should be able to use his new password 222222 to revert it to 111111.
 
   #@ignore
   Scenario Outline: 1.1: Create new clerks
-    Given Aureliano is managing clerks,
-    When he adds a new clerk with Alias "<Alias>", ID "<Clerk ID>", Role "<Role>", and Password "<Password>",
+    Given Aureliano, with ID 1 and Password 111111, is managing clerks,
+    When he adds a new clerk with Alias <Alias>, ID <Clerk ID>, Role <Role>, and Password <Password>,
     Then he should see the new clerk is listed as "<Clerk ID>" with the role "<Role>".
     Examples:
       | Alias       | Clerk ID | Role     | Password |
@@ -47,92 +47,100 @@ Feature: clerk and Role management
 
   #@ignore
   Scenario: 1.2: Verify correct clerks list sorting
-    Given Aureliano is managing clerks,
+    Given Aureliano, with ID 1 and Password 111111, is managing clerks,
     When he lists the clerks,
     Then he should see that the clerks list is sorted numerically ("1, 10, 20, 21, 30, 31, 100") instead of alphabetically.
 
-  @ignore
+  #@ignore
   Scenario: 1.4: Verify correct clerks list roles
-    Given Aureliano is managing clerks,
+    Given Aureliano, with ID 1 and Password 111111, is managing clerks,
     When he search for the Clerk ID 20,
-    Then he should see that the clerk "Melquiades" is listed as a "Manager".
+    Then he should see that the clerk Melquiades, with ID 20, is listed as a Manager.
 
-  @ignore
+  #@ignore
   Scenario: 1.5: Verify correct clerks list roles
-    Given Aureliano is managing clerks,
+    Given Aureliano, with ID 1 and Password 111111, is managing clerks,
     When he search for the Clerk ID 200,
     Then he should that the list is empty.
 
   @ignore
   Scenario: 1.7: Admins can change other clerks' account details.
-    Given Aureliano is managing clerks,
-    When he requests another clerk's account details,
-    Then he should have the options to change password, Clerk ID, and Role.
+    Given Aureliano, with ID 1 and Password 111111, is managing clerks,
+    When he requests another clerk's account details (ex: ID 2),
+    Then he should see the options to change password, Clerk ID, and Role.
 
   @ignore
   Scenario: 1.11: Prevent creating a new clerk with an existing Clerk ID
-    Given Aureliano is managing clerks,
+    Given Aureliano, with ID 1 and Password 111111, is managing clerks,
     When he attempts to create a new clerk with his own Clerk ID,
     Then he should receive the error message "Please verify clerk Id and try again!".
 
   @ignore
   Scenario: 1.12: Prevent renaming a clerk to an existing Clerk ID
-    Given Aureliano is managing clerks,
-    When he attempts to assign his own Clerk ID to another clerk,
-    Then he should receive an error message stating that the Clerk ID is already in use.
+    Given Aureliano, with ID 1 and Password 111111, is managing clerks,
+    When he attempts to assign his own Clerk ID to another clerk (ex: ID 2),
+    Then he should receive the error message "Please verify clerk Id and try again!".
 
   @ignore
   Scenario: 1.13: Rename other clerk's Clerk ID.
-    Given Aureliano is managing clerks,
-    When he attempts to update Melquiades' Clerk ID to a valid value,
-    Then he should see Melquiades' new Clerk ID in the clerks list.
+    Given Aureliano, with ID 1 and Password 111111, is managing clerks,
+    When he attempts to update Melquiades' Clerk ID 20 to 22,
+    Then he should see Melquiades' new Clerk ID 22 in the clerks list.
 
   @ignore
   Scenario: 1.14: Change other clerk's password.
-    Given Aureliano is managing clerks,
-    When he attempts to update Melquiades' password to a valid value,
-    Then Melquiades should be able to use his new password to manage clerks.
+    Given Aureliano, with ID 22 and Password 111111, is managing clerks,
+    When he attempts to update Melquiades' password to 222222,
+    Then Melquiades, with ID 22, should be able to use his new password 222222 to revert it to 111111.
 
   # Filtering as Admin is managed in Scenarios 1.2 and 1.3
 
   @ignore
   Scenario: 1.16: Filter the clerks list as Manager.
-    Given Melquiades is managing clerks,
-    When he views the clerks list based on his role,
-    Then he should have the visibility of a Manager, meaning she would see his account, all the Employees' roles, and have the option to add new clerks.
+    Given Melquiades, with ID 22 and Password 111111, is managing clerks,
+    When he lists the clerks,
+    Then he should see the list as a Manager, meaning he can see his account and all the Employees' roles ("22, 30, 31, 100"),
+    And he should have the option to add new clerks.
 
   @ignore
   Scenario: 1.17: Filter the clerks list as Employee.
-    Given Eusebia is managing clerks,
-    When she views the clerks list based on her role,
-    Then she should have the visibility of an Employee, meaning she can only see her own clerk account, and doesn't have the option to add new clerks.
+    Given Eusebia, with ID 30 and Password 111111, is managing clerks,
+    When she lists the clerks,
+    Then she should see a list as a Employee, meaning she can see only her account, which is 30,
+    And she should have no option to add new clerks.
 
   @ignore
   Scenario: 1.18: Change a clerk's role from Eusebia to Manager.
-    Given Aureliano is managing clerks,
-    When he changes Eusebia's role from Employee to Manager,
-    Then Eusebia should have the visibility of a Manager, meaning she would see her account, all the Employees' roles, and have the option to add new clerks.
+    Given Aureliano, with ID 1 and Password 111111, is managing clerks,
+    When he changes Eusebia's, with ID 30, role from Employee to Manager,
+    And Eusebia uses her ID 30 and Password 111111 to list clerks,
+    Then she should see the list as a Manager, meaning she can see her account and all the Employees' roles ("30, 31, 100"),
+    And she should have the option to add new clerks.
 
   @ignore
   Scenario: 1.19: Change a clerk's role from Manager to Admin.
-    Given Aureliano is managing clerks,
-    When he changes Melquiades' role from Manager to Admin,
-    Then Melquiades should have the visibility of an Admin, meaning he sees all clerks (Admin, Manager, and Employees).
+    Given Aureliano, with ID 1 and Password 111111, is managing clerks,
+    When he changes Melquiades', with ID 22, role from Manager to Admin,
+    And Melquiades uses his ID 22 and Password 111111 to list clerks,
+    Then he should see the list as an Admin, meaning he can see all clerks (Admin, Manager, and Employees = "1, 10, 20, 21, 30, 31, 100"),
+    And she should have the option to add new clerks.
 
   @ignore
   Scenario: 1.20: Change a clerk's role from Admin to Employee.
-    Given Aureliano is managing clerks,
-    When he changes the other clerk's role from Admin to Employee,
-    Then they should have the visibility of an Employee, meaning they can only see their own clerk account, and doesn't have the option to add new clerks.
+    Given Aureliano, with ID 1 and Password 111111, is managing clerks,
+    When he changes Arcadio', with ID 10, role from Admin to Employee,
+    And Arcadio uses his ID 10 and Password 111111 to list clerks,
+    Then she should see a list as a Employee, meaning she can see only her account, which is 10,
+    And she should have no option to add new clerks.
 
   @ignore
   Scenario: 1.21: clerk deletion regret.
-    Given Aureliano is managing clerks,
-    When he attempts to delete a clerk but regrets it,
-    Then he should see the clerk still in the clerks list.
+    Given Aureliano, with ID 1 and Password 111111, is managing clerks,
+    When he attempts to delete Melquiades' account (ID 22) but regrets it,
+    Then he should still see Melquiades' account (ID 22) in the clerks list.
 
   @ignore
   Scenario: 1.22: clerk deletion: delete all clerks except himself
-    Given Aureliano is managing clerks,
-    When he attempts delete all clerks except himself,
-    Then he should see that only his account remains in the clerks list.
+    Given Aureliano, with ID 1 and Password 111111, is managing clerks,
+    When he attempts delete all clerks except himself (ID 1),
+    Then he should see that only his account (ID 1) remains in the clerks list.
