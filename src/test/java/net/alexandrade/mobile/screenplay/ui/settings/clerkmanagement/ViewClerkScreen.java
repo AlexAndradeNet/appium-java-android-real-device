@@ -22,18 +22,17 @@ public class ViewClerkScreen {
     }
 
     private static final String BASE_SELECTOR = "new UiSelector().text(\"%s\")";
+    private static final String BASE_XPATH = "(//android.widget.TextView)[%s]";
 
     public static final Target TITLE =
             Target.the("Title")
                     .located(AppiumBy.androidUIAutomator(BASE_SELECTOR.formatted("VIEW CLERK")));
 
     public static final Target LABEL_CLERK_ID =
-            Target.the("Label Clerk ID")
-                    .located(AppiumBy.androidUIAutomator(BASE_SELECTOR.formatted("#{0}")));
+            Target.the("Label Clerk ID").located(AppiumBy.xpath(BASE_XPATH.formatted("2")));
 
     public static final Target LABEL_CLERK_ROLE =
-            Target.the("Label Clerk Role")
-                    .located(AppiumBy.androidUIAutomator(BASE_SELECTOR.formatted("#{0}")));
+            Target.the("Label Clerk Role").located(AppiumBy.xpath(BASE_XPATH.formatted("3")));
 
     public static final Target BUTTON_CHANGE_CLERK_ID =
             Target.the("Button change Clerk ID")

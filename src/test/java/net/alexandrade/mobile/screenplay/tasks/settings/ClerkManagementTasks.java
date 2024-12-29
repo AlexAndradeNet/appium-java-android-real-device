@@ -51,27 +51,53 @@ public class ClerkManagementTasks {
     }
 
     @Step("{0} adds a new user {1}, {2}, and {3}")
-    public static Performable addANewUser(String clerkId, String role, String password) {
+    public static Performable addANewUser(
+            boolean withTextValidation, String clerkId, String role, String password) {
         return Task.where(
                 "{0} adds a new user",
-                TapAction.on(MainClerkManagementScreen.BUTTON_ADD_NEW_USER),
-                TapAction.on(getTargetForRole(role)),
-                EnterAction.theValue(clerkId).into(AddUserScreen.TEXTBOX_USER_ID),
-                EnterAction.theValue(password).into(AddUserScreen.TEXTBOX_PASSWORD),
-                EnterAction.theValue(password).into(AddUserScreen.TEXTBOX_CONFIRM),
-                Ensure.that(TextQuestion.of(AddUserScreen.TITLE))
-                        .isEqualTo("NEW " + role.toUpperCase()),
-                TapAction.on(AddUserScreen.BUTTON_CONFIRM));
+                actor -> {
+                    actor.attemptsTo(TapAction.on(MainClerkManagementScreen.BUTTON_ADD_NEW_USER));
+
+                    if (withTextValidation) {
+                        actor.attemptsTo(
+                                Ensure.that(TextQuestion.of(AddUserScreen.TITLE))
+                                        .isEqualTo("ADD NEW CLERK"));
+                    }
+
+                    actor.attemptsTo(
+                            TapAction.on(getTargetForRole(role)),
+                            EnterAction.theValue(clerkId).into(AddUserScreen.TEXTBOX_USER_ID),
+                            EnterAction.theValue(password).into(AddUserScreen.TEXTBOX_PASSWORD),
+                            EnterAction.theValue(password).into(AddUserScreen.TEXTBOX_CONFIRM));
+
+                    if (withTextValidation) {
+                        actor.attemptsTo(
+                                Ensure.that(
+                                                "Verify that the role in the screen is \"%s\""
+                                                        .formatted(role),
+                                                TextQuestion.of(AddUserScreen.TITLE))
+                                        .isEqualTo("NEW " + role.toUpperCase()));
+                    }
+
+                    actor.attemptsTo(
+                            TapAction.on(AddUserScreen.BUTTON_CONFIRM),
+                            WaitSpecificTime.forSeconds(1));
+                });
     }
 
     @Step("{0} dismisses the confirmation after adding a new user")
     public static Performable dismissSuccessConfirmationAfterAddingANewUser() {
         return Task.where(
                 "{0} dismisses the confirmation after adding a new user",
-                Ensure.that(TextQuestion.of(ConfirmationScreen.TITLE)).isEqualTo("ADD NEW CLERK"),
-                Ensure.that(TextQuestion.of(ConfirmationScreen.LABEL_MESSAGE_TITLE))
+                Ensure.that("Visibility of title", TextQuestion.of(ConfirmationScreen.TITLE))
+                        .isEqualTo("ADD NEW CLERK"),
+                Ensure.that(
+                                "Visibility of message title",
+                                TextQuestion.of(ConfirmationScreen.LABEL_MESSAGE_TITLE))
                         .isEqualTo("SUCCESS"),
-                Ensure.that(TextQuestion.of(ConfirmationScreen.LABEL_MESSAGE_DETAIL))
+                Ensure.that(
+                                "Visibility of message detail",
+                                TextQuestion.of(ConfirmationScreen.LABEL_MESSAGE_DETAIL))
                         .isEqualTo("Clerk Created"),
                 TapAction.on(ConfirmationScreen.BUTTON_DONE));
     }
@@ -124,8 +150,9 @@ public class ClerkManagementTasks {
                 "{0} deletes the clerk",
                 actor -> {
                     actor.attemptsTo(
-                            TapAction.on(ViewClerkScreen.BUTTON_DELETE_USER),
-                            WaitSpecificTime.forSeconds(2));
+                            TapAction.on(ViewClerkScreen.BUTTON_DELETE_USER)
+                            // WaitSpecificTime.forSeconds(2)
+                            );
 
                     if (withValidationOfTexts) {
                         actor.attemptsTo(
@@ -169,6 +196,27 @@ public class ClerkManagementTasks {
                                         .isEqualTo("Clerk Deleted"));
                     }
                     actor.attemptsTo(TapAction.on(ConfirmationScreen.BUTTON_DONE));
+                });
+    }
+
+    public static Performable removeClerksDifferentThan() {
+        return Task.where(
+                "{0} cleans all clerks",
+                actor -> {
+                    while (VisibilityQuestion.isPresent(
+                                    MainClerkManagementScreen
+                                            .BUTTON_USER_FIRST_PROFILE_ID_DIFFERENT_THAN
+                                            .of("1"))
+                            .answeredBy(actor)
+                            .equals(true)) {
+                        actor.attemptsTo(
+                                TapAction.on(
+                                        MainClerkManagementScreen
+                                                .BUTTON_USER_FIRST_PROFILE_ID_DIFFERENT_THAN
+                                                .of("1")),
+                                deleteClerk(false, true),
+                                dismissSuccessConfirmationAfterDeletingClerk(false));
+                    }
                 });
     }
 }

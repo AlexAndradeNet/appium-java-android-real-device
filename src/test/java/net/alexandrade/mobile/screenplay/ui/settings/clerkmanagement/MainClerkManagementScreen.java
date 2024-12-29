@@ -36,6 +36,12 @@ public class MainClerkManagementScreen {
     public static final Target BUTTON_USER_PROFILE_ID =
             Target.the("Button profile #{0}").locatedBy(BASE_XPATH);
 
+    public static final Target BUTTON_USER_FIRST_PROFILE_ID_DIFFERENT_THAN =
+            Target.the("Button profile #{0}")
+                    .locatedBy(
+                            "(//android.widget.TextView[contains(@resource-id, \"txtClerkId\") and"
+                                    + " @text!=\"#{0}\"])[1]");
+
     public static final Target LIST_OF_USER_PROFILE_IDS =
             Target.the("List of Profiles IDs")
                     .located(
