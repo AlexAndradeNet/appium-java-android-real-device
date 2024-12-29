@@ -18,7 +18,7 @@ import static net.serenitybdd.screenplay.Tasks.instrumented;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import net.alexandrade.mobile.screenplay.driver.AppiumDriverSingleton;
+import net.alexandrade.mobile.screenplay.driver.AppiumDriver;
 import net.alexandrade.mobile.screenplay.ui.NumericScreen;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Interaction;
@@ -52,7 +52,7 @@ public class NumpadAction implements Interaction {
     }
 
     private void performAndroidNumpadAction() {
-        AppiumDriverSingleton.getDriver().navigate().back();
+        AppiumDriver.getDriver().navigate().back();
     }
 
     private <T extends Actor> void performNuveisNumpadAction(T actor) {

@@ -17,7 +17,7 @@ import static net.serenitybdd.screenplay.Tasks.instrumented;
 
 import java.time.Duration;
 import java.util.Collections;
-import net.alexandrade.mobile.screenplay.driver.AppiumDriverSingleton;
+import net.alexandrade.mobile.screenplay.driver.AppiumDriver;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Interaction;
 import net.serenitybdd.screenplay.targets.Target;
@@ -70,7 +70,7 @@ public class TapAction implements Interaction {
                         .addAction(new Pause(finger, Duration.ofMillis(duration)))
                         .addAction(finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
 
-        WebDriverFacade appiumDriver = AppiumDriverSingleton.getDriver();
+        WebDriverFacade appiumDriver = AppiumDriver.getDriver();
         appiumDriver.perform(Collections.singletonList(tapSequence));
     }
 

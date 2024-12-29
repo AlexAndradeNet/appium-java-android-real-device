@@ -15,7 +15,7 @@ package net.alexandrade.mobile.screenplay.interactions;
 
 import java.time.Duration;
 import java.util.Collections;
-import net.alexandrade.mobile.screenplay.driver.AppiumDriverSingleton;
+import net.alexandrade.mobile.screenplay.driver.AppiumDriver;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Interaction;
 import net.thucydides.core.webdriver.WebDriverFacade;
@@ -38,7 +38,7 @@ public class ScrollAction implements Interaction {
 
     @Override
     public <T extends Actor> void performAs(T actor) {
-        WebDriverFacade appiumDriver = AppiumDriverSingleton.getDriver();
+        WebDriverFacade appiumDriver = AppiumDriver.getDriver();
 
         Dimension size = appiumDriver.manage().window().getSize();
 
