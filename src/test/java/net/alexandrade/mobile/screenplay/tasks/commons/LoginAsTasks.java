@@ -28,25 +28,59 @@ public class LoginAsTasks {
         throw new IllegalStateException("Utility class - cannot be instantiated");
     }
 
-    @Step("{0} fills the clerk ID '{1}' and password '{2}'")
-    public static Performable clerk(String clerkId, String clerkPassword) {
+    @Step("{0} fills the clerk ID '{1}'")
+    public static Performable fillClerkID(boolean withValidation, String clerkId) {
         return Task.where(
                 "{0} fills the clerk ID and password",
-                Ensure.that(
-                                VisibilityQuestion.isPresent(
-                                        NumericScreen.TITLE.of("CLERK MANAGEMENT")))
-                        .isTrue(),
-                Ensure.that(
-                                VisibilityQuestion.isPresent(
-                                        NumericScreen.LABEL_REASON.of("Enter your Clerk ID")))
-                        .isTrue(),
-                NumpadAction.onNuveisNumpad(clerkId),
-                TapAction.on(NumericScreen.BUTTON_CONTINUE),
-                Ensure.that(
-                                VisibilityQuestion.isPresent(
-                                        NumericScreen.LABEL_REASON.of("Enter your Password")))
-                        .isTrue(),
-                NumpadAction.onNuveisNumpad(clerkPassword),
-                TapAction.on(NumericScreen.BUTTON_CONTINUE));
+                actor -> {
+                    if (withValidation) {
+                        actor.attemptsTo(
+                                Ensure.that(
+                                                VisibilityQuestion.isPresent(
+                                                        NumericScreen.TITLE.of("CLERK MANAGEMENT")))
+                                        .isTrue(),
+                                Ensure.that(
+                                                VisibilityQuestion.isPresent(
+                                                        NumericScreen.LABEL_REASON.of(
+                                                                "Enter your Clerk ID")))
+                                        .isTrue());
+                    }
+                    actor.attemptsTo(
+                            NumpadAction.onNuveisNumpad(clerkId),
+                            TapAction.on(NumericScreen.BUTTON_CONTINUE));
+                });
+    }
+
+    @Step("{0} fills the clerk ID '{1}'")
+    public static Performable fillClerkID(String clerkId) {
+        return fillClerkID(false, clerkId);
+    }
+
+    @Step("{0} fills the password '{1}'")
+    public static Performable fillPassword(boolean withValidation, String clerkPassword) {
+        return Task.where(
+                "{0} fills the clerk ID and password",
+                actor -> {
+                    if (withValidation) {
+                        actor.attemptsTo(
+                                Ensure.that(
+                                                VisibilityQuestion.isPresent(
+                                                        NumericScreen.TITLE.of("CLERK MANAGEMENT")))
+                                        .isTrue(),
+                                Ensure.that(
+                                                VisibilityQuestion.isPresent(
+                                                        NumericScreen.LABEL_REASON.of(
+                                                                "Enter your Password")))
+                                        .isTrue());
+                    }
+                    actor.attemptsTo(
+                            NumpadAction.onNuveisNumpad(clerkPassword),
+                            TapAction.on(NumericScreen.BUTTON_CONTINUE));
+                });
+    }
+
+    @Step("{0} fills the Password '{1}'")
+    public static Performable fillPassword(String clerkPassword) {
+        return fillPassword(false, clerkPassword);
     }
 }

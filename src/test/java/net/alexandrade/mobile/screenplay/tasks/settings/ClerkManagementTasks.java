@@ -199,21 +199,21 @@ public class ClerkManagementTasks {
                 });
     }
 
-    public static Performable removeClerksDifferentThan() {
+    public static Performable removeClerksDifferentThan(String clerkId) {
         return Task.where(
                 "{0} cleans all clerks",
                 actor -> {
                     while (VisibilityQuestion.isPresent(
                                     MainClerkManagementScreen
                                             .BUTTON_USER_FIRST_PROFILE_ID_DIFFERENT_THAN
-                                            .of("1"))
+                                            .of(clerkId))
                             .answeredBy(actor)
                             .equals(true)) {
                         actor.attemptsTo(
                                 TapAction.on(
                                         MainClerkManagementScreen
                                                 .BUTTON_USER_FIRST_PROFILE_ID_DIFFERENT_THAN
-                                                .of("1")),
+                                                .of(clerkId)),
                                 deleteClerk(false, true),
                                 dismissSuccessConfirmationAfterDeletingClerk(false));
                     }

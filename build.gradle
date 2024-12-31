@@ -100,6 +100,7 @@ test {
         gradle.startParameter.taskNames.contains('test')
     }
     useJUnitPlatform()
+    failFast = true
     testLogging {
         //showStandardStreams = true
         events "PASSED", "FAILED", "SKIPPED"

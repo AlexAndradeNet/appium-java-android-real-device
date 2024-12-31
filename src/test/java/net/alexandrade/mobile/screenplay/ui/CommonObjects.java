@@ -22,7 +22,7 @@ public class CommonObjects {
     }
 
     private static final String BASE_SELECTOR =
-            "//android.widget.TextView[@text=\"Alert Message\"]/following-sibling::*[%s]";
+            "//android.widget.TextView[contains(@resource-id, \"%s\")]";
 
     public static final Target BUTTON_ARROW_BACK =
             Target.the("Arrow Back")
@@ -32,15 +32,15 @@ public class CommonObjects {
 
     public static final Target POPUP_MESSAGE_TITLE =
             Target.the("Popup Message Title")
-                    .located(
-                            AppiumBy.androidUIAutomator(
-                                    "new UiSelector().text(\"Alert Message\")"));
+                    .located(AppiumBy.xpath(BASE_SELECTOR.formatted("txtHeader")));
 
     public static final Target POPUP_MESSAGE_CONTENT =
-            Target.the("Popup Message Content").located(AppiumBy.xpath(BASE_SELECTOR.formatted(1)));
+            Target.the("Popup Message Content")
+                    .located(AppiumBy.xpath(BASE_SELECTOR.formatted("txtMessage")));
 
-    public static final Target POPUP_MESSAGE_FIRST_OR_UNIQUE_BUTTON =
-            Target.the("Button {0}").located(AppiumBy.xpath(BASE_SELECTOR.formatted(2)));
+    public static final Target POPUP_MESSAGE_BUTTON_OK =
+            Target.the("Button {0}")
+                    .located(AppiumBy.xpath(BASE_SELECTOR.formatted("btnPossitive")));
 
     public static final Target POPUP_MESSAGE_SECOND_BUTTON =
             Target.the("Button {0}").located(AppiumBy.xpath(BASE_SELECTOR.formatted(3)));

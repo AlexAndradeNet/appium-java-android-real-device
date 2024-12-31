@@ -34,7 +34,7 @@ Feature: clerk and Role management
   #@ignore
   Scenario: 5: Clean the clerks list
     Given Aureliano, with ID 1 and Password 111111, is managing clerks,
-    When he cleans the clerks list,
+    When he removes all clerks except himself (ID 1),
     Then he should see only his ID 1 in the list.
 
   #@ignore
@@ -141,3 +141,27 @@ Feature: clerk and Role management
     Given Aureliano, with ID 1 and Password 111111, is managing clerks,
     When he attempts to delete Arcadio's account (ID 10)
     Then he should not see Arcadio's account (ID 10) in the clerks list.
+
+  #@ignore
+  Scenario: 21: using un existent clerk ID
+    Given Aureliano is using the wrong Clerk ID 0,
+    When he tries to manage clerks with a wrong Clerk ID,
+    Then he should receive the error message error message "Please verify and try again!" with the title "User does not exist".
+
+  #@ignore
+  Scenario: 22: using wrong password
+    Given Aureliano, with ID 1 and wrong Password 999999,
+    When he tries to manage clerks with a wrong password,
+    Then he should receive the error message error message "Please verify and try again!" with the title "Invalid password".
+
+  #@ignore
+  Scenario: 23: cancel a password-protected function.
+    Given Aureliano, with ID 1 and Password 111111, is managing clerks,
+    When he attempts to go to the previous screen
+    Then he should see the main function screen instead of the password-protected function screen.
+
+  #@ignore
+  Scenario: 24: cancel a password-protected function using physical back key.
+    Given Aureliano, with ID 1 and Password 111111, is managing clerks,
+    When he attempts to go to the previous screen using the physical back key
+    Then he should see the main function screen instead of the password-protected function screen.

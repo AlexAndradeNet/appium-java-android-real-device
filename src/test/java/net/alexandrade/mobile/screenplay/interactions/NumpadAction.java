@@ -18,7 +18,6 @@ import static net.serenitybdd.screenplay.Tasks.instrumented;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import net.alexandrade.mobile.screenplay.driver.AppiumDriver;
 import net.alexandrade.mobile.screenplay.ui.NumericScreen;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Interaction;
@@ -27,32 +26,17 @@ import org.openqa.selenium.WebElement;
 
 public class NumpadAction implements Interaction {
 
-    private enum NumpadType {
-        NUVEI,
-        ANDROID
-    }
-
     // Cache for numeric button Targets
     private final Map<String, WebElement> cachedTargets = new HashMap<>();
     private final String text;
-    private final NumpadType numpadType;
 
-    protected NumpadAction(NumpadType numpadType, String text) {
+    protected NumpadAction(String text) {
         this.text = text;
-        this.numpadType = numpadType;
     }
 
     @Override
     public <T extends Actor> void performAs(T actor) {
-        if (numpadType == NumpadType.ANDROID) {
-            performAndroidNumpadAction();
-        } else {
-            performNuveisNumpadAction(actor);
-        }
-    }
-
-    private void performAndroidNumpadAction() {
-        AppiumDriver.getDriver().navigate().back();
+        performNuveisNumpadAction(actor);
     }
 
     private <T extends Actor> void performNuveisNumpadAction(T actor) {
@@ -70,11 +54,7 @@ public class NumpadAction implements Interaction {
     }
 
     public static NumpadAction onNuveisNumpad(String text) {
-        return instrumented(NumpadAction.class, NumpadType.NUVEI, text);
-    }
-
-    public static NumpadAction dismissAndroidsNumpad() {
-        return instrumented(NumpadAction.class, NumpadType.ANDROID, "");
+        return instrumented(NumpadAction.class, text);
     }
 
     private WebElement getOrCreateButtonForDigit(Actor actor, String digit) {

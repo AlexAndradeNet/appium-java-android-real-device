@@ -24,10 +24,13 @@ import net.alexandrade.mobile.screenplay.questions.ElementListQuestion;
 import net.alexandrade.mobile.screenplay.questions.TextQuestion;
 import net.alexandrade.mobile.screenplay.questions.VisibilityQuestion;
 import net.alexandrade.mobile.screenplay.tasks.MainTileScreenTasks;
+import net.alexandrade.mobile.screenplay.tasks.commons.CommonTasks;
 import net.alexandrade.mobile.screenplay.tasks.commons.LoginAsTasks;
 import net.alexandrade.mobile.screenplay.tasks.settings.ClerkManagementTasks;
 import net.alexandrade.mobile.screenplay.tasks.settings.MainSettingsTasks;
 import net.alexandrade.mobile.screenplay.ui.CommonObjects;
+import net.alexandrade.mobile.screenplay.ui.NumericScreen;
+import net.alexandrade.mobile.screenplay.ui.settings.MainSettingsScreen;
 import net.alexandrade.mobile.screenplay.ui.settings.clerkmanagement.MainClerkManagementScreen;
 import net.alexandrade.mobile.screenplay.ui.settings.clerkmanagement.ViewClerkScreen;
 import net.serenitybdd.screenplay.Actor;
@@ -49,7 +52,8 @@ public class ClerkManagementSteps {
     private void managesClerks(Actor theActor, String clerkId, String clerkPassword) {
         theActor.attemptsTo(
                 MainSettingsTasks.openClerkManagementScreen(),
-                LoginAsTasks.clerk(clerkId, clerkPassword));
+                LoginAsTasks.fillClerkID(clerkId),
+                LoginAsTasks.fillPassword(clerkPassword));
 
         theActor.remember( // Save the clerk ID for later use
                 CLERK_ID, clerkId);
@@ -286,7 +290,7 @@ public class ClerkManagementSteps {
                                 .isEqualTo("Alert Message"),
                         Ensure.that(TextQuestion.of(CommonObjects.POPUP_MESSAGE_CONTENT))
                                 .isEqualTo(messageError),
-                        TapAction.on(CommonObjects.POPUP_MESSAGE_FIRST_OR_UNIQUE_BUTTON));
+                        TapAction.on(CommonObjects.POPUP_MESSAGE_BUTTON_OK));
     }
 
     @Then("he should see {word} new Clerk ID is {word} in the clerks list.")
@@ -345,7 +349,7 @@ public class ClerkManagementSteps {
                             String clerkId = row.get(1);
                             String role = row.get(2);
 
-                            WebElement clerkElement = null;
+                            WebElement clerkElement;
 
                             clerkElement =
                                     MainClerkManagementScreen.LABEL_USER_PROFILE_ROLE
@@ -455,11 +459,11 @@ public class ClerkManagementSteps {
                         .isFalse());
     }
 
-    @When("he cleans the clerks list,")
-    public void heCleansTheClerksList() {
+    @When("he removes all clerks except himself \\(ID {word}),")
+    public void heCleansTheClerksList(String clerkId) {
         OnStage.theActorInTheSpotlight()
                 .attemptsTo(
-                        ClerkManagementTasks.removeClerksDifferentThan(),
+                        ClerkManagementTasks.removeClerksDifferentThan(clerkId),
                         MainTileScreenTasks.returnToMainScreen());
     }
 
@@ -484,5 +488,80 @@ public class ClerkManagementSteps {
     private void reLogin(Actor theActor) {
         managesClerks( // Re-login
                 theActor, theActor.recall(CLERK_ID), theActor.recall(CLERK_PASSWORD));
+    }
+
+    @Given("{actor} is using the wrong Clerk ID {word},")
+    public void aurelianoIsUsingTheWrongClerkID(Actor actor, String clerkId) {
+        actor.attemptsTo(MainSettingsTasks.openClerkManagementScreen());
+        actor.remember( // Save the clerk ID for later use
+                CLERK_ID, clerkId);
+    }
+
+    @When("he tries to manage clerks with a wrong Clerk ID,")
+    public void heTriesToManageClerks() {
+        Actor theActor = OnStage.theActorInTheSpotlight();
+        theActor.attemptsTo(LoginAsTasks.fillClerkID(true, theActor.recall(CLERK_ID)));
+    }
+
+    @Then("he should receive the error message error message {string} with the title {string}.")
+    public void heShouldReceiveTheErrorMessageErrorMessageWithTheTitle(
+            String alertMessage, String alertTitle) {
+        Actor theActor = OnStage.theActorInTheSpotlight();
+
+        theActor.attemptsTo(
+                Ensure.that(TextQuestion.of(CommonObjects.POPUP_MESSAGE_TITLE))
+                        .isEqualTo(alertTitle),
+                Ensure.that(TextQuestion.of(CommonObjects.POPUP_MESSAGE_CONTENT))
+                        .isEqualTo(alertMessage),
+                TapAction.on(CommonObjects.POPUP_MESSAGE_BUTTON_OK),
+                TapAction.on(CommonObjects.BUTTON_ARROW_BACK));
+
+        if (alertMessage.contains("User")) {
+            theActor.attemptsTo(
+                    Ensure.that(VisibilityQuestion.isPresent(MainSettingsScreen.TITLE)).isTrue());
+        }
+
+        if (alertMessage.contains("password")) {
+            theActor.attemptsTo(
+                    Ensure.that(TextQuestion.of(NumericScreen.LABEL_REASON))
+                            .isEqualTo("Enter your Clerk ID"));
+        }
+    }
+
+    @Given("{actor}, with ID {word} and wrong Password {word},")
+    public void aurelianoWithIDAndPassword(Actor actor, String clerkId, String clerkPassword) {
+        actor.attemptsTo(MainSettingsTasks.openClerkManagementScreen());
+        actor.remember( // Save the clerk ID for later use
+                CLERK_ID, clerkId);
+        actor.remember( // Save the clerk password for later use
+                CLERK_PASSWORD, clerkPassword);
+    }
+
+    @When("he tries to manage clerks with a wrong password,")
+    public void heTriesToManageClerksWithAWrongPassword() {
+        Actor theActor = OnStage.theActorInTheSpotlight();
+        theActor.attemptsTo(
+                LoginAsTasks.fillClerkID(false, theActor.recall(CLERK_ID)),
+                LoginAsTasks.fillPassword(true, theActor.recall(CLERK_PASSWORD)));
+    }
+
+    @When("he attempts to go to the previous screen")
+    public void heAttemptsToGoToThePreviousScreen() {
+        OnStage.theActorInTheSpotlight().attemptsTo(CommonTasks.tapBackArrow());
+    }
+
+    @When("he attempts to go to the previous screen using the physical back key")
+    public void heAttemptsToGoToThePreviousScreenUsingThePhysicalBackKey() {
+        OnStage.theActorInTheSpotlight().attemptsTo(CommonTasks.pressPhysicalBackKey());
+    }
+
+    @Then(
+            "he should see the main function screen instead of the password-protected function"
+                    + " screen.")
+    public void heShouldSeeTheMainFunctionScreenInsteadOfThePasswordProtectedFunctionScreen() {
+        OnStage.theActorInTheSpotlight()
+                .attemptsTo(
+                        Ensure.that(VisibilityQuestion.isPresent(MainSettingsScreen.TITLE))
+                                .isTrue());
     }
 }
