@@ -38,11 +38,9 @@ Feature: clerk and Role management
     Then he should see only his ID 1 in the list.
 
   #@ignore
-  Scenario Outline: 6: Create new clerks
+  Scenario: 6: Create new clerks
     Given Aureliano, with ID 1 and Password 111111, is managing clerks,
-    When he adds a new clerk with Alias <Alias>, ID <Clerk ID>, Role <Role>, and Password <Password>,
-    Then he should see the new clerk is listed as <Clerk ID> with the role <Role>.
-    Examples:
+    When he attempts to add multiple clerks with the following data:
       | Alias       | Clerk ID | Role     | Password |
       | Arcadio     | 10       | Admin    | 111111   |
       | Melquiades  | 20       | Manager  | 111111   |
@@ -50,6 +48,7 @@ Feature: clerk and Role management
       | Eusebia     | 30       | Employee | 111111   |
       | Elena       | 31       | Employee | 111111   |
       | Escolastica | 100      | Employee | 111111   |
+    Then he should see the each new clerk was created correctly.
 
   #@ignore
   Scenario: 7: Verify correct clerks list sorting

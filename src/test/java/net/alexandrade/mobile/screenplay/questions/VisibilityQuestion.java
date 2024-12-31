@@ -16,6 +16,7 @@ package net.alexandrade.mobile.screenplay.questions;
 import net.serenitybdd.screenplay.Question;
 import net.serenitybdd.screenplay.targets.Target;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebElement;
 
 public class VisibilityQuestion {
 
@@ -24,9 +25,13 @@ public class VisibilityQuestion {
     }
 
     public static Question<Boolean> isPresent(Target target) {
+        return actor -> isPresent(target.resolveFor(actor)).answeredBy(actor);
+    }
+
+    public static Question<Boolean> isPresent(WebElement element) {
         return actor -> {
             try {
-                return target.resolveFor(actor).isEnabled();
+                return element.isEnabled();
             } catch (NoSuchElementException e) {
                 return false; // Treat NoSuchElementException as "not present"
             }

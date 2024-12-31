@@ -13,6 +13,7 @@ from Nuvei Inc.
 */
 package net.alexandrade.mobile.features.steps.settings;
 
+import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -32,6 +33,7 @@ import net.alexandrade.mobile.screenplay.ui.settings.clerkmanagement.ViewClerkSc
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.ensure.Ensure;
+import org.jetbrains.annotations.NotNull;
 import org.openqa.selenium.WebElement;
 
 public class ClerkManagementSteps {
@@ -309,25 +311,59 @@ public class ClerkManagementSteps {
         shouldSeeNewClerkIDInTheClerksList(alias, clerkId);
     }
 
-    @When(
-            "he adds a new clerk with Alias {word}, ID {word}, Role {word}, and Password"
-                    + " {word},")
-    public void heAddsANewClerkWithAliasIDRoleAndPassword(
-            String alias, String clerkId, String role, String password) {
-        OnStage.theActorInTheSpotlight()
-                .attemptsTo(
-                        ClerkManagementTasks.addANewUser(false, clerkId, role, password),
-                        ClerkManagementTasks.dismissSuccessConfirmationAfterAddingANewUser());
+    @When("he attempts to add multiple clerks with the following data:")
+    public void heAddsANewClerkWithAliasIDRoleAndPassword(@NotNull DataTable dataTable) {
+        Actor theActor = OnStage.theActorInTheSpotlight();
+
+        dataTable.asLists().stream()
+                .skip(1) // Skip the header row
+                .forEach(
+                        row -> {
+                            String clerkId = row.get(1);
+                            String role = row.get(2);
+                            String password = row.get(3);
+
+                            theActor.attemptsTo(
+                                    ClerkManagementTasks.addANewUser(
+                                            false, clerkId, role, password),
+                                    ClerkManagementTasks
+                                            .dismissSuccessConfirmationAfterAddingANewUser());
+                        });
+
+        theActor.remember("clerkListDataTable", dataTable);
     }
 
-    @Then("he should see the new clerk is listed as {word} with the role {word}.")
-    public void heShouldSeeTheNewClerkIsListedAsWithTheRole(String clerkId, String role) {
+    @Then("he should see the each new clerk was created correctly.")
+    public void heShouldSeeTheNewClerkIsListedAsWithTheRole() {
         Actor theActor = OnStage.theActorInTheSpotlight();
-        WebElement clerkElement =
-                MainClerkManagementScreen.LABEL_USER_PROFILE_ROLE.of(clerkId).resolveFor(theActor);
-        theActor.attemptsTo(
-                ScrollAction.scrollUp(),
-                Ensure.that(TextQuestion.of(clerkElement)).isEqualTo(role));
+        DataTable dataTable = theActor.recall("clerkListDataTable");
+
+        dataTable.asLists().stream()
+                .skip(1) // Skip the header row
+                .forEach(
+                        row -> {
+                            String clerkId = row.get(1);
+                            String role = row.get(2);
+
+                            WebElement clerkElement = null;
+
+                            clerkElement =
+                                    MainClerkManagementScreen.LABEL_USER_PROFILE_ROLE
+                                            .of(clerkId)
+                                            .resolveFor(theActor);
+                            if (VisibilityQuestion.isPresent(clerkElement)
+                                    .answeredBy(theActor)
+                                    .equals(false)) {
+                                theActor.attemptsTo(ScrollAction.scrollUp());
+                            }
+
+                            theActor.attemptsTo(
+                                    Ensure.that(
+                                                    "Check ID %s has the role '%s'"
+                                                            .formatted(clerkId, role),
+                                                    TextQuestion.of(clerkElement))
+                                            .isEqualTo(role));
+                        });
     }
 
     @Then(
