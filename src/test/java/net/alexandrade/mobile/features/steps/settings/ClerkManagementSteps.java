@@ -286,9 +286,13 @@ public class ClerkManagementSteps {
     public void shouldReceiveTheErrorMessage(String messageError) {
         OnStage.theActorInTheSpotlight()
                 .attemptsTo(
-                        Ensure.that(TextQuestion.of(CommonObjects.POPUP_MESSAGE_TITLE))
+                        Ensure.that(
+                                        "Should see the alert title",
+                                        TextQuestion.of(CommonObjects.POPUP_MESSAGE_TITLE))
                                 .isEqualTo("Alert Message"),
-                        Ensure.that(TextQuestion.of(CommonObjects.POPUP_MESSAGE_CONTENT))
+                        Ensure.that(
+                                        "Should see the alert description",
+                                        TextQuestion.of(CommonObjects.POPUP_MESSAGE_CONTENT))
                                 .isEqualTo(messageError),
                         TapAction.on(CommonObjects.POPUP_MESSAGE_BUTTON_OK));
     }
@@ -387,6 +391,7 @@ public class ClerkManagementSteps {
         OnStage.theActorInTheSpotlight()
                 .attemptsTo(
                         Ensure.that(
+                                        "Should see the add button",
                                         VisibilityQuestion.isPresent(
                                                 MainClerkManagementScreen.BUTTON_ADD_NEW_USER))
                                 .isEqualTo(isPresent));
@@ -509,21 +514,26 @@ public class ClerkManagementSteps {
         Actor theActor = OnStage.theActorInTheSpotlight();
 
         theActor.attemptsTo(
-                Ensure.that(TextQuestion.of(CommonObjects.POPUP_MESSAGE_TITLE))
+                Ensure.that(
+                                "Should see the alert title",
+                                TextQuestion.of(CommonObjects.POPUP_MESSAGE_TITLE))
                         .isEqualTo(alertTitle),
-                Ensure.that(TextQuestion.of(CommonObjects.POPUP_MESSAGE_CONTENT))
+                Ensure.that(
+                                "Should see the alert description",
+                                TextQuestion.of(CommonObjects.POPUP_MESSAGE_CONTENT))
                         .isEqualTo(alertMessage),
                 TapAction.on(CommonObjects.POPUP_MESSAGE_BUTTON_OK),
                 TapAction.on(CommonObjects.BUTTON_ARROW_BACK));
 
         if (alertMessage.contains("User")) {
-            theActor.attemptsTo(
-                    Ensure.that(VisibilityQuestion.isPresent(MainSettingsScreen.TITLE)).isTrue());
+            heShouldSeeTheMainFunctionScreenInsteadOfThePasswordProtectedFunctionScreen();
         }
 
         if (alertMessage.contains("password")) {
             theActor.attemptsTo(
-                    Ensure.that(TextQuestion.of(NumericScreen.LABEL_REASON))
+                    Ensure.that(
+                                    "Should be returned to the Clerk ID entry screen",
+                                    TextQuestion.of(NumericScreen.LABEL_REASON))
                             .isEqualTo("Enter your Clerk ID"));
         }
     }
@@ -561,7 +571,9 @@ public class ClerkManagementSteps {
     public void heShouldSeeTheMainFunctionScreenInsteadOfThePasswordProtectedFunctionScreen() {
         OnStage.theActorInTheSpotlight()
                 .attemptsTo(
-                        Ensure.that(VisibilityQuestion.isPresent(MainSettingsScreen.TITLE))
+                        Ensure.that(
+                                        "Should be returned to the Settings main screen",
+                                        VisibilityQuestion.isPresent(MainSettingsScreen.TITLE))
                                 .isTrue());
     }
 }

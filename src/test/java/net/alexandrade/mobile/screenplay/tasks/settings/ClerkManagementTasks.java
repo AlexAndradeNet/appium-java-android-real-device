@@ -60,7 +60,9 @@ public class ClerkManagementTasks {
 
                     if (withTextValidation) {
                         actor.attemptsTo(
-                                Ensure.that(TextQuestion.of(AddUserScreen.TITLE))
+                                Ensure.that(
+                                                "Should see the title",
+                                                TextQuestion.of(AddUserScreen.TITLE))
                                         .isEqualTo("ADD NEW CLERK"));
                     }
 
@@ -156,15 +158,22 @@ public class ClerkManagementTasks {
 
                     if (withValidationOfTexts) {
                         actor.attemptsTo(
-                                Ensure.that(TextQuestion.of(ConfirmationScreen.TITLE))
+                                Ensure.that(
+                                                "Should see the title",
+                                                TextQuestion.of(ConfirmationScreen.TITLE))
                                         .isEqualTo("DELETE CLERK"),
-                                Ensure.that(TextQuestion.of(ConfirmationScreen.LABEL_MESSAGE_TITLE))
+                                Ensure.that(
+                                                "Should see the confirmation reason",
+                                                TextQuestion.of(
+                                                        ConfirmationScreen.LABEL_MESSAGE_TITLE))
                                         .isEqualTo("Are you sure you want to delete this clerk?"),
                                 Ensure.that(
+                                                "Should see the cancel button",
                                                 VisibilityQuestion.isPresent(
                                                         ConfirmationScreen.BUTTON_CANCEL))
                                         .isTrue(),
                                 Ensure.that(
+                                                "Should see the yes button",
                                                 VisibilityQuestion.isPresent(
                                                         ConfirmationScreen.BUTTON_YES))
                                         .isTrue());
@@ -186,11 +195,17 @@ public class ClerkManagementTasks {
                 actor -> {
                     if (withValidationOfTexts) {
                         actor.attemptsTo(
-                                Ensure.that(TextQuestion.of(ConfirmationScreen.TITLE))
+                                Ensure.that(
+                                                "Should see the title",
+                                                TextQuestion.of(ConfirmationScreen.TITLE))
                                         .isEqualTo("DELETE CLERK"),
-                                Ensure.that(TextQuestion.of(ConfirmationScreen.LABEL_MESSAGE_TITLE))
+                                Ensure.that(
+                                                "Should see the confirmation",
+                                                TextQuestion.of(
+                                                        ConfirmationScreen.LABEL_MESSAGE_TITLE))
                                         .isEqualTo("SUCCESS"),
                                 Ensure.that(
+                                                "Should see the clerk deleted message",
                                                 TextQuestion.of(
                                                         ConfirmationScreen.LABEL_MESSAGE_DETAIL))
                                         .isEqualTo("Clerk Deleted"));

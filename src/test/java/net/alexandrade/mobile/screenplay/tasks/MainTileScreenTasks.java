@@ -55,7 +55,7 @@ public class MainTileScreenTasks {
                 });
     }
 
-    @Step("{0} makes the terminal goes back to the main screen {1}")
+    @Step("{0} opens a new Sale {1}")
     public static Performable openSale() {
         return Task.where("{0} opens the Sale main tile", TapAction.on(BUTTON_SALE_TRANSACTION));
     }
