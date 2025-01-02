@@ -176,12 +176,13 @@ public class ClerkManagementSteps {
         OnStage.theActorInTheSpotlight()
                 .attemptsTo(
                         Ensure.that(
-                                        "Just one result should be in the list",
+                                        "Should see just one result in the list",
                                         ElementListQuestion.quantityOf(
                                                 MainClerkManagementScreen.LIST_OF_USER_PROFILE_IDS))
                                 .isEqualTo(1),
                         Ensure.that(
-                                        "Looking for %s to be in the list".formatted(clerkName),
+                                        "Should see that the Clerk ID '%s' is in the list"
+                                                .formatted(clerkName),
                                         TextQuestion.of(
                                                 MainClerkManagementScreen.LABEL_USER_PROFILE_ROLE
                                                         .of(clerkId)))
@@ -193,7 +194,7 @@ public class ClerkManagementSteps {
         OnStage.theActorInTheSpotlight()
                 .attemptsTo(
                         Ensure.that(
-                                        "The list should be empty",
+                                        "Should see that the list is empty",
                                         ElementListQuestion.quantityOf(
                                                 MainClerkManagementScreen.LIST_OF_USER_PROFILE_IDS))
                                 .isEqualTo(0));
@@ -204,17 +205,17 @@ public class ClerkManagementSteps {
         OnStage.theActorInTheSpotlight()
                 .attemptsTo(
                         Ensure.that(
-                                        "Visibility of Password change button",
+                                        "Should see the 'Change Password' button",
                                         VisibilityQuestion.isPresent(
                                                 ViewClerkScreen.BUTTON_CHANGE_PASSWORD))
                                 .isTrue(),
                         Ensure.that(
-                                        "Visibility of ID change button",
+                                        "Should see the 'Change ID' button",
                                         VisibilityQuestion.isPresent(
                                                 ViewClerkScreen.BUTTON_CHANGE_CLERK_ID))
                                 .isTrue(),
                         Ensure.that(
-                                        "Visibility of Role change button",
+                                        "Should see the 'Role Change' button",
                                         VisibilityQuestion.isPresent(
                                                 ViewClerkScreen.BUTTON_CHANGE_CLERK_ROLE))
                                 .isTrue());
@@ -227,29 +228,29 @@ public class ClerkManagementSteps {
         Actor actor = OnStage.theActorInTheSpotlight();
         actor.attemptsTo(
                 Ensure.that(
-                                "Visibility of the Title",
+                                "Should see the screen title",
                                 VisibilityQuestion.isPresent(ViewClerkScreen.TITLE))
                         .isTrue(),
                 Ensure.that(
-                                "Visibility of the Clerk ID label",
+                                "Should see the 'Clerk ID; label",
                                 TextQuestion.of(ViewClerkScreen.LABEL_CLERK_ID))
                         .isEqualTo("#" + actor.recall(CLERK_ID).toString()),
                 Ensure.that(
-                                "Visibility of the Clerk Role",
+                                "Should see the 'Clerk Role' label",
                                 TextQuestion.of(ViewClerkScreen.LABEL_CLERK_ROLE))
                         .isEqualTo("Admin"),
                 Ensure.that(
-                                "Visibility of Password change button",
+                                "Should see the 'Change Password' button",
                                 VisibilityQuestion.isPresent(
                                         ViewClerkScreen.BUTTON_CHANGE_PASSWORD))
                         .isTrue(),
                 Ensure.that(
-                                "Visibility of ID change button",
+                                "Should see the 'Change ID' button",
                                 VisibilityQuestion.isPresent(
                                         ViewClerkScreen.BUTTON_CHANGE_CLERK_ID))
                         .isFalse(),
                 Ensure.that(
-                                "Visibility of Role change button",
+                                "Should see the 'Role Change' button",
                                 VisibilityQuestion.isPresent(
                                         ViewClerkScreen.BUTTON_CHANGE_CLERK_ROLE))
                         .isFalse());
@@ -296,8 +297,8 @@ public class ClerkManagementSteps {
         OnStage.theActorInTheSpotlight()
                 .attemptsTo(
                         Ensure.that(
-                                        "The %s new Clerk %s should be present"
-                                                .formatted(alias, clerkId),
+                                        "Should see that the new '%s' for %s is present"
+                                                .formatted(clerkId, alias),
                                         VisibilityQuestion.isPresent(
                                                 MainClerkManagementScreen.LABEL_USER_PROFILE_ROLE
                                                         .of(clerkId)))
@@ -361,7 +362,7 @@ public class ClerkManagementSteps {
 
                             theActor.attemptsTo(
                                     Ensure.that(
-                                                    "Check ID %s has the role '%s'"
+                                                    "Should see that the role for Clerk ID %s is '%s'"
                                                             .formatted(clerkId, role),
                                                     TextQuestion.of(clerkElement))
                                             .isEqualTo(role));
@@ -385,7 +386,7 @@ public class ClerkManagementSteps {
         OnStage.theActorInTheSpotlight()
                 .attemptsTo(
                         Ensure.that(
-                                        "Should see the add button",
+                                        "Should see the 'Add New User' button",
                                         VisibilityQuestion.isPresent(
                                                 MainClerkManagementScreen.BUTTON_ADD_NEW_USER))
                                 .isEqualTo(isPresent));
@@ -450,8 +451,8 @@ public class ClerkManagementSteps {
 
         theActor.attemptsTo(
                 Ensure.that(
-                                "The %s new Clerk %s should not be present"
-                                        .formatted(alias, clerkId),
+                                "Should see the Clerk ID '%s' is not present for %s"
+                                        .formatted(clerkId, alias),
                                 VisibilityQuestion.isPresent(
                                         MainClerkManagementScreen.LABEL_USER_PROFILE_ROLE.of(
                                                 clerkId)))
@@ -472,12 +473,13 @@ public class ClerkManagementSteps {
         reLogin(theActor);
         theActor.attemptsTo(
                 Ensure.that(
-                                "The list should have only one element",
+                                "Should see that the list just have one element",
                                 ElementListQuestion.quantityOf(
                                         MainClerkManagementScreen.LIST_OF_USER_PROFILE_IDS))
                         .isEqualTo(1),
                 Ensure.that(
-                                "The list should have only his ID",
+                                "Should see that the list have only their own ID: '%s'"
+                                        .formatted(clerkId),
                                 VisibilityQuestion.isPresent(
                                         MainClerkManagementScreen.BUTTON_USER_PROFILE_ID.of(
                                                 clerkId)))

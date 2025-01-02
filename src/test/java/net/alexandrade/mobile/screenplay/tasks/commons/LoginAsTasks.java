@@ -40,12 +40,12 @@ public class LoginAsTasks {
                     if (withValidation) {
                         actor.attemptsTo(
                                 Ensure.that(
-                                                "Should see the title",
+                                                "Should see the title: '%s'".formatted(screenTitle),
                                                 VisibilityQuestion.isPresent(
                                                         NumericScreen.TITLE.of(screenTitle)))
                                         .isTrue(),
                                 Ensure.that(
-                                                "Should see the label",
+                                                "Should see the label: 'Enter your Clerk ID'",
                                                 VisibilityQuestion.isPresent(
                                                         NumericScreen.LABEL_REASON.of(
                                                                 "Enter your Clerk ID")))
@@ -55,7 +55,10 @@ public class LoginAsTasks {
 
                     if (withValidation) {
                         actor.attemptsTo(
-                                Ensure.that(TextQuestion.of(NumericScreen.TEXTBOX_VALUE))
+                                Ensure.that(
+                                                "Should see the value of the Clerk ID field: '%s'"
+                                                        .formatted(clerkId),
+                                                TextQuestion.of(NumericScreen.TEXTBOX_VALUE))
                                         .isEqualTo(clerkId));
                     }
 
@@ -78,12 +81,12 @@ public class LoginAsTasks {
                     if (withValidation) {
                         actor.attemptsTo(
                                 Ensure.that(
-                                                "Should see the title",
+                                                "Should see the title: '%s'".formatted(screenTitle),
                                                 VisibilityQuestion.isPresent(
                                                         NumericScreen.TITLE.of(screenTitle)))
                                         .isTrue(),
                                 Ensure.that(
-                                                "Should see the label",
+                                                "Should see the label: 'Enter your Password'",
                                                 VisibilityQuestion.isPresent(
                                                         NumericScreen.LABEL_REASON.of(
                                                                 "Enter your Password")))
@@ -94,7 +97,9 @@ public class LoginAsTasks {
 
                     if (withValidation) {
                         actor.attemptsTo(
-                                Ensure.that(TextQuestion.of(NumericScreen.TEXTBOX_VALUE))
+                                Ensure.that(
+                                                "Should see the value of the Password field",
+                                                TextQuestion.of(NumericScreen.TEXTBOX_VALUE))
                                         .isEqualTo("******"));
                     }
 

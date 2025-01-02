@@ -45,11 +45,11 @@ public class CommonTasks {
         return Task.where(
                 "{0} validate the popup alert on the screen",
                 Ensure.that(
-                                "Should see the alert title",
+                                "Should see the alert title: '%s'".formatted(title),
                                 TextQuestion.of(CommonObjects.POPUP_MESSAGE_TITLE))
                         .isEqualTo(title),
                 Ensure.that(
-                                "Should see the alert detail",
+                                "Should see the alert detail: '%s'".formatted(message),
                                 TextQuestion.of(CommonObjects.POPUP_MESSAGE_CONTENT))
                         .isEqualTo(message),
                 TapAction.on(CommonObjects.POPUP_MESSAGE_BUTTON_OK));
@@ -65,18 +65,20 @@ public class CommonTasks {
                 actor -> {
                     actor.attemptsTo(
                             Ensure.that(
-                                            "Visibility of title",
+                                            "Should see the title: '%s'".formatted(screenTitle),
                                             TextQuestion.of(ConfirmationScreen.TITLE))
                                     .isEqualTo(screenTitle),
                             Ensure.that(
-                                            "Visibility of message title",
+                                            "Should see the message title: '%s'"
+                                                    .formatted(messageTitle),
                                             TextQuestion.of(ConfirmationScreen.LABEL_MESSAGE_TITLE))
                                     .isEqualTo(messageTitle));
 
                     if (StringUtils.isNotBlank(messageDetail)) {
                         actor.attemptsTo(
                                 Ensure.that(
-                                                "Visibility of message detail",
+                                                "Should see the message detail: '%s'"
+                                                        .formatted(messageDetail),
                                                 TextQuestion.of(
                                                         ConfirmationScreen.LABEL_MESSAGE_DETAIL))
                                         .isEqualTo(messageDetail));
@@ -99,9 +101,7 @@ public class CommonTasks {
     }
 
     public static Performable validateConfirmationScreen(
-      String screenTitle,
-      String messageTitle,
-      String messageDetail) {
+            String screenTitle, String messageTitle, String messageDetail) {
         return validateConfirmationScreen(screenTitle, messageTitle, messageDetail, false);
     }
 
