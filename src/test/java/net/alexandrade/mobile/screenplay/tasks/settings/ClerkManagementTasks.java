@@ -18,6 +18,7 @@ import net.alexandrade.mobile.screenplay.interactions.TapAction;
 import net.alexandrade.mobile.screenplay.interactions.WaitSpecificTime;
 import net.alexandrade.mobile.screenplay.questions.TextQuestion;
 import net.alexandrade.mobile.screenplay.questions.VisibilityQuestion;
+import net.alexandrade.mobile.screenplay.tasks.commons.CommonTasks;
 import net.alexandrade.mobile.screenplay.ui.ConfirmationScreen;
 import net.alexandrade.mobile.screenplay.ui.settings.clerkmanagement.*;
 import net.serenitybdd.annotations.Step;
@@ -91,17 +92,8 @@ public class ClerkManagementTasks {
     public static Performable dismissSuccessConfirmationAfterAddingANewUser() {
         return Task.where(
                 "{0} dismisses the confirmation after adding a new user",
-                Ensure.that("Visibility of title", TextQuestion.of(ConfirmationScreen.TITLE))
-                        .isEqualTo("ADD NEW CLERK"),
-                Ensure.that(
-                                "Visibility of message title",
-                                TextQuestion.of(ConfirmationScreen.LABEL_MESSAGE_TITLE))
-                        .isEqualTo("SUCCESS"),
-                Ensure.that(
-                                "Visibility of message detail",
-                                TextQuestion.of(ConfirmationScreen.LABEL_MESSAGE_DETAIL))
-                        .isEqualTo("Clerk Created"),
-                TapAction.on(ConfirmationScreen.BUTTON_DONE));
+                CommonTasks.validateAndDismissConfirmationScreenWithDoneButton(
+                        "ADD NEW CLERK", "SUCCESS", "Clerk Created"));
     }
 
     private static Target getTargetForRole(String role) {
@@ -158,25 +150,11 @@ public class ClerkManagementTasks {
 
                     if (withValidationOfTexts) {
                         actor.attemptsTo(
-                                Ensure.that(
-                                                "Should see the title",
-                                                TextQuestion.of(ConfirmationScreen.TITLE))
-                                        .isEqualTo("DELETE CLERK"),
-                                Ensure.that(
-                                                "Should see the confirmation reason",
-                                                TextQuestion.of(
-                                                        ConfirmationScreen.LABEL_MESSAGE_TITLE))
-                                        .isEqualTo("Are you sure you want to delete this clerk?"),
-                                Ensure.that(
-                                                "Should see the cancel button",
-                                                VisibilityQuestion.isPresent(
-                                                        ConfirmationScreen.BUTTON_CANCEL))
-                                        .isTrue(),
-                                Ensure.that(
-                                                "Should see the yes button",
-                                                VisibilityQuestion.isPresent(
-                                                        ConfirmationScreen.BUTTON_YES))
-                                        .isTrue());
+                                CommonTasks.validateConfirmationScreen(
+                                        "DELETE CLERK",
+                                        "Are you sure you want to delete this clerk?",
+                                        "",
+                                        true));
                     }
 
                     if (confirmDeletion) {
@@ -195,20 +173,8 @@ public class ClerkManagementTasks {
                 actor -> {
                     if (withValidationOfTexts) {
                         actor.attemptsTo(
-                                Ensure.that(
-                                                "Should see the title",
-                                                TextQuestion.of(ConfirmationScreen.TITLE))
-                                        .isEqualTo("DELETE CLERK"),
-                                Ensure.that(
-                                                "Should see the confirmation",
-                                                TextQuestion.of(
-                                                        ConfirmationScreen.LABEL_MESSAGE_TITLE))
-                                        .isEqualTo("SUCCESS"),
-                                Ensure.that(
-                                                "Should see the clerk deleted message",
-                                                TextQuestion.of(
-                                                        ConfirmationScreen.LABEL_MESSAGE_DETAIL))
-                                        .isEqualTo("Clerk Deleted"));
+                                CommonTasks.validateConfirmationScreen(
+                                        "DELETE CLERK", "SUCCESS", "Clerk Deleted"));
                     }
                     actor.attemptsTo(TapAction.on(ConfirmationScreen.BUTTON_DONE));
                 });

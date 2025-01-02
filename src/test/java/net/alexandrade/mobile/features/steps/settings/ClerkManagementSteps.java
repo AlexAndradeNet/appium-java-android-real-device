@@ -43,6 +43,7 @@ public class ClerkManagementSteps {
 
     private static final String CLERK_ID = "clerkId";
     private static final String CLERK_PASSWORD = "clerkPassword";
+    private static final String SCREEN_TITLE = "CLERK MANAGEMENT";
 
     @Given("{actor}, with ID {word} and Password {word}, is managing clerks,")
     public void isManagingClerks(Actor actor, String clerkId, String password) {
@@ -286,15 +287,8 @@ public class ClerkManagementSteps {
     public void shouldReceiveTheErrorMessage(String messageError) {
         OnStage.theActorInTheSpotlight()
                 .attemptsTo(
-                        Ensure.that(
-                                        "Should see the alert title",
-                                        TextQuestion.of(CommonObjects.POPUP_MESSAGE_TITLE))
-                                .isEqualTo("Alert Message"),
-                        Ensure.that(
-                                        "Should see the alert description",
-                                        TextQuestion.of(CommonObjects.POPUP_MESSAGE_CONTENT))
-                                .isEqualTo(messageError),
-                        TapAction.on(CommonObjects.POPUP_MESSAGE_BUTTON_OK));
+                        CommonTasks.validateAndDismissPopupAlertWithOkButton(
+                                "Alert Message", messageError));
     }
 
     @Then("he should see {word} new Clerk ID is {word} in the clerks list.")
@@ -505,7 +499,7 @@ public class ClerkManagementSteps {
     @When("he tries to manage clerks with a wrong Clerk ID,")
     public void heTriesToManageClerks() {
         Actor theActor = OnStage.theActorInTheSpotlight();
-        theActor.attemptsTo(LoginAsTasks.fillClerkID(true, theActor.recall(CLERK_ID)));
+        theActor.attemptsTo(LoginAsTasks.fillClerkID(SCREEN_TITLE, theActor.recall(CLERK_ID)));
     }
 
     @Then("he should receive the error message error message {string} with the title {string}.")
@@ -514,15 +508,7 @@ public class ClerkManagementSteps {
         Actor theActor = OnStage.theActorInTheSpotlight();
 
         theActor.attemptsTo(
-                Ensure.that(
-                                "Should see the alert title",
-                                TextQuestion.of(CommonObjects.POPUP_MESSAGE_TITLE))
-                        .isEqualTo(alertTitle),
-                Ensure.that(
-                                "Should see the alert description",
-                                TextQuestion.of(CommonObjects.POPUP_MESSAGE_CONTENT))
-                        .isEqualTo(alertMessage),
-                TapAction.on(CommonObjects.POPUP_MESSAGE_BUTTON_OK),
+                CommonTasks.validateAndDismissPopupAlertWithOkButton(alertTitle, alertMessage),
                 TapAction.on(CommonObjects.BUTTON_ARROW_BACK));
 
         if (alertMessage.contains("User")) {
@@ -551,8 +537,8 @@ public class ClerkManagementSteps {
     public void heTriesToManageClerksWithAWrongPassword() {
         Actor theActor = OnStage.theActorInTheSpotlight();
         theActor.attemptsTo(
-                LoginAsTasks.fillClerkID(false, theActor.recall(CLERK_ID)),
-                LoginAsTasks.fillPassword(true, theActor.recall(CLERK_PASSWORD)));
+                LoginAsTasks.fillClerkID(theActor.recall(CLERK_ID)),
+                LoginAsTasks.fillPassword(SCREEN_TITLE, theActor.recall(CLERK_PASSWORD)));
     }
 
     @When("he attempts to go to the previous screen")

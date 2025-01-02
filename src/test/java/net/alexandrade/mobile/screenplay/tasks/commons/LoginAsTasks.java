@@ -15,12 +15,14 @@ package net.alexandrade.mobile.screenplay.tasks.commons;
 
 import net.alexandrade.mobile.screenplay.interactions.NumpadAction;
 import net.alexandrade.mobile.screenplay.interactions.TapAction;
+import net.alexandrade.mobile.screenplay.questions.TextQuestion;
 import net.alexandrade.mobile.screenplay.questions.VisibilityQuestion;
 import net.alexandrade.mobile.screenplay.ui.NumericScreen;
 import net.serenitybdd.annotations.Step;
 import net.serenitybdd.screenplay.Performable;
 import net.serenitybdd.screenplay.Task;
 import net.serenitybdd.screenplay.ensure.Ensure;
+import org.junit.platform.commons.util.StringUtils;
 
 public class LoginAsTasks {
 
@@ -29,16 +31,18 @@ public class LoginAsTasks {
     }
 
     @Step("{0} fills the clerk ID '{1}'")
-    public static Performable fillClerkID(boolean withValidation, String clerkId) {
+    public static Performable fillClerkID(String screenTitle, String clerkId) {
         return Task.where(
                 "{0} fills the clerk ID and password",
                 actor -> {
+                    boolean withValidation = StringUtils.isNotBlank(screenTitle);
+
                     if (withValidation) {
                         actor.attemptsTo(
                                 Ensure.that(
                                                 "Should see the title",
                                                 VisibilityQuestion.isPresent(
-                                                        NumericScreen.TITLE.of("CLERK MANAGEMENT")))
+                                                        NumericScreen.TITLE.of(screenTitle)))
                                         .isTrue(),
                                 Ensure.that(
                                                 "Should see the label",
@@ -47,28 +51,36 @@ public class LoginAsTasks {
                                                                 "Enter your Clerk ID")))
                                         .isTrue());
                     }
-                    actor.attemptsTo(
-                            NumpadAction.digit(clerkId),
-                            TapAction.on(NumericScreen.BUTTON_CONTINUE));
+                    actor.attemptsTo(NumpadAction.digit(clerkId));
+
+                    if (withValidation) {
+                        actor.attemptsTo(
+                                Ensure.that(TextQuestion.of(NumericScreen.TEXTBOX_VALUE))
+                                        .isEqualTo(clerkId));
+                    }
+
+                    actor.attemptsTo(TapAction.on(NumericScreen.BUTTON_CONTINUE));
                 });
     }
 
     @Step("{0} fills the clerk ID '{1}'")
     public static Performable fillClerkID(String clerkId) {
-        return fillClerkID(false, clerkId);
+        return fillClerkID(null, clerkId);
     }
 
     @Step("{0} fills the password '{1}'")
-    public static Performable fillPassword(boolean withValidation, String clerkPassword) {
+    public static Performable fillPassword(String screenTitle, String clerkPassword) {
         return Task.where(
                 "{0} fills the clerk ID and password",
                 actor -> {
+                    boolean withValidation = StringUtils.isNotBlank(screenTitle);
+
                     if (withValidation) {
                         actor.attemptsTo(
                                 Ensure.that(
                                                 "Should see the title",
                                                 VisibilityQuestion.isPresent(
-                                                        NumericScreen.TITLE.of("CLERK MANAGEMENT")))
+                                                        NumericScreen.TITLE.of(screenTitle)))
                                         .isTrue(),
                                 Ensure.that(
                                                 "Should see the label",
@@ -77,14 +89,21 @@ public class LoginAsTasks {
                                                                 "Enter your Password")))
                                         .isTrue());
                     }
-                    actor.attemptsTo(
-                            NumpadAction.digit(clerkPassword),
-                            TapAction.on(NumericScreen.BUTTON_CONTINUE));
+
+                    actor.attemptsTo(NumpadAction.digit(clerkPassword));
+
+                    if (withValidation) {
+                        actor.attemptsTo(
+                                Ensure.that(TextQuestion.of(NumericScreen.TEXTBOX_VALUE))
+                                        .isEqualTo("******"));
+                    }
+
+                    actor.attemptsTo(TapAction.on(NumericScreen.BUTTON_CONTINUE));
                 });
     }
 
     @Step("{0} fills the Password '{1}'")
     public static Performable fillPassword(String clerkPassword) {
-        return fillPassword(false, clerkPassword);
+        return fillPassword(null, clerkPassword);
     }
 }

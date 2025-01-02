@@ -15,9 +15,14 @@ package net.alexandrade.mobile.screenplay.tasks.commons;
 
 import net.alexandrade.mobile.screenplay.driver.AppiumDriver;
 import net.alexandrade.mobile.screenplay.interactions.TapAction;
+import net.alexandrade.mobile.screenplay.questions.TextQuestion;
+import net.alexandrade.mobile.screenplay.questions.VisibilityQuestion;
 import net.alexandrade.mobile.screenplay.ui.CommonObjects;
+import net.alexandrade.mobile.screenplay.ui.ConfirmationScreen;
 import net.serenitybdd.screenplay.Performable;
 import net.serenitybdd.screenplay.Task;
+import net.serenitybdd.screenplay.ensure.Ensure;
+import org.junit.platform.commons.util.StringUtils;
 
 public class CommonTasks {
     private CommonTasks() {
@@ -27,13 +32,84 @@ public class CommonTasks {
     public static Performable pressPhysicalBackKey() {
         return Task.where(
                 "{0} press the physical back key",
-                actor -> {
-                    AppiumDriver.getDriver().navigate().back();
-                });
+                actor -> AppiumDriver.getDriver().navigate().back());
     }
 
     public static Performable tapBackArrow() {
         return Task.where(
-                "{0} tap the Back Arrow on Screeen", TapAction.on(CommonObjects.BUTTON_ARROW_BACK));
+                "{0} tap the Back Arrow on Screen", TapAction.on(CommonObjects.BUTTON_ARROW_BACK));
+    }
+
+    public static Performable validateAndDismissPopupAlertWithOkButton(
+            String title, String message) {
+        return Task.where(
+                "{0} validate the popup alert on the screen",
+                Ensure.that(
+                                "Should see the alert title",
+                                TextQuestion.of(CommonObjects.POPUP_MESSAGE_TITLE))
+                        .isEqualTo(title),
+                Ensure.that(
+                                "Should see the alert detail",
+                                TextQuestion.of(CommonObjects.POPUP_MESSAGE_CONTENT))
+                        .isEqualTo(message),
+                TapAction.on(CommonObjects.POPUP_MESSAGE_BUTTON_OK));
+    }
+
+    public static Performable validateConfirmationScreen(
+            String screenTitle,
+            String messageTitle,
+            String messageDetail,
+            boolean validateYesCancelButtons) {
+        return Task.where(
+                "{0} validates the confirmation screen",
+                actor -> {
+                    actor.attemptsTo(
+                            Ensure.that(
+                                            "Visibility of title",
+                                            TextQuestion.of(ConfirmationScreen.TITLE))
+                                    .isEqualTo(screenTitle),
+                            Ensure.that(
+                                            "Visibility of message title",
+                                            TextQuestion.of(ConfirmationScreen.LABEL_MESSAGE_TITLE))
+                                    .isEqualTo(messageTitle));
+
+                    if (StringUtils.isNotBlank(messageDetail)) {
+                        actor.attemptsTo(
+                                Ensure.that(
+                                                "Visibility of message detail",
+                                                TextQuestion.of(
+                                                        ConfirmationScreen.LABEL_MESSAGE_DETAIL))
+                                        .isEqualTo(messageDetail));
+                    }
+
+                    if (validateYesCancelButtons) {
+                        actor.attemptsTo(
+                                Ensure.that(
+                                                "Should see the cancel button",
+                                                VisibilityQuestion.isPresent(
+                                                        ConfirmationScreen.BUTTON_CANCEL))
+                                        .isTrue(),
+                                Ensure.that(
+                                                "Should see the yes button",
+                                                VisibilityQuestion.isPresent(
+                                                        ConfirmationScreen.BUTTON_YES))
+                                        .isTrue());
+                    }
+                });
+    }
+
+    public static Performable validateConfirmationScreen(
+      String screenTitle,
+      String messageTitle,
+      String messageDetail) {
+        return validateConfirmationScreen(screenTitle, messageTitle, messageDetail, false);
+    }
+
+    public static Performable validateAndDismissConfirmationScreenWithDoneButton(
+            String title, String messageTitle, String messageDetail) {
+        return Task.where(
+                "{0} validates and dismisses the confirmation screen",
+                validateConfirmationScreen(title, messageTitle, messageDetail, false),
+                TapAction.on(ConfirmationScreen.BUTTON_DONE));
     }
 }

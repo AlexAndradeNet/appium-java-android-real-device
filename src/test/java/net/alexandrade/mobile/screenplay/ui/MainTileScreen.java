@@ -30,6 +30,22 @@ public class MainTileScreen {
             Target.the("Sale")
                     .located(AppiumBy.androidUIAutomator(BASE_SELECTOR.formatted("Sale")));
 
+    public static final Target BUTTON_REFUND_TRANSACTION =
+            Target.the("Refund")
+                    .located(AppiumBy.androidUIAutomator(BASE_SELECTOR.formatted("Refund")));
+
+    public static final Target BUTTON_MOTO_TRANSACTION =
+            Target.the("Moto")
+                    .located(AppiumBy.androidUIAutomator(BASE_SELECTOR.formatted("Moto")));
+
+    public static final Target BUTTON_VOID_TRANSACTION =
+            Target.the("Void")
+                    .located(AppiumBy.androidUIAutomator(BASE_SELECTOR.formatted("Void")));
+
+    public static final Target BUTTON_BATCH_OR_SETTLE_TRANSACTION =
+            Target.the("Batch or Settle")
+                    .located(AppiumBy.androidUIAutomator(BASE_SELECTOR.formatted("Settle")));
+
     public static final Target BUTTON_SETTINGS_TRANSACTION =
             Target.the("Settings")
                     .located(AppiumBy.androidUIAutomator(BASE_SELECTOR.formatted("Settings")));
