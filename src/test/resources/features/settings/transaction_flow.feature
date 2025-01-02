@@ -1,14 +1,8 @@
 @ignore
-Feature: Solve course exercises
+Feature: Control the flow of transactions
   As a User
-  I want to test all the exercises
-  So that I can practice the new knowledge
-
-  #@ignore
-  Scenario: The trader explores the menu
-    Given Aureliano is in the Main Screen
-    When he opens the Sale main tile
-    Then he see the numbers of items is 8
+  I want to control the flow of transactions
+  So that I can manage the transactions in my business
 
   #@ignore
   Scenario: The clerk enables the Order Number prompt
