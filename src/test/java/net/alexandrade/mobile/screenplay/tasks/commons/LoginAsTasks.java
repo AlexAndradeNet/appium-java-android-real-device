@@ -36,17 +36,19 @@ public class LoginAsTasks {
                     if (withValidation) {
                         actor.attemptsTo(
                                 Ensure.that(
+                                                "Should see the title",
                                                 VisibilityQuestion.isPresent(
                                                         NumericScreen.TITLE.of("CLERK MANAGEMENT")))
                                         .isTrue(),
                                 Ensure.that(
+                                                "Should see the label",
                                                 VisibilityQuestion.isPresent(
                                                         NumericScreen.LABEL_REASON.of(
                                                                 "Enter your Clerk ID")))
                                         .isTrue());
                     }
                     actor.attemptsTo(
-                            NumpadAction.onNuveisNumpad(clerkId),
+                            NumpadAction.digit(clerkId),
                             TapAction.on(NumericScreen.BUTTON_CONTINUE));
                 });
     }
@@ -64,17 +66,19 @@ public class LoginAsTasks {
                     if (withValidation) {
                         actor.attemptsTo(
                                 Ensure.that(
+                                                "Should see the title",
                                                 VisibilityQuestion.isPresent(
                                                         NumericScreen.TITLE.of("CLERK MANAGEMENT")))
                                         .isTrue(),
                                 Ensure.that(
+                                                "Should see the label",
                                                 VisibilityQuestion.isPresent(
                                                         NumericScreen.LABEL_REASON.of(
                                                                 "Enter your Password")))
                                         .isTrue());
                     }
                     actor.attemptsTo(
-                            NumpadAction.onNuveisNumpad(clerkPassword),
+                            NumpadAction.digit(clerkPassword),
                             TapAction.on(NumericScreen.BUTTON_CONTINUE));
                 });
     }
