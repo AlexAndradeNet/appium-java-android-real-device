@@ -18,7 +18,7 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import net.alexandrade.mobile.screenplay.interactions.ScrollAction;
+import net.alexandrade.mobile.screenplay.interactions.SwipeAction;
 import net.alexandrade.mobile.screenplay.interactions.TapAction;
 import net.alexandrade.mobile.screenplay.questions.ElementListQuestion;
 import net.alexandrade.mobile.screenplay.questions.TextQuestion;
@@ -358,7 +358,7 @@ public class ClerkManagementSteps {
                             if (VisibilityQuestion.isPresent(clerkElement)
                                     .answeredBy(theActor)
                                     .equals(false)) {
-                                theActor.attemptsTo(ScrollAction.scrollUp());
+                                theActor.attemptsTo(SwipeAction.toUp());
                             }
 
                             theActor.attemptsTo(

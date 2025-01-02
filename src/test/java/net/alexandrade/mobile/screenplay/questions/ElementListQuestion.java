@@ -14,7 +14,7 @@ from Nuvei Inc.
 package net.alexandrade.mobile.screenplay.questions;
 
 import java.util.*;
-import net.alexandrade.mobile.screenplay.interactions.ScrollAction;
+import net.alexandrade.mobile.screenplay.interactions.SwipeAction;
 import net.serenitybdd.core.pages.ListOfWebElementFacades;
 import net.serenitybdd.screenplay.Question;
 import net.serenitybdd.screenplay.targets.Target;
@@ -48,7 +48,7 @@ public class ElementListQuestion {
                 if (currentSize > previousSize) {
                     // Update the previous size and continue scrolling
                     previousSize = currentSize;
-                    ScrollAction.scrollUp().performAs(actor);
+                    SwipeAction.toUp().performAs(actor);
                 } else {
                     // Break if no growth in size
                     break;
