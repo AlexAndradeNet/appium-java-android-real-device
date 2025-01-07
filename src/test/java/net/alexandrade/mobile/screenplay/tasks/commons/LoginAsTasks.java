@@ -13,14 +13,15 @@ from Nuvei Inc.
 */
 package net.alexandrade.mobile.screenplay.tasks.commons;
 
+import net.alexandrade.mobile.screenplay.interactions.ClickAction;
 import net.alexandrade.mobile.screenplay.interactions.NumpadAction;
-import net.alexandrade.mobile.screenplay.interactions.TapAction;
+import net.alexandrade.mobile.screenplay.questions.TextQuestion;
 import net.alexandrade.mobile.screenplay.questions.VisibilityQuestion;
 import net.alexandrade.mobile.screenplay.ui.NumericScreen;
-import net.serenitybdd.annotations.Step;
 import net.serenitybdd.screenplay.Performable;
 import net.serenitybdd.screenplay.Task;
 import net.serenitybdd.screenplay.ensure.Ensure;
+import org.junit.platform.commons.util.StringUtils;
 
 public class LoginAsTasks {
 
@@ -28,59 +29,106 @@ public class LoginAsTasks {
         throw new IllegalStateException("Utility class - cannot be instantiated");
     }
 
-    @Step("{0} fills the clerk ID '{1}'")
-    public static Performable fillClerkID(boolean withValidation, String clerkId) {
+    private enum Confirmation {
+        CONFIRM,
+        CONTINUE
+    }
+
+    public static Performable fillClerkID(String screenTitle, String clerkId) {
         return Task.where(
                 "{0} fills the clerk ID and password",
                 actor -> {
+                    boolean withValidation = StringUtils.isNotBlank(screenTitle);
+
                     if (withValidation) {
                         actor.attemptsTo(
                                 Ensure.that(
+                                                "Should see the title: '%s'".formatted(screenTitle),
                                                 VisibilityQuestion.isPresent(
-                                                        NumericScreen.TITLE.of("CLERK MANAGEMENT")))
+                                                        NumericScreen.TITLE.of(screenTitle)))
                                         .isTrue(),
                                 Ensure.that(
+                                                "Should see the label: 'Enter your Clerk ID'",
                                                 VisibilityQuestion.isPresent(
                                                         NumericScreen.LABEL_REASON.of(
                                                                 "Enter your Clerk ID")))
                                         .isTrue());
                     }
-                    actor.attemptsTo(
-                            NumpadAction.onNuveisNumpad(clerkId),
-                            TapAction.on(NumericScreen.BUTTON_CONTINUE));
-                });
-    }
+                    actor.attemptsTo(NumpadAction.digit(clerkId));
 
-    @Step("{0} fills the clerk ID '{1}'")
-    public static Performable fillClerkID(String clerkId) {
-        return fillClerkID(false, clerkId);
-    }
-
-    @Step("{0} fills the password '{1}'")
-    public static Performable fillPassword(boolean withValidation, String clerkPassword) {
-        return Task.where(
-                "{0} fills the clerk ID and password",
-                actor -> {
                     if (withValidation) {
                         actor.attemptsTo(
                                 Ensure.that(
+                                                "Should see the value of the Clerk ID field: '%s'"
+                                                        .formatted(clerkId),
+                                                TextQuestion.of(NumericScreen.TEXTBOX_VALUE))
+                                        .isEqualTo(clerkId));
+                    }
+
+                    actor.attemptsTo(
+                            ClickAction.on(
+                                    NumericScreen.getButtonConfirm(Confirmation.CONTINUE.name())));
+                });
+    }
+
+    public static Performable fillClerkID(String clerkId) {
+        return fillClerkID(null, clerkId);
+    }
+
+    public static Performable fillPassword(
+            String screenTitle, Confirmation confirmation, String clerkPassword) {
+        return Task.where(
+                "{0} fills the clerk ID and password {1}",
+                actor -> {
+                    boolean withValidation = StringUtils.isNotBlank(screenTitle);
+
+                    if (withValidation) {
+                        actor.attemptsTo(
+                                Ensure.that(
+                                                "Should see the title: '%s'".formatted(screenTitle),
                                                 VisibilityQuestion.isPresent(
-                                                        NumericScreen.TITLE.of("CLERK MANAGEMENT")))
+                                                        NumericScreen.TITLE.of(screenTitle)))
                                         .isTrue(),
                                 Ensure.that(
+                                                "Should see the label: 'Enter your Password'",
                                                 VisibilityQuestion.isPresent(
                                                         NumericScreen.LABEL_REASON.of(
                                                                 "Enter your Password")))
                                         .isTrue());
                     }
+
+                    actor.attemptsTo(NumpadAction.digit(clerkPassword));
+
+                    if (withValidation) {
+                        actor.attemptsTo(
+                                Ensure.that(
+                                                "Should see the value of the Password field",
+                                                TextQuestion.of(NumericScreen.TEXTBOX_VALUE))
+                                        .isEqualTo("******"));
+                    }
+
                     actor.attemptsTo(
-                            NumpadAction.onNuveisNumpad(clerkPassword),
-                            TapAction.on(NumericScreen.BUTTON_CONTINUE));
+                            ClickAction.on(NumericScreen.getButtonConfirm(confirmation.name())));
                 });
     }
 
-    @Step("{0} fills the Password '{1}'")
+    public static Performable fillPassword(String screenTitle, String clerkPassword) {
+        return fillPassword(screenTitle, Confirmation.CONTINUE, clerkPassword);
+    }
+
     public static Performable fillPassword(String clerkPassword) {
-        return fillPassword(false, clerkPassword);
+        return fillPassword(null, Confirmation.CONTINUE, clerkPassword);
+    }
+
+    public static Performable fillPassword(boolean withConfirmationButton, String clerkPassword) {
+        Confirmation confirmation =
+                withConfirmationButton ? Confirmation.CONFIRM : Confirmation.CONTINUE;
+        return fillPassword(null, confirmation, clerkPassword);
+    }
+
+    public static Performable as(String clerkId, String clerkPassword) {
+        return Task.where(
+                "{0} fills the clerk ID and password",
+                fillClerkID(clerkId), fillPassword(clerkPassword));
     }
 }

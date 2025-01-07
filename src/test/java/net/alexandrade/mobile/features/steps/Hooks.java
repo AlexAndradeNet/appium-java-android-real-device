@@ -17,7 +17,7 @@ import io.cucumber.java.After;
 import io.cucumber.java.AfterAll;
 import io.cucumber.java.Before;
 import io.cucumber.java.BeforeAll;
-import net.alexandrade.mobile.screenplay.tasks.MainTileScreenTasks;
+import net.alexandrade.mobile.screenplay.tasks.commons.CommonTasks;
 import net.alexandrade.utils.SimpleLogger;
 import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.actors.OnlineCast;
@@ -41,7 +41,7 @@ public class Hooks {
 
     @After(order = 1)
     public void afterEachScenario() {
-        OnStage.theActorInTheSpotlight().attemptsTo(MainTileScreenTasks.returnToMainScreen());
+        OnStage.theActorInTheSpotlight().attemptsTo(CommonTasks.returnToMainScreen());
     }
 
     @AfterAll

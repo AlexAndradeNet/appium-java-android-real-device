@@ -21,16 +21,22 @@ public class NumericScreen {
         throw new IllegalStateException("Utility class - cannot be instantiated");
     }
 
-    private static final String BASE_SELECTOR = "//android.widget.TextView[@text=\"{0}\"][1]";
+    private static final String BASE_XPATH = "//android.widget.TextView[@text=\"{0}\"][1]";
 
-    public static final Target TITLE = Target.the("Title {0}").locatedBy(BASE_SELECTOR);
+    public static final Target TITLE = Target.the("Title {0}").locatedBy(BASE_XPATH);
 
-    public static final Target LABEL_REASON = Target.the("Reason {0}").locatedBy(BASE_SELECTOR);
+    public static final Target LABEL_REASON = Target.the("Reason {0}").locatedBy(BASE_XPATH);
+
+    public static final Target TEXTBOX_VALUE =
+            Target.the("Reason {0}").located(AppiumBy.xpath("(//android.widget.EditText)[1]"));
 
     public static final Target BUTTON_NUMBER =
-            Target.the("Button number {0}").locatedBy(BASE_SELECTOR);
+            Target.the("Button number {0}").locatedBy(BASE_XPATH);
 
-    public static final Target BUTTON_CONTINUE =
-            Target.the("Button Continue")
-                    .located(AppiumBy.androidUIAutomator("new UiSelector().text(\"CONTINUE\")"));
+    private static final String BASE_SELECTOR = "new UiSelector().text(\"%s\")";
+
+    public static Target getButtonConfirm(String text) {
+        return Target.the("Button Confirm {0}")
+                .located(AppiumBy.androidUIAutomator(BASE_SELECTOR.formatted(text)));
+    }
 }

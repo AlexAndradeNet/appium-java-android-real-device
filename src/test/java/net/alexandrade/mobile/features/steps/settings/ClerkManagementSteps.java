@@ -18,12 +18,11 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import net.alexandrade.mobile.screenplay.interactions.ScrollAction;
-import net.alexandrade.mobile.screenplay.interactions.TapAction;
+import net.alexandrade.mobile.screenplay.interactions.ClickAction;
+import net.alexandrade.mobile.screenplay.interactions.SwipeAction;
 import net.alexandrade.mobile.screenplay.questions.ElementListQuestion;
 import net.alexandrade.mobile.screenplay.questions.TextQuestion;
 import net.alexandrade.mobile.screenplay.questions.VisibilityQuestion;
-import net.alexandrade.mobile.screenplay.tasks.MainTileScreenTasks;
 import net.alexandrade.mobile.screenplay.tasks.commons.CommonTasks;
 import net.alexandrade.mobile.screenplay.tasks.commons.LoginAsTasks;
 import net.alexandrade.mobile.screenplay.tasks.settings.ClerkManagementTasks;
@@ -43,6 +42,7 @@ public class ClerkManagementSteps {
 
     private static final String CLERK_ID = "clerkId";
     private static final String CLERK_PASSWORD = "clerkPassword";
+    private static final String SCREEN_TITLE = "CLERK MANAGEMENT";
 
     @Given("{actor}, with ID {word} and Password {word}, is managing clerks,")
     public void isManagingClerks(Actor actor, String clerkId, String password) {
@@ -77,7 +77,7 @@ public class ClerkManagementSteps {
                 .attemptsTo(
                         ClerkManagementTasks.openAccountDetailsForProfile(clerkId),
                         ClerkManagementTasks.changeRole(newRole),
-                        MainTileScreenTasks.returnToMainScreen());
+                        CommonTasks.returnToMainScreen());
     }
 
     @When("he search for the Clerk ID {word},")
@@ -156,7 +156,7 @@ public class ClerkManagementSteps {
                 .attemptsTo(
                         ClerkManagementTasks.openAccountDetailsForProfile(clerkId),
                         ClerkManagementTasks.deleteClerk(true, false),
-                        MainTileScreenTasks.returnToMainScreen());
+                        CommonTasks.returnToMainScreen());
     }
 
     @Then(
@@ -175,12 +175,13 @@ public class ClerkManagementSteps {
         OnStage.theActorInTheSpotlight()
                 .attemptsTo(
                         Ensure.that(
-                                        "Just one result should be in the list",
+                                        "Should see just one result in the list",
                                         ElementListQuestion.quantityOf(
                                                 MainClerkManagementScreen.LIST_OF_USER_PROFILE_IDS))
                                 .isEqualTo(1),
                         Ensure.that(
-                                        "Looking for %s to be in the list".formatted(clerkName),
+                                        "Should see that the Clerk ID '%s' is in the list"
+                                                .formatted(clerkName),
                                         TextQuestion.of(
                                                 MainClerkManagementScreen.LABEL_USER_PROFILE_ROLE
                                                         .of(clerkId)))
@@ -192,7 +193,7 @@ public class ClerkManagementSteps {
         OnStage.theActorInTheSpotlight()
                 .attemptsTo(
                         Ensure.that(
-                                        "The list should be empty",
+                                        "Should see that the list is empty",
                                         ElementListQuestion.quantityOf(
                                                 MainClerkManagementScreen.LIST_OF_USER_PROFILE_IDS))
                                 .isEqualTo(0));
@@ -203,17 +204,17 @@ public class ClerkManagementSteps {
         OnStage.theActorInTheSpotlight()
                 .attemptsTo(
                         Ensure.that(
-                                        "Visibility of Password change button",
+                                        "Should see the 'Change Password' button",
                                         VisibilityQuestion.isPresent(
                                                 ViewClerkScreen.BUTTON_CHANGE_PASSWORD))
                                 .isTrue(),
                         Ensure.that(
-                                        "Visibility of ID change button",
+                                        "Should see the 'Change ID' button",
                                         VisibilityQuestion.isPresent(
                                                 ViewClerkScreen.BUTTON_CHANGE_CLERK_ID))
                                 .isTrue(),
                         Ensure.that(
-                                        "Visibility of Role change button",
+                                        "Should see the 'Role Change' button",
                                         VisibilityQuestion.isPresent(
                                                 ViewClerkScreen.BUTTON_CHANGE_CLERK_ROLE))
                                 .isTrue());
@@ -226,29 +227,29 @@ public class ClerkManagementSteps {
         Actor actor = OnStage.theActorInTheSpotlight();
         actor.attemptsTo(
                 Ensure.that(
-                                "Visibility of the Title",
+                                "Should see the screen title",
                                 VisibilityQuestion.isPresent(ViewClerkScreen.TITLE))
                         .isTrue(),
                 Ensure.that(
-                                "Visibility of the Clerk ID label",
+                                "Should see the 'Clerk ID; label",
                                 TextQuestion.of(ViewClerkScreen.LABEL_CLERK_ID))
                         .isEqualTo("#" + actor.recall(CLERK_ID).toString()),
                 Ensure.that(
-                                "Visibility of the Clerk Role",
+                                "Should see the 'Clerk Role' label",
                                 TextQuestion.of(ViewClerkScreen.LABEL_CLERK_ROLE))
                         .isEqualTo("Admin"),
                 Ensure.that(
-                                "Visibility of Password change button",
+                                "Should see the 'Change Password' button",
                                 VisibilityQuestion.isPresent(
                                         ViewClerkScreen.BUTTON_CHANGE_PASSWORD))
                         .isTrue(),
                 Ensure.that(
-                                "Visibility of ID change button",
+                                "Should see the 'Change ID' button",
                                 VisibilityQuestion.isPresent(
                                         ViewClerkScreen.BUTTON_CHANGE_CLERK_ID))
                         .isFalse(),
                 Ensure.that(
-                                "Visibility of Role change button",
+                                "Should see the 'Role Change' button",
                                 VisibilityQuestion.isPresent(
                                         ViewClerkScreen.BUTTON_CHANGE_CLERK_ROLE))
                         .isFalse());
@@ -258,7 +259,7 @@ public class ClerkManagementSteps {
     public void shouldStillBeAbleToUseHisOldPasswordToManageClerks(
             String clerkId, String oldPassword) {
         Actor actor = OnStage.theActorInTheSpotlight();
-        actor.attemptsTo(MainTileScreenTasks.returnToMainScreen());
+        actor.attemptsTo(CommonTasks.returnToMainScreen());
         managesClerks(actor, clerkId, oldPassword);
         checkAbilityToAddNewClerks(true);
     }
@@ -274,7 +275,7 @@ public class ClerkManagementSteps {
     private void testNewPasswordAndChangeIt(
             String clerkId, String currentPassword, String newPassword) {
         Actor theActor = OnStage.theActorInTheSpotlight();
-        theActor.attemptsTo(MainTileScreenTasks.returnToMainScreen());
+        theActor.attemptsTo(CommonTasks.returnToMainScreen());
         managesClerks(theActor, clerkId, currentPassword);
 
         // Reverts previous password
@@ -286,11 +287,8 @@ public class ClerkManagementSteps {
     public void shouldReceiveTheErrorMessage(String messageError) {
         OnStage.theActorInTheSpotlight()
                 .attemptsTo(
-                        Ensure.that(TextQuestion.of(CommonObjects.POPUP_MESSAGE_TITLE))
-                                .isEqualTo("Alert Message"),
-                        Ensure.that(TextQuestion.of(CommonObjects.POPUP_MESSAGE_CONTENT))
-                                .isEqualTo(messageError),
-                        TapAction.on(CommonObjects.POPUP_MESSAGE_BUTTON_OK));
+                        CommonTasks.validateAndDismissPopupAlertWithOkButton(
+                                "Alert Message", messageError));
     }
 
     @Then("he should see {word} new Clerk ID is {word} in the clerks list.")
@@ -298,8 +296,8 @@ public class ClerkManagementSteps {
         OnStage.theActorInTheSpotlight()
                 .attemptsTo(
                         Ensure.that(
-                                        "The %s new Clerk %s should be present"
-                                                .formatted(alias, clerkId),
+                                        "Should see that the new '%s' for %s is present"
+                                                .formatted(clerkId, alias),
                                         VisibilityQuestion.isPresent(
                                                 MainClerkManagementScreen.LABEL_USER_PROFILE_ROLE
                                                         .of(clerkId)))
@@ -358,12 +356,12 @@ public class ClerkManagementSteps {
                             if (VisibilityQuestion.isPresent(clerkElement)
                                     .answeredBy(theActor)
                                     .equals(false)) {
-                                theActor.attemptsTo(ScrollAction.scrollUp());
+                                theActor.attemptsTo(SwipeAction.toUp());
                             }
 
                             theActor.attemptsTo(
                                     Ensure.that(
-                                                    "Check ID %s has the role '%s'"
+                                                    "Should see that the role for Clerk ID %s is '%s'"
                                                             .formatted(clerkId, role),
                                                     TextQuestion.of(clerkElement))
                                             .isEqualTo(role));
@@ -387,6 +385,7 @@ public class ClerkManagementSteps {
         OnStage.theActorInTheSpotlight()
                 .attemptsTo(
                         Ensure.that(
+                                        "Should see the 'Add New User' button",
                                         VisibilityQuestion.isPresent(
                                                 MainClerkManagementScreen.BUTTON_ADD_NEW_USER))
                                 .isEqualTo(isPresent));
@@ -440,7 +439,7 @@ public class ClerkManagementSteps {
                         ClerkManagementTasks.openAccountDetailsForProfile(clerkId),
                         ClerkManagementTasks.deleteClerk(false, true),
                         ClerkManagementTasks.dismissSuccessConfirmationAfterDeletingClerk(true),
-                        MainTileScreenTasks.returnToMainScreen());
+                        CommonTasks.returnToMainScreen());
     }
 
     @Then("he should not see {word} account \\(ID {word}) in the clerks list.")
@@ -451,8 +450,8 @@ public class ClerkManagementSteps {
 
         theActor.attemptsTo(
                 Ensure.that(
-                                "The %s new Clerk %s should not be present"
-                                        .formatted(alias, clerkId),
+                                "Should see the Clerk ID '%s' is not present for %s"
+                                        .formatted(clerkId, alias),
                                 VisibilityQuestion.isPresent(
                                         MainClerkManagementScreen.LABEL_USER_PROFILE_ROLE.of(
                                                 clerkId)))
@@ -464,7 +463,7 @@ public class ClerkManagementSteps {
         OnStage.theActorInTheSpotlight()
                 .attemptsTo(
                         ClerkManagementTasks.removeClerksDifferentThan(clerkId),
-                        MainTileScreenTasks.returnToMainScreen());
+                        CommonTasks.returnToMainScreen());
     }
 
     @Then("he should see only his ID {word} in the list.")
@@ -473,12 +472,13 @@ public class ClerkManagementSteps {
         reLogin(theActor);
         theActor.attemptsTo(
                 Ensure.that(
-                                "The list should have only one element",
+                                "Should see that the list just have one element",
                                 ElementListQuestion.quantityOf(
                                         MainClerkManagementScreen.LIST_OF_USER_PROFILE_IDS))
                         .isEqualTo(1),
                 Ensure.that(
-                                "The list should have only his ID",
+                                "Should see that the list have only their own ID: '%s'"
+                                        .formatted(clerkId),
                                 VisibilityQuestion.isPresent(
                                         MainClerkManagementScreen.BUTTON_USER_PROFILE_ID.of(
                                                 clerkId)))
@@ -500,7 +500,7 @@ public class ClerkManagementSteps {
     @When("he tries to manage clerks with a wrong Clerk ID,")
     public void heTriesToManageClerks() {
         Actor theActor = OnStage.theActorInTheSpotlight();
-        theActor.attemptsTo(LoginAsTasks.fillClerkID(true, theActor.recall(CLERK_ID)));
+        theActor.attemptsTo(LoginAsTasks.fillClerkID(SCREEN_TITLE, theActor.recall(CLERK_ID)));
     }
 
     @Then("he should receive the error message error message {string} with the title {string}.")
@@ -509,21 +509,18 @@ public class ClerkManagementSteps {
         Actor theActor = OnStage.theActorInTheSpotlight();
 
         theActor.attemptsTo(
-                Ensure.that(TextQuestion.of(CommonObjects.POPUP_MESSAGE_TITLE))
-                        .isEqualTo(alertTitle),
-                Ensure.that(TextQuestion.of(CommonObjects.POPUP_MESSAGE_CONTENT))
-                        .isEqualTo(alertMessage),
-                TapAction.on(CommonObjects.POPUP_MESSAGE_BUTTON_OK),
-                TapAction.on(CommonObjects.BUTTON_ARROW_BACK));
+                CommonTasks.validateAndDismissPopupAlertWithOkButton(alertTitle, alertMessage),
+                ClickAction.on(CommonObjects.BUTTON_ARROW_BACK));
 
         if (alertMessage.contains("User")) {
-            theActor.attemptsTo(
-                    Ensure.that(VisibilityQuestion.isPresent(MainSettingsScreen.TITLE)).isTrue());
+            heShouldSeeTheMainFunctionScreenInsteadOfThePasswordProtectedFunctionScreen();
         }
 
         if (alertMessage.contains("password")) {
             theActor.attemptsTo(
-                    Ensure.that(TextQuestion.of(NumericScreen.LABEL_REASON))
+                    Ensure.that(
+                                    "Should be returned to the Clerk ID entry screen",
+                                    TextQuestion.of(NumericScreen.LABEL_REASON))
                             .isEqualTo("Enter your Clerk ID"));
         }
     }
@@ -541,8 +538,8 @@ public class ClerkManagementSteps {
     public void heTriesToManageClerksWithAWrongPassword() {
         Actor theActor = OnStage.theActorInTheSpotlight();
         theActor.attemptsTo(
-                LoginAsTasks.fillClerkID(false, theActor.recall(CLERK_ID)),
-                LoginAsTasks.fillPassword(true, theActor.recall(CLERK_PASSWORD)));
+                LoginAsTasks.fillClerkID(theActor.recall(CLERK_ID)),
+                LoginAsTasks.fillPassword(SCREEN_TITLE, theActor.recall(CLERK_PASSWORD)));
     }
 
     @When("he attempts to go to the previous screen")
@@ -561,7 +558,9 @@ public class ClerkManagementSteps {
     public void heShouldSeeTheMainFunctionScreenInsteadOfThePasswordProtectedFunctionScreen() {
         OnStage.theActorInTheSpotlight()
                 .attemptsTo(
-                        Ensure.that(VisibilityQuestion.isPresent(MainSettingsScreen.TITLE))
+                        Ensure.that(
+                                        "Should be returned to the Settings main screen",
+                                        VisibilityQuestion.isPresent(MainSettingsScreen.TITLE))
                                 .isTrue());
     }
 }

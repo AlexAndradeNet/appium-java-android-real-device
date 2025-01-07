@@ -34,8 +34,14 @@ public class MainSettingsScreen {
                                     BASE_SELECTOR.formatted("Transaction Options")));
 
     public static final Target BUTTON_CLERK_MANAGEMENT =
-            Target.the("Clerk Management")
+            Target.the("Clerk Management Option")
                     .located(
                             AppiumBy.androidUIAutomator(
                                     BASE_SELECTOR.formatted("Clerk Management")));
+
+    public static final Target BUTTON_SEMI_INTEGRATION =
+            Target.the("Semi Integration Option")
+                    .located(
+                            AppiumBy.androidUIAutomator(
+                                    BASE_SELECTOR.formatted("Semi Integration")));
 }

@@ -27,12 +27,7 @@ import org.openqa.selenium.interactions.Pause;
 import org.openqa.selenium.interactions.PointerInput;
 import org.openqa.selenium.interactions.Sequence;
 
-/**
- * An Interaction that performs a tap action on a given target element using the W3C Pointer Input
- * API.
- */
 public class TapAction implements Interaction {
-
     private final Target target;
     private final WebElement webElement;
     private final int duration;

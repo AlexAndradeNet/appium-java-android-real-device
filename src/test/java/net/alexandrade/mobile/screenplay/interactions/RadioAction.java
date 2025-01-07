@@ -20,44 +20,45 @@ import net.serenitybdd.screenplay.Interaction;
 import net.serenitybdd.screenplay.targets.Target;
 import org.openqa.selenium.WebElement;
 
-public class ToggleAction implements Interaction {
+public class RadioAction implements Interaction {
 
     private final Target target;
     private final WebElement element;
-    private final boolean enabled;
+    private final boolean checked;
 
-    protected ToggleAction(Target target, WebElement element, boolean enabled) {
+    protected RadioAction(Target target, WebElement element, boolean checked) {
         this.target = target;
         this.element = element;
-        this.enabled = enabled;
+        this.checked = checked;
     }
 
     @Override
     public <T extends Actor> void performAs(T actor) {
-        String translatedStatus = enabled ? "ON" : "OFF";
         String currentToggleStatus =
-                (element != null) ? element.getText() : target.resolveFor(actor).getText();
-        currentToggleStatus =
-                currentToggleStatus.replaceAll("\\p{C}", ""); // Removes control characters
+                (element != null)
+                        ? element.getAttribute("checked")
+                        : target.resolveFor(actor).getAttribute("checked");
+
+        String translatedStatus = checked ? "true" : "false";
 
         if (!currentToggleStatus.equals(translatedStatus)) {
             actor.attemptsTo(ClickAction.on(element));
         }
     }
 
-    public static ToggleAction toOn(Target target) {
-        return instrumented(ToggleAction.class, target, null, true);
+    public static RadioAction toOn(Target target) {
+        return instrumented(RadioAction.class, target, null, true);
     }
 
-    public static ToggleAction toOn(WebElement element) {
-        return instrumented(ToggleAction.class, null, element, true);
+    public static RadioAction toOn(WebElement element) {
+        return instrumented(RadioAction.class, null, element, true);
     }
 
-    public static ToggleAction toOff(Target target) {
-        return instrumented(ToggleAction.class, target, null, false);
+    public static RadioAction toOff(Target target) {
+        return instrumented(RadioAction.class, target, null, false);
     }
 
-    public static ToggleAction toOff(WebElement element) {
-        return instrumented(ToggleAction.class, null, element, false);
+    public static RadioAction toOff(WebElement element) {
+        return instrumented(RadioAction.class, null, element, false);
     }
 }
