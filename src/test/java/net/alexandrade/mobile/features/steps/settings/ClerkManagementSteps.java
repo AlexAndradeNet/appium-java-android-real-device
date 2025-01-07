@@ -23,7 +23,6 @@ import net.alexandrade.mobile.screenplay.interactions.SwipeAction;
 import net.alexandrade.mobile.screenplay.questions.ElementListQuestion;
 import net.alexandrade.mobile.screenplay.questions.TextQuestion;
 import net.alexandrade.mobile.screenplay.questions.VisibilityQuestion;
-import net.alexandrade.mobile.screenplay.tasks.MainTileScreenTasks;
 import net.alexandrade.mobile.screenplay.tasks.commons.CommonTasks;
 import net.alexandrade.mobile.screenplay.tasks.commons.LoginAsTasks;
 import net.alexandrade.mobile.screenplay.tasks.settings.ClerkManagementTasks;
@@ -78,7 +77,7 @@ public class ClerkManagementSteps {
                 .attemptsTo(
                         ClerkManagementTasks.openAccountDetailsForProfile(clerkId),
                         ClerkManagementTasks.changeRole(newRole),
-                        MainTileScreenTasks.returnToMainScreen());
+                        CommonTasks.returnToMainScreen());
     }
 
     @When("he search for the Clerk ID {word},")
@@ -157,7 +156,7 @@ public class ClerkManagementSteps {
                 .attemptsTo(
                         ClerkManagementTasks.openAccountDetailsForProfile(clerkId),
                         ClerkManagementTasks.deleteClerk(true, false),
-                        MainTileScreenTasks.returnToMainScreen());
+                        CommonTasks.returnToMainScreen());
     }
 
     @Then(
@@ -260,7 +259,7 @@ public class ClerkManagementSteps {
     public void shouldStillBeAbleToUseHisOldPasswordToManageClerks(
             String clerkId, String oldPassword) {
         Actor actor = OnStage.theActorInTheSpotlight();
-        actor.attemptsTo(MainTileScreenTasks.returnToMainScreen());
+        actor.attemptsTo(CommonTasks.returnToMainScreen());
         managesClerks(actor, clerkId, oldPassword);
         checkAbilityToAddNewClerks(true);
     }
@@ -276,7 +275,7 @@ public class ClerkManagementSteps {
     private void testNewPasswordAndChangeIt(
             String clerkId, String currentPassword, String newPassword) {
         Actor theActor = OnStage.theActorInTheSpotlight();
-        theActor.attemptsTo(MainTileScreenTasks.returnToMainScreen());
+        theActor.attemptsTo(CommonTasks.returnToMainScreen());
         managesClerks(theActor, clerkId, currentPassword);
 
         // Reverts previous password
@@ -440,7 +439,7 @@ public class ClerkManagementSteps {
                         ClerkManagementTasks.openAccountDetailsForProfile(clerkId),
                         ClerkManagementTasks.deleteClerk(false, true),
                         ClerkManagementTasks.dismissSuccessConfirmationAfterDeletingClerk(true),
-                        MainTileScreenTasks.returnToMainScreen());
+                        CommonTasks.returnToMainScreen());
     }
 
     @Then("he should not see {word} account \\(ID {word}) in the clerks list.")
@@ -464,7 +463,7 @@ public class ClerkManagementSteps {
         OnStage.theActorInTheSpotlight()
                 .attemptsTo(
                         ClerkManagementTasks.removeClerksDifferentThan(clerkId),
-                        MainTileScreenTasks.returnToMainScreen());
+                        CommonTasks.returnToMainScreen());
     }
 
     @Then("he should see only his ID {word} in the list.")

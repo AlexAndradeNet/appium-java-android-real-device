@@ -19,7 +19,7 @@ import net.serenitybdd.screenplay.Actor;
 
 public class SharedSteps {
 
-    @Given("{actor} is in the Main Screen")
+    @Given("{actor} is in the Main Screen,")
     public void theActorIsInTheHomePage(Actor theActor) {
         theActor.attemptsTo(MainTileScreenTasks.waitTheAppIsFullyLoaded());
     }

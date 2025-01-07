@@ -13,9 +13,7 @@ from Nuvei Inc.
 */
 package net.alexandrade.mobile.screenplay.tasks;
 
-import static net.alexandrade.mobile.screenplay.ui.CommonObjects.BUTTON_ARROW_BACK;
 import static net.alexandrade.mobile.screenplay.ui.MainTileScreen.*;
-import static net.serenitybdd.screenplay.matchers.WebElementStateMatchers.isNotPresent;
 
 import net.alexandrade.mobile.screenplay.interactions.ClickAction;
 import net.alexandrade.mobile.screenplay.questions.VisibilityQuestion;
@@ -38,15 +36,10 @@ public class MainTileScreenTasks {
                 WaitUntil.the(SPINNER, isNotPresent()).forNoMoreThan(100).seconds());
     }
 
-    @Step("{0} navigates back to the main screen")
-    public static Performable returnToMainScreen() {
         return Task.where(
                 "{0} navigates back to the main screen",
                 actor -> {
                     try {
-                        while (VisibilityQuestion.isPresent(BUTTON_ARROW_BACK)
-                                .answeredBy(actor)
-                                .equals(true)) {
                 actor.attemptsTo(SwipeAction.toLeft());
                         }
                     } catch (NoSuchElementException ignored) {

@@ -13,16 +13,25 @@ from Nuvei Inc.
 */
 package net.alexandrade.mobile.screenplay.tasks.commons;
 
+import static net.alexandrade.mobile.screenplay.ui.CommonObjects.BUTTON_ARROW_BACK;
+
+import java.util.LinkedHashSet;
+import java.util.Set;
 import net.alexandrade.mobile.screenplay.driver.AppiumDriver;
 import net.alexandrade.mobile.screenplay.interactions.ClickAction;
+import net.alexandrade.mobile.screenplay.interactions.SwipeAction;
+import net.alexandrade.mobile.screenplay.interactions.ToggleAction;
 import net.alexandrade.mobile.screenplay.questions.TextQuestion;
 import net.alexandrade.mobile.screenplay.questions.VisibilityQuestion;
 import net.alexandrade.mobile.screenplay.ui.CommonObjects;
 import net.alexandrade.mobile.screenplay.ui.ConfirmationScreen;
+import net.serenitybdd.core.pages.WebElementFacade;
 import net.serenitybdd.screenplay.Performable;
 import net.serenitybdd.screenplay.Task;
 import net.serenitybdd.screenplay.ensure.Ensure;
+import net.serenitybdd.screenplay.targets.Target;
 import org.junit.platform.commons.util.StringUtils;
+import org.openqa.selenium.NoSuchElementException;
 
 public class CommonTasks {
     private CommonTasks() {
@@ -112,5 +121,80 @@ public class CommonTasks {
                 "{0} validates and dismisses the confirmation screen",
                 validateConfirmationScreen(title, messageTitle, messageDetail, false),
                 ClickAction.on(ConfirmationScreen.BUTTON_DONE));
+    }
+
+    private static Performable modifyAllTogglesOnTheScreen(boolean toggleOn) {
+        return Task.where(
+                "{0} deactivates all toggles in the screen",
+                actor -> {
+                    int previousSize = 0;
+                    Set<WebElementFacade> togglesList = new LinkedHashSet<>();
+                    Set<String> uniqueToglesLables = new LinkedHashSet<>();
+
+                    do {
+                        uniqueToglesLables.addAll(
+                                CommonObjects.TOGGLE_LABEL_LIST.resolveAllFor(actor).texts());
+                        togglesList.addAll(CommonObjects.TOGGLE_LIST.resolveAllFor(actor));
+
+                        int currentSize = uniqueToglesLables.size();
+
+                        if (currentSize > previousSize) {
+                            // Process only the newly discovered toggles
+                            togglesList.stream()
+                                    .skip(previousSize) // Skip already processed toggles
+                                    .forEach(
+                                            toggle -> {
+                                                if (toggleOn) {
+                                                    actor.attemptsTo(ToggleAction.toOn(toggle));
+                                                } else {
+                                                    actor.attemptsTo(ToggleAction.toOff(toggle));
+                                                }
+                                            });
+
+                            // Update the previous size to reflect the processed toggles
+                            previousSize = currentSize;
+                            actor.attemptsTo(SwipeAction.toUp());
+                        } else {
+                            break;
+                        }
+                    } while (true);
+                });
+    }
+
+    public static Performable turnOffAllTogglesOnTheScreen() {
+        return modifyAllTogglesOnTheScreen(false);
+    }
+
+    public static Performable turnOnAllTogglesOnTheScreen() {
+        return modifyAllTogglesOnTheScreen(true);
+    }
+
+    public static Performable navigateMenuUntilElementIsVisibleAndTapOnIt(Target target) {
+        return Task.where(
+                "{0} navigates the menu until the element is visible and taps on it",
+                actor -> {
+                    do {
+                        // The element could be present since the second screen
+                        actor.attemptsTo(SwipeAction.toUp());
+                    } while (!VisibilityQuestion.isPresent(target).answeredBy(actor));
+
+                    actor.attemptsTo(ClickAction.on(target));
+                });
+    }
+
+    public static Performable returnToMainScreen() {
+        return Task.where(
+                "{0} navigates back to the main screen",
+                actor -> {
+                    try {
+                        while (VisibilityQuestion.isPresent(BUTTON_ARROW_BACK)
+                                .answeredBy(actor)
+                                .equals(true)) {
+                            actor.attemptsTo(ClickAction.on(BUTTON_ARROW_BACK));
+                        }
+                    } catch (NoSuchElementException ignored) {
+                        // Do nothing
+                    }
+                });
     }
 }
