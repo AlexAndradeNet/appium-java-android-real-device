@@ -45,7 +45,7 @@ public class NumpadAction implements Interaction {
                         .mapToObj(c -> String.valueOf((char) c)) // Convert each character to String
                         .map(
                                 digit ->
-                                        TapAction.on(
+                                        ClickAction.on(
                                                 getOrCreateButtonForDigit(
                                                         actor, digit))) // Resolve Target
                         .toList();

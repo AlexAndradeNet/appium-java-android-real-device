@@ -13,8 +13,8 @@ from Nuvei Inc.
 */
 package net.alexandrade.mobile.screenplay.tasks.commons;
 
+import net.alexandrade.mobile.screenplay.interactions.ClickAction;
 import net.alexandrade.mobile.screenplay.interactions.NumpadAction;
-import net.alexandrade.mobile.screenplay.interactions.TapAction;
 import net.alexandrade.mobile.screenplay.questions.TextQuestion;
 import net.alexandrade.mobile.screenplay.questions.VisibilityQuestion;
 import net.alexandrade.mobile.screenplay.ui.NumericScreen;
@@ -62,7 +62,9 @@ public class LoginAsTasks {
                                         .isEqualTo(clerkId));
                     }
 
-                    actor.attemptsTo(TapAction.on(NumericScreen.BUTTON_CONTINUE));
+                    actor.attemptsTo(
+                            ClickAction.on(
+                                    NumericScreen.getButtonConfirm(Confirmation.CONTINUE.name())));
                 });
     }
 
@@ -71,10 +73,10 @@ public class LoginAsTasks {
         return fillClerkID(null, clerkId);
     }
 
-    @Step("{0} fills the password '{1}'")
-    public static Performable fillPassword(String screenTitle, String clerkPassword) {
+    public static Performable fillPassword(
+            String screenTitle, Confirmation confirmation, String clerkPassword) {
         return Task.where(
-                "{0} fills the clerk ID and password",
+                "{0} fills the clerk ID and password {1}",
                 actor -> {
                     boolean withValidation = StringUtils.isNotBlank(screenTitle);
 
@@ -103,7 +105,8 @@ public class LoginAsTasks {
                                         .isEqualTo("******"));
                     }
 
-                    actor.attemptsTo(TapAction.on(NumericScreen.BUTTON_CONTINUE));
+                    actor.attemptsTo(
+                            ClickAction.on(NumericScreen.getButtonConfirm(confirmation.name())));
                 });
     }
 

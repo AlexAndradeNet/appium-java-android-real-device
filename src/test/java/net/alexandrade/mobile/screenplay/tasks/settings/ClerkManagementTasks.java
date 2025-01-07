@@ -13,8 +13,8 @@ from Nuvei Inc.
 */
 package net.alexandrade.mobile.screenplay.tasks.settings;
 
+import net.alexandrade.mobile.screenplay.interactions.ClickAction;
 import net.alexandrade.mobile.screenplay.interactions.EnterAction;
-import net.alexandrade.mobile.screenplay.interactions.TapAction;
 import net.alexandrade.mobile.screenplay.interactions.WaitSpecificTime;
 import net.alexandrade.mobile.screenplay.questions.TextQuestion;
 import net.alexandrade.mobile.screenplay.questions.VisibilityQuestion;
@@ -37,27 +37,26 @@ public class ClerkManagementTasks {
     public static Performable openAccountDetailsForProfile(String clerkId) {
         return Task.where(
                 "{0} opens the Transaction Options > Transaction Flow screen",
-                TapAction.on(MainClerkManagementScreen.BUTTON_USER_PROFILE_ID.of(clerkId)));
+                ClickAction.on(MainClerkManagementScreen.BUTTON_USER_PROFILE_ID.of(clerkId)));
     }
 
     @Step("{0} changes the current user password {1} and confirmation {2}")
     public static Performable changePassword(String password, String confirmationPassword) {
         return Task.where(
                 "{0} changes the current user password",
-                TapAction.on(ViewClerkScreen.BUTTON_CHANGE_PASSWORD),
+                ClickAction.on(ViewClerkScreen.BUTTON_CHANGE_PASSWORD),
                 EnterAction.theValue(password).into(ChangePasswordScreen.TEXTBOX_PASSWORD),
                 EnterAction.theValue(confirmationPassword)
                         .into(ChangePasswordScreen.TEXTBOX_CONFIRM),
-                TapAction.on(ChangePasswordScreen.BUTTON_CONFIRM));
+                ClickAction.on(ChangePasswordScreen.BUTTON_CONFIRM));
     }
 
-    @Step("{0} adds a new user {1}, {2}, and {3}")
     public static Performable addANewUser(
             boolean withTextValidation, String clerkId, String role, String password) {
         return Task.where(
                 "{0} adds a new user",
                 actor -> {
-                    actor.attemptsTo(TapAction.on(MainClerkManagementScreen.BUTTON_ADD_NEW_USER));
+                    actor.attemptsTo(ClickAction.on(MainClerkManagementScreen.BUTTON_ADD_NEW_USER));
 
                     if (withTextValidation) {
                         actor.attemptsTo(
@@ -68,7 +67,7 @@ public class ClerkManagementTasks {
                     }
 
                     actor.attemptsTo(
-                            TapAction.on(getTargetForRole(role)),
+                            ClickAction.on(getTargetForRole(role)),
                             EnterAction.theValue(clerkId).into(AddUserScreen.TEXTBOX_USER_ID),
                             EnterAction.theValue(password).into(AddUserScreen.TEXTBOX_PASSWORD),
                             EnterAction.theValue(password).into(AddUserScreen.TEXTBOX_CONFIRM));
@@ -83,7 +82,7 @@ public class ClerkManagementTasks {
                     }
 
                     actor.attemptsTo(
-                            TapAction.on(AddUserScreen.BUTTON_CONFIRM),
+                            ClickAction.on(AddUserScreen.BUTTON_CONFIRM),
                             WaitSpecificTime.forSeconds(1));
                 });
     }
@@ -116,35 +115,33 @@ public class ClerkManagementTasks {
     public static Performable changeClerkId(String newClerkId) {
         return Task.where(
                 "{0} changes the clerk ID",
-                TapAction.on(ViewClerkScreen.BUTTON_CHANGE_CLERK_ID),
+                ClickAction.on(ViewClerkScreen.BUTTON_CHANGE_CLERK_ID),
                 EnterAction.theValue(newClerkId).into(ChangeClerkIDScreen.TEXTBOX_NEW_CLERK_ID),
                 Ensure.that(
                                 "The title should be correct",
                                 VisibilityQuestion.isPresent(ChangeClerkIDScreen.TITLE))
                         .isTrue(),
-                TapAction.on(ChangeClerkIDScreen.BUTTON_CONFIRM));
+                ClickAction.on(ChangeClerkIDScreen.BUTTON_CONFIRM));
     }
 
-    @Step("{0} changes the role to {1}")
     public static Performable changeRole(String newRole) {
         return Task.where(
                 "{0} changes the role",
-                TapAction.on(ViewClerkScreen.BUTTON_CHANGE_CLERK_ROLE),
+                ClickAction.on(ViewClerkScreen.BUTTON_CHANGE_CLERK_ROLE),
                 WaitSpecificTime.forSeconds(2),
                 Ensure.that(
                                 "The title should be correct",
                                 VisibilityQuestion.isPresent(ChangeClerkRoleScreen.TITLE))
                         .isTrue(),
-                TapAction.on(getTargetForRole(newRole)));
+                ClickAction.on(getTargetForRole(newRole)));
     }
 
-    @Step("{0} deletes the clerk")
     public static Performable deleteClerk(boolean withValidationOfTexts, boolean confirmDeletion) {
         return Task.where(
                 "{0} deletes the clerk",
                 actor -> {
                     actor.attemptsTo(
-                            TapAction.on(ViewClerkScreen.BUTTON_DELETE_USER)
+                            ClickAction.on(ViewClerkScreen.BUTTON_DELETE_USER)
                             // WaitSpecificTime.forSeconds(2)
                             );
 
@@ -158,9 +155,9 @@ public class ClerkManagementTasks {
                     }
 
                     if (confirmDeletion) {
-                        actor.attemptsTo(TapAction.on(ConfirmationScreen.BUTTON_YES));
+                        actor.attemptsTo(ClickAction.on(ConfirmationScreen.BUTTON_YES));
                     } else {
-                        actor.attemptsTo(TapAction.on(ConfirmationScreen.BUTTON_CANCEL));
+                        actor.attemptsTo(ClickAction.on(ConfirmationScreen.BUTTON_CANCEL));
                     }
                 });
     }
@@ -176,7 +173,7 @@ public class ClerkManagementTasks {
                                 CommonTasks.validateConfirmationScreen(
                                         "DELETE CLERK", "SUCCESS", "Clerk Deleted"));
                     }
-                    actor.attemptsTo(TapAction.on(ConfirmationScreen.BUTTON_DONE));
+                    actor.attemptsTo(ClickAction.on(ConfirmationScreen.BUTTON_DONE));
                 });
     }
 
@@ -191,7 +188,7 @@ public class ClerkManagementTasks {
                             .answeredBy(actor)
                             .equals(true)) {
                         actor.attemptsTo(
-                                TapAction.on(
+                                ClickAction.on(
                                         MainClerkManagementScreen
                                                 .BUTTON_USER_FIRST_PROFILE_ID_DIFFERENT_THAN
                                                 .of(clerkId)),

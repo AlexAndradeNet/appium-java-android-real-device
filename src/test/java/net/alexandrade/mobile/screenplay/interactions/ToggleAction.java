@@ -37,7 +37,7 @@ public class ToggleAction implements Interaction {
                 currentToggleStatus.replaceAll("\\p{C}", ""); // Removes control characters
 
         if (!currentToggleStatus.equals(translatedStatus)) {
-            actor.attemptsTo(TapAction.on(target));
+            actor.attemptsTo(ClickAction.on(element));
         }
     }
 

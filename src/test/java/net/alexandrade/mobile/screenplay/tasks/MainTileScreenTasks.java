@@ -17,7 +17,7 @@ import static net.alexandrade.mobile.screenplay.ui.CommonObjects.BUTTON_ARROW_BA
 import static net.alexandrade.mobile.screenplay.ui.MainTileScreen.*;
 import static net.serenitybdd.screenplay.matchers.WebElementStateMatchers.isNotPresent;
 
-import net.alexandrade.mobile.screenplay.interactions.TapAction;
+import net.alexandrade.mobile.screenplay.interactions.ClickAction;
 import net.alexandrade.mobile.screenplay.questions.VisibilityQuestion;
 import net.serenitybdd.annotations.Step;
 import net.serenitybdd.screenplay.Performable;
@@ -47,7 +47,7 @@ public class MainTileScreenTasks {
                         while (VisibilityQuestion.isPresent(BUTTON_ARROW_BACK)
                                 .answeredBy(actor)
                                 .equals(true)) {
-                            actor.attemptsTo(TapAction.on(BUTTON_ARROW_BACK));
+                actor.attemptsTo(SwipeAction.toLeft());
                         }
                     } catch (NoSuchElementException ignored) {
                         // Do nothing

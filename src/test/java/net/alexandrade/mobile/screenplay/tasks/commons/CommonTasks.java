@@ -14,7 +14,7 @@ from Nuvei Inc.
 package net.alexandrade.mobile.screenplay.tasks.commons;
 
 import net.alexandrade.mobile.screenplay.driver.AppiumDriver;
-import net.alexandrade.mobile.screenplay.interactions.TapAction;
+import net.alexandrade.mobile.screenplay.interactions.ClickAction;
 import net.alexandrade.mobile.screenplay.questions.TextQuestion;
 import net.alexandrade.mobile.screenplay.questions.VisibilityQuestion;
 import net.alexandrade.mobile.screenplay.ui.CommonObjects;
@@ -37,7 +37,8 @@ public class CommonTasks {
 
     public static Performable tapBackArrow() {
         return Task.where(
-                "{0} tap the Back Arrow on Screen", TapAction.on(CommonObjects.BUTTON_ARROW_BACK));
+                "{0} tap the Back Arrow on Screen",
+                ClickAction.on(CommonObjects.BUTTON_ARROW_BACK));
     }
 
     public static Performable validateAndDismissPopupAlertWithOkButton(
@@ -52,7 +53,7 @@ public class CommonTasks {
                                 "Should see the alert detail: '%s'".formatted(message),
                                 TextQuestion.of(CommonObjects.POPUP_MESSAGE_CONTENT))
                         .isEqualTo(message),
-                TapAction.on(CommonObjects.POPUP_MESSAGE_BUTTON_OK));
+                ClickAction.on(CommonObjects.POPUP_MESSAGE_BUTTON_OK));
     }
 
     public static Performable validateConfirmationScreen(
@@ -110,6 +111,6 @@ public class CommonTasks {
         return Task.where(
                 "{0} validates and dismisses the confirmation screen",
                 validateConfirmationScreen(title, messageTitle, messageDetail, false),
-                TapAction.on(ConfirmationScreen.BUTTON_DONE));
+                ClickAction.on(ConfirmationScreen.BUTTON_DONE));
     }
 }

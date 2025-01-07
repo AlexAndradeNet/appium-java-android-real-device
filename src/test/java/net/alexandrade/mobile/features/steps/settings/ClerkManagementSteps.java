@@ -18,8 +18,8 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import net.alexandrade.mobile.screenplay.interactions.ClickAction;
 import net.alexandrade.mobile.screenplay.interactions.SwipeAction;
-import net.alexandrade.mobile.screenplay.interactions.TapAction;
 import net.alexandrade.mobile.screenplay.questions.ElementListQuestion;
 import net.alexandrade.mobile.screenplay.questions.TextQuestion;
 import net.alexandrade.mobile.screenplay.questions.VisibilityQuestion;
@@ -511,7 +511,7 @@ public class ClerkManagementSteps {
 
         theActor.attemptsTo(
                 CommonTasks.validateAndDismissPopupAlertWithOkButton(alertTitle, alertMessage),
-                TapAction.on(CommonObjects.BUTTON_ARROW_BACK));
+                ClickAction.on(CommonObjects.BUTTON_ARROW_BACK));
 
         if (alertMessage.contains("User")) {
             heShouldSeeTheMainFunctionScreenInsteadOfThePasswordProtectedFunctionScreen();
