@@ -21,7 +21,6 @@ import net.alexandrade.mobile.screenplay.questions.VisibilityQuestion;
 import net.alexandrade.mobile.screenplay.tasks.commons.CommonTasks;
 import net.alexandrade.mobile.screenplay.ui.ConfirmationScreen;
 import net.alexandrade.mobile.screenplay.ui.settings.clerkmanagement.*;
-import net.serenitybdd.annotations.Step;
 import net.serenitybdd.screenplay.Performable;
 import net.serenitybdd.screenplay.Task;
 import net.serenitybdd.screenplay.ensure.Ensure;
@@ -33,14 +32,12 @@ public class ClerkManagementTasks {
         throw new IllegalStateException("Utility class - cannot be instantiated");
     }
 
-    @Step("{0} opens the Transaction Flow settings {1}")
     public static Performable openAccountDetailsForProfile(String clerkId) {
         return Task.where(
                 "{0} opens the Transaction Options > Transaction Flow screen",
                 ClickAction.on(MainClerkManagementScreen.BUTTON_USER_PROFILE_ID.of(clerkId)));
     }
 
-    @Step("{0} changes the current user password {1} and confirmation {2}")
     public static Performable changePassword(String password, String confirmationPassword) {
         return Task.where(
                 "{0} changes the current user password",
@@ -87,7 +84,6 @@ public class ClerkManagementTasks {
                 });
     }
 
-    @Step("{0} dismisses the confirmation after adding a new user")
     public static Performable dismissSuccessConfirmationAfterAddingANewUser() {
         return Task.where(
                 "{0} dismisses the confirmation after adding a new user",
@@ -104,14 +100,12 @@ public class ClerkManagementTasks {
         };
     }
 
-    @Step("{0} searches for the clerk ID {1}")
     public static Performable searchForClerkId(String clerkId) {
         return Task.where(
                 "{0} searches for the clerk ID",
                 EnterAction.theValue(clerkId).into(MainClerkManagementScreen.TEXTBOX_SEARCH));
     }
 
-    @Step("{0} changes the clerk ID to {1}")
     public static Performable changeClerkId(String newClerkId) {
         return Task.where(
                 "{0} changes the clerk ID",
@@ -162,7 +156,6 @@ public class ClerkManagementTasks {
                 });
     }
 
-    @Step("{0} dismisses the confirmation after deleting a clerk")
     public static Performable dismissSuccessConfirmationAfterDeletingClerk(
             boolean withValidationOfTexts) {
         return Task.where(

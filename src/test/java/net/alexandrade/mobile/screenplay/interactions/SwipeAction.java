@@ -32,6 +32,7 @@ public class SwipeAction implements Interaction {
         RIGHT
     }
 
+    private static final int SWIPE_SPEED = 101;
     private final SwipeDirection direction;
 
     public SwipeAction(SwipeDirection direction) {
@@ -96,7 +97,7 @@ public class SwipeAction implements Interaction {
                 .addAction(finger.createPointerDown(PointerInput.MouseButton.LEFT.asArg()))
                 .addAction(
                         finger.createPointerMove(
-                                Duration.ofMillis(1000), // Duration of the swipe
+                                Duration.ofMillis(SWIPE_SPEED), // Duration of the swipe
                                 PointerInput.Origin.viewport(),
                                 startX,
                                 endY))
@@ -112,7 +113,7 @@ public class SwipeAction implements Interaction {
                 .addAction(finger.createPointerDown(PointerInput.MouseButton.LEFT.asArg()))
                 .addAction(
                         finger.createPointerMove(
-                                Duration.ofMillis(1000), // Duration of the swipe
+                                Duration.ofMillis(SWIPE_SPEED), // Duration of the swipe
                                 PointerInput.Origin.viewport(),
                                 endX,
                                 startY))

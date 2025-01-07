@@ -17,7 +17,6 @@ import static net.alexandrade.mobile.screenplay.ui.MainTileScreen.*;
 
 import net.alexandrade.mobile.screenplay.interactions.ClickAction;
 import net.alexandrade.mobile.screenplay.questions.VisibilityQuestion;
-import net.serenitybdd.annotations.Step;
 import net.serenitybdd.screenplay.Performable;
 import net.serenitybdd.screenplay.Task;
 import net.serenitybdd.screenplay.waits.WaitUntil;
@@ -29,7 +28,6 @@ public class MainTileScreenTasks {
         throw new IllegalStateException("Utility class - cannot be instantiated");
     }
 
-    @Step("{0} waits until the app is fully loaded {1}")
     public static Performable waitTheAppIsFullyLoaded() {
         return Task.where(
                 "{0} waits the app is fully loaded",
@@ -48,7 +46,6 @@ public class MainTileScreenTasks {
                 });
     }
 
-    @Step("{0} opens a new Sale {1}")
     public static Performable openSale() {
         return Task.where("{0} opens the Sale main tile", TapAction.on(BUTTON_SALE_TRANSACTION));
     }

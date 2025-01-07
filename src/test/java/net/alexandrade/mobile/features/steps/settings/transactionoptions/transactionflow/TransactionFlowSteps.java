@@ -23,7 +23,7 @@ import net.serenitybdd.screenplay.actors.OnStage;
 
 public class TransactionFlowSteps {
 
-    @When("he enables the Order Number prompt")
+    @When("he enables the Order Number toggle,")
     public void heEnablesTheOrderNumberPrompt() {
         OnStage.theActorInTheSpotlight()
                 .attemptsTo(
@@ -31,7 +31,7 @@ public class TransactionFlowSteps {
                         ToggleAction.toOn(TOGGLE_ORDER_NUMBER));
     }
 
-    @Then("he see the Order Number prompt is enabled")
+    @Then("he see the Order Number prompt is prompted in Sales.")
     public void heSeeTheOrderNumberPromptIsEnabled() {
         assert true;
     }

@@ -30,7 +30,7 @@ public class MainTransactionOptionsScreen {
                                     BASE_SELECTOR.formatted("TRANSACTION OPTIONS")));
 
     public static final Target BUTTON_TRANSACTION_FLOW =
-            Target.the("Transaction Flow")
+            Target.the("Transaction Flow Button")
                     .located(
                             AppiumBy.androidUIAutomator(
                                     BASE_SELECTOR.formatted("Transaction Flow")));

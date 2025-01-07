@@ -17,7 +17,6 @@ import net.alexandrade.mobile.screenplay.interactions.ClickAction;
 import net.alexandrade.mobile.screenplay.ui.MainTileScreen;
 import net.alexandrade.mobile.screenplay.ui.settings.MainSettingsScreen;
 import net.alexandrade.mobile.screenplay.ui.settings.transactionoptions.MainTransactionOptionsScreen;
-import net.serenitybdd.annotations.Step;
 import net.serenitybdd.screenplay.Performable;
 import net.serenitybdd.screenplay.Task;
 
@@ -27,7 +26,6 @@ public class MainSettingsTasks {
         throw new IllegalStateException("Utility class - cannot be instantiated");
     }
 
-    @Step("{0} opens the Transaction Flow settings {1}")
     public static Performable openTransactionFlowScreen() {
         return Task.where(
                 "{0} opens the Transaction Options > Transaction Flow screen",
@@ -37,7 +35,6 @@ public class MainSettingsTasks {
     }
     }
 
-    @Step("{0} opens the Clerk Management Settings {1}")
     public static Performable openClerkManagementScreen() {
         return Task.where(
                 "{0} opens the Sale main tile",
