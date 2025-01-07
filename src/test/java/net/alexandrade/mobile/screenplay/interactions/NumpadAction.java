@@ -40,7 +40,7 @@ public class NumpadAction implements Interaction {
     }
 
     private <T extends Actor> void performNuveisNumpadAction(T actor) {
-        List<TapAction> tapActions =
+        List<ClickAction> tapActions =
                 text.chars()
                         .mapToObj(c -> String.valueOf((char) c)) // Convert each character to String
                         .map(

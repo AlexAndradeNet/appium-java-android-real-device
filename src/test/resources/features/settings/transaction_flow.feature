@@ -1,4 +1,4 @@
-@ignore
+#@ignore
 Feature: Control the flow of transactions
   As a User,
   I want to control the flow of transactions,

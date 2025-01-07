@@ -34,4 +34,12 @@ public class MainTransactionOptionsScreen {
                     .located(
                             AppiumBy.androidUIAutomator(
                                     BASE_SELECTOR.formatted("Transaction Flow")));
+
+    public static final Target BUTTON_TIPPING_OPTIONS =
+            Target.the("Tips Options Button")
+                    .located(AppiumBy.androidUIAutomator(BASE_SELECTOR.formatted("Tipping")));
+
+    public static final Target BUTTON_SPLIT_PAYMENT =
+            Target.the("Split Payment Button")
+                    .located(AppiumBy.androidUIAutomator(BASE_SELECTOR.formatted("Split Payment")));
 }

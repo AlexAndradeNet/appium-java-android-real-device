@@ -29,6 +29,11 @@ public class LoginAsTasks {
         throw new IllegalStateException("Utility class - cannot be instantiated");
     }
 
+    private enum Confirmation {
+        CONFIRM,
+        CONTINUE
+    }
+
     public static Performable fillClerkID(String screenTitle, String clerkId) {
         return Task.where(
                 "{0} fills the clerk ID and password",
@@ -107,7 +112,23 @@ public class LoginAsTasks {
                 });
     }
 
+    public static Performable fillPassword(String screenTitle, String clerkPassword) {
+        return fillPassword(screenTitle, Confirmation.CONTINUE, clerkPassword);
+    }
+
     public static Performable fillPassword(String clerkPassword) {
-        return fillPassword(null, clerkPassword);
+        return fillPassword(null, Confirmation.CONTINUE, clerkPassword);
+    }
+
+    public static Performable fillPassword(boolean withConfirmationButton, String clerkPassword) {
+        Confirmation confirmation =
+                withConfirmationButton ? Confirmation.CONFIRM : Confirmation.CONTINUE;
+        return fillPassword(null, confirmation, clerkPassword);
+    }
+
+    public static Performable as(String clerkId, String clerkPassword) {
+        return Task.where(
+                "{0} fills the clerk ID and password",
+                fillClerkID(clerkId), fillPassword(clerkPassword));
     }
 }

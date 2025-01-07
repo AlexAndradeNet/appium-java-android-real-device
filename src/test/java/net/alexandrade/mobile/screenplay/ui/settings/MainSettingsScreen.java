@@ -38,4 +38,10 @@ public class MainSettingsScreen {
                     .located(
                             AppiumBy.androidUIAutomator(
                                     BASE_SELECTOR.formatted("Clerk Management")));
+
+    public static final Target BUTTON_SEMI_INTEGRATION =
+            Target.the("Semi Integration Option")
+                    .located(
+                            AppiumBy.androidUIAutomator(
+                                    BASE_SELECTOR.formatted("Semi Integration")));
 }
