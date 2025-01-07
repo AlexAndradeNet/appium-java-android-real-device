@@ -35,9 +35,11 @@ public class ToggleAction implements Interaction {
     @Override
     public <T extends Actor> void performAs(T actor) {
         String translatedStatus = enabled ? "ON" : "OFF";
+
         WebElement element = (webElement == null) ? target.resolveFor(actor) : webElement;
 
         String currentToggleStatus = element.getText();
+
         currentToggleStatus =
                 currentToggleStatus.replaceAll("\\p{C}", ""); // Removes control characters
 
