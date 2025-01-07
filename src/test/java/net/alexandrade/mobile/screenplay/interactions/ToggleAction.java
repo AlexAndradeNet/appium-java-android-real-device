@@ -23,20 +23,23 @@ import org.openqa.selenium.WebElement;
 public class ToggleAction implements Interaction {
 
     private final Target target;
-    private final WebElement element;
+    private final WebElement webElement;
     private final boolean enabled;
 
-    protected ToggleAction(Target target, WebElement element, boolean enabled) {
+    protected ToggleAction(Target target, WebElement webElement, boolean enabled) {
         this.target = target;
-        this.element = element;
+        this.webElement = webElement;
         this.enabled = enabled;
     }
 
     @Override
     public <T extends Actor> void performAs(T actor) {
         String translatedStatus = enabled ? "ON" : "OFF";
-        String currentToggleStatus =
-                (element != null) ? element.getText() : target.resolveFor(actor).getText();
+
+        WebElement element = (webElement == null) ? target.resolveFor(actor) : webElement;
+
+        String currentToggleStatus = element.getText();
+
         currentToggleStatus =
                 currentToggleStatus.replaceAll("\\p{C}", ""); // Removes control characters
 
