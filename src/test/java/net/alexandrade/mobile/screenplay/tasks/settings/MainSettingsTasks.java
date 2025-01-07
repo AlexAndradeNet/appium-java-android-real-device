@@ -14,6 +14,7 @@ from Nuvei Inc.
 package net.alexandrade.mobile.screenplay.tasks.settings;
 
 import net.alexandrade.mobile.screenplay.interactions.ClickAction;
+import net.alexandrade.mobile.screenplay.tasks.commons.CommonTasks;
 import net.alexandrade.mobile.screenplay.ui.MainTileScreen;
 import net.alexandrade.mobile.screenplay.ui.settings.MainSettingsScreen;
 import net.alexandrade.mobile.screenplay.ui.settings.transactionoptions.MainTransactionOptionsScreen;
@@ -33,6 +34,13 @@ public class MainSettingsTasks {
                 ClickAction.on(MainSettingsScreen.BUTTON_TRANSACTION_OPTIONS),
                 ClickAction.on(MainTransactionOptionsScreen.BUTTON_TRANSACTION_FLOW));
     }
+
+    public static Performable openTipsOptionsScreen() {
+        return Task.where(
+                "{0} opens the Transaction Options > Transaction Flow screen",
+                ClickAction.on(MainTileScreen.BUTTON_SETTINGS_TRANSACTION),
+                ClickAction.on(MainSettingsScreen.BUTTON_TRANSACTION_OPTIONS),
+                ClickAction.on(MainTransactionOptionsScreen.BUTTON_TIPPING_OPTIONS));
     }
 
     public static Performable openClerkManagementScreen() {
@@ -40,5 +48,13 @@ public class MainSettingsTasks {
                 "{0} opens the Sale main tile",
                 ClickAction.on(MainTileScreen.BUTTON_SETTINGS_TRANSACTION),
                 ClickAction.on(MainSettingsScreen.BUTTON_CLERK_MANAGEMENT));
+    }
+
+    public static Performable openSemiIntegrationOptionsScreen() {
+        return Task.where(
+                "{0} opens the Sale main tile",
+                ClickAction.on(MainTileScreen.BUTTON_SETTINGS_TRANSACTION),
+                CommonTasks.navigateMenuUntilElementIsVisibleAndTapOnIt(
+                        MainSettingsScreen.BUTTON_SEMI_INTEGRATION));
     }
 }

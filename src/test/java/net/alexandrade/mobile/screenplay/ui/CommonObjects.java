@@ -42,6 +42,18 @@ public class CommonObjects {
             Target.the("Button {0}")
                     .located(AppiumBy.xpath(BASE_SELECTOR.formatted("btnPossitive")));
 
+    public static final Target BUTTON_GO_TO_STANDALONE =
+            Target.the("Button Go To Stand Alone")
+                    .located(AppiumBy.xpath("//android.widget.Button[@text='GO TO STAND ALONE']"));
+
     public static final Target POPUP_MESSAGE_SECOND_BUTTON =
             Target.the("Button {0}").located(AppiumBy.xpath(BASE_SELECTOR.formatted(3)));
+
+    public static final Target TOGGLE_LABEL_LIST =
+            Target.the("List of labels for toggle")
+                    .located(AppiumBy.xpath("(//android.view.ViewGroup/android.widget.TextView)"));
+
+    public static final Target TOGGLE_LIST =
+            Target.the("List of toggles")
+                    .located(AppiumBy.xpath("(//android.view.ViewGroup/android.widget.Switch)"));
 }

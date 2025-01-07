@@ -49,4 +49,12 @@ public class MainTileScreen {
     public static final Target BUTTON_SETTINGS_TRANSACTION =
             Target.the("Settings")
                     .located(AppiumBy.androidUIAutomator(BASE_SELECTOR.formatted("Settings")));
+
+    public static final Target BUTTON_HELP_DESK =
+            Target.the("Help Desk")
+                    .located(AppiumBy.androidUIAutomator(BASE_SELECTOR.formatted("Help")));
+
+    public static final Target BUTTON_TID =
+            Target.the("TID info")
+                    .located(AppiumBy.androidUIAutomator(BASE_SELECTOR.formatted("TID")));
 }

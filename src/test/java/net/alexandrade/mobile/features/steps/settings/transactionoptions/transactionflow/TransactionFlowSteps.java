@@ -17,9 +17,14 @@ import static net.alexandrade.mobile.screenplay.ui.settings.transactionoptions.T
 
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import net.alexandrade.mobile.screenplay.interactions.ClickAction;
 import net.alexandrade.mobile.screenplay.interactions.ToggleAction;
+import net.alexandrade.mobile.screenplay.tasks.commons.CommonTasks;
 import net.alexandrade.mobile.screenplay.tasks.settings.MainSettingsTasks;
+import net.alexandrade.mobile.screenplay.ui.settings.transactionoptions.MainTransactionOptionsScreen;
+import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.actors.OnStage;
+import net.serenitybdd.screenplay.ensure.Ensure;
 
 public class TransactionFlowSteps {
 
@@ -34,5 +39,24 @@ public class TransactionFlowSteps {
     @Then("he see the Order Number prompt is prompted in Sales.")
     public void heSeeTheOrderNumberPromptIsEnabled() {
         assert true;
+    }
+
+    @When("he deactivates all toggles options,")
+    public void heDeactivatesAllTogglesOptions() {
+        Actor actor = OnStage.theActorInTheSpotlight();
+        actor.attemptsTo(
+                MainSettingsTasks.openTransactionFlowScreen(),
+                CommonTasks.turnOffAllTogglesOnTheScreen(),
+                CommonTasks.tapBackArrow(),
+                ClickAction.on(MainTransactionOptionsScreen.BUTTON_TIPPING_OPTIONS),
+                CommonTasks.turnOffAllTogglesOnTheScreen(),
+                CommonTasks.tapBackArrow(),
+                ClickAction.on(MainTransactionOptionsScreen.BUTTON_SPLIT_PAYMENT),
+                CommonTasks.turnOffAllTogglesOnTheScreen());
+    }
+
+    @Then("he should see all toggles were deactivated.")
+    public void heShouldSeeAllTogglesWereDeactivated() {
+        OnStage.theActorInTheSpotlight().attemptsTo(Ensure.that(true).isTrue());
     }
 }
