@@ -13,11 +13,16 @@ from Nuvei Inc.
 */
 package net.alexandrade.mobile.features;
 
+import static io.cucumber.core.options.Constants.FILTER_TAGS_PROPERTY_NAME;
+import static io.cucumber.core.options.Constants.GLUE_PROPERTY_NAME;
+
 import org.junit.platform.suite.api.*;
 
 @Suite
 @IncludeEngines("cucumber")
 @SelectClasspathResource("features")
-@ConfigurationParameter(key = "cucumber.glue", value = "net.alexandrade.mobile.features.steps")
-@ExcludeTags({"@ignore", "@wip", "@manual", "@skip"})
+@ConfigurationParameter(key = GLUE_PROPERTY_NAME, value = "net.alexandrade.mobile.features.steps")
+@ConfigurationParameter(
+        key = FILTER_TAGS_PROPERTY_NAME,
+        value = "not @ignore and not @wip and not @manual and not @skip")
 public class CucumberTestSuite {}

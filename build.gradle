@@ -6,6 +6,7 @@ plugins {
     id 'net.serenity-bdd.serenity-gradle-plugin' version '4.2.8'
     id 'com.diffplug.spotless' version '6.25.0'
     id 'org.gradle.test-retry' version '1.6.0'
+    id 'org.caffinitas.gradle.testsummary' version '0.1.1'
 }
 
 repositories {
@@ -102,7 +103,7 @@ test {
     useJUnitPlatform()
     failFast = true
     testLogging {
-        //showStandardStreams = true
+        showStandardStreams = false
         events "PASSED", "FAILED", "SKIPPED"
     }
     systemProperties System.getProperties()
@@ -110,10 +111,14 @@ test {
     retry {
         maxRetries = 0 // Disables test retries
     }
+
+    finalizedBy tasks.register('printAfterAllTests', Exec) {
+        commandLine 'echo', "Test report is available at: file://${project.layout.buildDirectory.asFile.get()}/reports/tests/test/index.html"
+    }
 }
 
 serenity {
-    outputDirectory = file("build/site/serenity")
+    outputDirectory = file("${project.layout.buildDirectory.asFile.get()}/site/serenity")
     generateOutcomes = true // Disable automatic report generation globally
 }
 
@@ -159,7 +164,9 @@ tasks.register('npmInstall', Exec) {
 tasks.register('installLocalGitHook', Copy) {
     from new File(rootProject.rootDir, 'scripts/pre-commit')
     into { new File(rootProject.rootDir, '.git/hooks') }
-    fileMode 0775
+    filePermissions {
+            0775
+    }
 }
 
 tasks.named('build') {
