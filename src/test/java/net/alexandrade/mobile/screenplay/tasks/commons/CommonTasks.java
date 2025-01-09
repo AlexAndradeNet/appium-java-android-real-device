@@ -32,6 +32,7 @@ import net.serenitybdd.screenplay.ensure.Ensure;
 import net.serenitybdd.screenplay.targets.Target;
 import org.junit.platform.commons.util.StringUtils;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebElement;
 
 public class CommonTasks {
     private CommonTasks() {
@@ -55,6 +56,10 @@ public class CommonTasks {
         return Task.where(
                 "{0} validate the popup alert on the screen",
                 Ensure.that(
+                                "Should see the alert title is present",
+                                VisibilityQuestion.isPresent(CommonObjects.POPUP_MESSAGE_TITLE))
+                        .isTrue(),
+                Ensure.that(
                                 "Should see the alert title: '%s'".formatted(title),
                                 TextQuestion.of(CommonObjects.POPUP_MESSAGE_TITLE))
                         .isEqualTo(title),
@@ -74,6 +79,10 @@ public class CommonTasks {
                 "{0} validates the confirmation screen",
                 actor -> {
                     actor.attemptsTo(
+                            Ensure.that(
+                                            "Should see the confirmation screen title",
+                                            VisibilityQuestion.isPresent(ConfirmationScreen.TITLE))
+                                    .isTrue(),
                             Ensure.that(
                                             "Should see the title: '%s'".formatted(screenTitle),
                                             TextQuestion.of(ConfirmationScreen.TITLE))
@@ -169,16 +178,26 @@ public class CommonTasks {
         return modifyAllTogglesOnTheScreen(true);
     }
 
-    public static Performable navigateMenuUntilElementIsVisibleAndTapOnIt(Target target) {
+    public static Performable navigateMenuUntilElementIsVisible(Target target) {
+        return Task.where(
+                actor -> {
+                    WebElement element = target.resolveFor(actor);
+                    actor.attemptsTo(navigateMenuUntilElementIsVisible(element));
+                });
+    }
+
+    public static Performable navigateMenuUntilElementIsVisible(WebElement element) {
         return Task.where(
                 "{0} navigates the menu until the element is visible and taps on it",
                 actor -> {
-                    do {
-                        // The element could be present since the second screen
-                        actor.attemptsTo(SwipeAction.toUp());
-                    } while (!VisibilityQuestion.isPresent(target).answeredBy(actor));
+                    final int MAX_SCREENS = 3;
+                    int currentScreen = 1;
 
-                    actor.attemptsTo(ClickAction.on(target));
+                    while (actor.asksFor(VisibilityQuestion.notPresent(element))
+                            && currentScreen < MAX_SCREENS) {
+                        actor.attemptsTo(SwipeAction.toUp());
+                        currentScreen++;
+                    }
                 });
     }
 
@@ -187,9 +206,7 @@ public class CommonTasks {
                 "{0} navigates back to the main screen",
                 actor -> {
                     try {
-                        while (VisibilityQuestion.isPresent(BUTTON_ARROW_BACK)
-                                .answeredBy(actor)
-                                .equals(true)) {
+                        while (actor.asksFor(VisibilityQuestion.isPresent(BUTTON_ARROW_BACK))) {
                             actor.attemptsTo(ClickAction.on(BUTTON_ARROW_BACK));
                         }
                     } catch (NoSuchElementException ignored) {

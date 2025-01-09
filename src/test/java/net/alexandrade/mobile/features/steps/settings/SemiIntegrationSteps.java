@@ -140,8 +140,7 @@ public class SemiIntegrationSteps {
     @Given("{actor} is in the Semi-Integration Idle Screen,")
     public void aurelianoIsInTheSemiIntegrationIdleScreen(Actor actor) {
         boolean isInSemiIntegrationIdleScreen =
-                VisibilityQuestion.isPresent(CommonObjects.BUTTON_GO_TO_STANDALONE)
-                        .answeredBy(actor);
+                actor.asksFor(VisibilityQuestion.isPresent(CommonObjects.BUTTON_GO_TO_STANDALONE));
 
         if (!isInSemiIntegrationIdleScreen) {
             heActivatesTheSemiIntegrationFeatureAndThePasswordPrompt();

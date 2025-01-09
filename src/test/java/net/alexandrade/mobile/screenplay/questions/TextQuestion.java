@@ -24,7 +24,10 @@ public class TextQuestion {
     }
 
     public static Question<String> of(Target target) {
-        return actor -> of(target.resolveFor(actor)).answeredBy(actor);
+        return actor -> {
+            WebElement element = target.resolveFor(actor);
+            return actor.asksFor(of(element));
+        };
     }
 
     public static Question<String> of(WebElement element) {

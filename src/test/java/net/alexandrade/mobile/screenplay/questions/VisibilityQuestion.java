@@ -25,16 +25,38 @@ public class VisibilityQuestion {
     }
 
     public static Question<Boolean> isPresent(Target target) {
-        return actor -> isPresent(target.resolveFor(actor)).answeredBy(actor);
+        return actor -> safelyCheck(() -> target.resolveFor(actor).isEnabled());
     }
 
     public static Question<Boolean> isPresent(WebElement element) {
-        return actor -> {
-            try {
-                return element.isEnabled();
-            } catch (NoSuchElementException e) {
-                return false; // Treat NoSuchElementException as "not present"
-            }
-        };
+        return actor -> safelyCheck(element::isEnabled);
+    }
+
+    public static Question<Boolean> notPresent(Target target) {
+        return actor -> !actor.asksFor(isPresent(target));
+    }
+
+    public static Question<Boolean> notPresent(WebElement element) {
+        return actor -> !actor.asksFor(isPresent(element));
+    }
+
+    /**
+     * Safely checks a condition and handles NoSuchElementException.
+     *
+     * @param condition A lambda to evaluate the presence of the element.
+     * @return The result of the evaluation, or false if the element is not found.
+     */
+    private static boolean safelyCheck(CheckCondition condition) {
+        try {
+            return condition.evaluate();
+        } catch (NoSuchElementException e) {
+            return false; // Element is not present
+        }
+    }
+
+    /** Functional interface to wrap checks that may throw exceptions. */
+    @FunctionalInterface
+    private interface CheckCondition {
+        boolean evaluate();
     }
 }

@@ -43,7 +43,7 @@ public class SwipeAction implements Interaction {
     public <T extends Actor> void performAs(T actor) {
         WebDriverFacade appiumDriver = AppiumDriver.getDriver();
 
-        Dimension size = appiumDriver.manage().window().getSize();
+        Dimension windowSize = appiumDriver.manage().window().getSize();
 
         int startX = 0;
         int endX = 0;
@@ -52,24 +52,24 @@ public class SwipeAction implements Interaction {
 
         switch (direction) {
             case DOWN -> {
-                startX = size.width / 2; // Start horizontally in the center
-                startY = (int) (size.height * 0.2); // Start near the top
-                endY = (int) (size.height * 0.8); // End near the bottom
+                startX = windowSize.width / 2; // Start horizontally in the center
+                startY = (int) (windowSize.height * 0.2); // Start near the top
+                endY = (int) (windowSize.height * 0.8); // End near the bottom
             }
             case UP -> {
-                startX = size.width / 2; // Start horizontally in the center
-                startY = (int) (size.height * 0.8); // Start near the bottom
-                endY = (int) (size.height * 0.2); // End near the top
+                startX = windowSize.width / 2; // Start horizontally in the center
+                startY = (int) (windowSize.height * 0.6); // Start near the bottom
+                endY = (int) (windowSize.height * 0.5); // End near the top
             }
             case LEFT -> {
-                startY = size.height / 2; // Start vertically in the center
-                startX = (int) (size.width * 0.8); // Start near the right
-                endX = (int) (size.width * 0.2); // End near the left
+                startY = windowSize.height / 2; // Start vertically in the center
+                startX = (int) (windowSize.width * 0.8); // Start near the right
+                endX = (int) (windowSize.width * 0.2); // End near the left
             }
             case RIGHT -> {
-                startY = size.height / 2; // Start vertically in the center
-                startX = (int) (size.width * 0.2); // Start near the left
-                endX = (int) (size.width * 0.8); // End near the right
+                startY = windowSize.height / 2; // Start vertically in the center
+                startX = (int) (windowSize.width * 0.2); // Start near the left
+                endX = (int) (windowSize.width * 0.8); // End near the right
             }
         }
 

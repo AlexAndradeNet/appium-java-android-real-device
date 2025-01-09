@@ -28,15 +28,11 @@ public class NumericScreen {
     public static final Target LABEL_REASON = Target.the("Reason {0}").locatedBy(BASE_XPATH);
 
     public static final Target TEXTBOX_VALUE =
-            Target.the("Reason {0}").located(AppiumBy.xpath("(//android.widget.EditText)[1]"));
+            Target.the("Reason {0}").located(AppiumBy.className("android.widget.EditText"));
 
-    public static final Target BUTTON_NUMBER =
+    public static final Target BUTTON_NUMPAD_NUMBER =
             Target.the("Button number {0}").locatedBy(BASE_XPATH);
 
-    private static final String BASE_SELECTOR = "new UiSelector().text(\"%s\")";
-
-    public static Target getButtonConfirm(String text) {
-        return Target.the("Button Confirm {0}")
-                .located(AppiumBy.androidUIAutomator(BASE_SELECTOR.formatted(text)));
-    }
+    public static final Target BUTTON_CONTINUE_OR_CONFIRM =
+            Target.the("Button Confirm {0}").located(AppiumBy.className("android.widget.Button"));
 }

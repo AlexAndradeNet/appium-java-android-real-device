@@ -33,7 +33,7 @@ public class HelpDeskSteps {
     public void heAttemptsToOpenTheHelpMenuWithACalculatedSuperPassword() {
         Actor actor = OnStage.theActorInTheSpotlight();
         actor.attemptsTo(MainTileScreenTasks.openTIDInfo());
-        String tid = TextQuestion.of(MainTIDScreen.LABEL_TID).answeredBy(actor);
+        String tid = actor.asksFor(TextQuestion.of(MainTIDScreen.LABEL_TID));
         actor.attemptsTo(
                 CommonTasks.tapBackArrow(),
                 MainTileScreenTasks.openHelpDeskMenu(),

@@ -19,7 +19,6 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import net.alexandrade.mobile.screenplay.interactions.ClickAction;
-import net.alexandrade.mobile.screenplay.interactions.SwipeAction;
 import net.alexandrade.mobile.screenplay.questions.ElementListQuestion;
 import net.alexandrade.mobile.screenplay.questions.TextQuestion;
 import net.alexandrade.mobile.screenplay.questions.VisibilityQuestion;
@@ -293,14 +292,17 @@ public class ClerkManagementSteps {
 
     @Then("he should see {word} new Clerk ID is {word} in the clerks list.")
     public void shouldSeeNewClerkIDInTheClerksList(String alias, String clerkId) {
-        OnStage.theActorInTheSpotlight()
-                .attemptsTo(
+        Actor theActor = OnStage.theActorInTheSpotlight();
+
+        WebElement clerkElement =
+                MainClerkManagementScreen.LABEL_USER_PROFILE_ROLE.of(clerkId).resolveFor(theActor);
+
+        theActor.attemptsTo(
+                CommonTasks.navigateMenuUntilElementIsVisible(clerkElement),
                         Ensure.that(
-                                        "Should see that the new '%s' for %s is present"
+                                "Should see that the new ID '%s' for %s is present"
                                                 .formatted(clerkId, alias),
-                                        VisibilityQuestion.isPresent(
-                                                MainClerkManagementScreen.LABEL_USER_PROFILE_ROLE
-                                                        .of(clerkId)))
+                                VisibilityQuestion.isPresent(clerkElement))
                                 .isTrue());
     }
 
@@ -347,19 +349,13 @@ public class ClerkManagementSteps {
                             String clerkId = row.get(1);
                             String role = row.get(2);
 
-                            WebElement clerkElement;
-
-                            clerkElement =
+                            WebElement clerkElement =
                                     MainClerkManagementScreen.LABEL_USER_PROFILE_ROLE
                                             .of(clerkId)
                                             .resolveFor(theActor);
-                            if (VisibilityQuestion.isPresent(clerkElement)
-                                    .answeredBy(theActor)
-                                    .equals(false)) {
-                                theActor.attemptsTo(SwipeAction.toUp());
-                            }
 
                             theActor.attemptsTo(
+                                    CommonTasks.navigateMenuUntilElementIsVisible(clerkElement),
                                     Ensure.that(
                                                     "Should see that the role for Clerk ID %s is '%s'"
                                                             .formatted(clerkId, role),

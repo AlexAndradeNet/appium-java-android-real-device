@@ -16,6 +16,7 @@ package net.alexandrade.mobile.features.steps.password;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import java.util.Map;
 import net.alexandrade.mobile.screenplay.questions.VisibilityQuestion;
 import net.alexandrade.mobile.screenplay.tasks.MainTileScreenTasks;
 import net.alexandrade.mobile.screenplay.tasks.commons.CommonTasks;
@@ -24,6 +25,7 @@ import net.alexandrade.mobile.screenplay.ui.NumericScreen;
 import net.alexandrade.mobile.screenplay.ui.settle.MainSettleScreen;
 import net.alexandrade.mobile.screenplay.ui.voidtile.VoidMainScreen;
 import net.serenitybdd.screenplay.Actor;
+import net.serenitybdd.screenplay.Performable;
 import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.ensure.Ensure;
 
@@ -41,36 +43,40 @@ public class PasswordProtected {
             String functionality, String role, String clerkID, String password) {
         Actor actor = OnStage.theActorInTheSpotlight();
 
-        switch (functionality) {
-            case "Refund":
-                actor.attemptsTo(MainTileScreenTasks.openRefund());
-                break;
-            case "Moto":
-                actor.attemptsTo(MainTileScreenTasks.openMoto());
-                break;
-            case "Settle":
-                actor.attemptsTo(MainTileScreenTasks.openBatchOrSettle());
-                break;
-            case "Void":
-                actor.attemptsTo(MainTileScreenTasks.openVoid());
-                break;
-            default:
-                throw new IllegalArgumentException("Invalid functionality: " + functionality);
-        }
+        // Map of functionality to corresponding tasks
+        Map<String, Performable> functionalityTasks =
+                Map.of(
+                        "Refund", MainTileScreenTasks.openRefund(),
+                        "Moto", MainTileScreenTasks.openMoto(),
+                        "Settle", MainTileScreenTasks.openBatchOrSettle(),
+                        "Void", MainTileScreenTasks.openVoid());
 
+        // Perform the selected functionality task
+        Performable task = functionalityTasks.get(functionality);
+        if (task == null) {
+            throw new IllegalArgumentException("Invalid functionality: " + functionality);
+        }
+        actor.attemptsTo(task);
+
+        // Ensure the title matches the expected functionality
+        String expectedTitle = functionality.toUpperCase();
         actor.attemptsTo(
                 Ensure.that(
-                                "Should see the name of the functionally in the title: '%s'"
-                                        .formatted(functionality.toUpperCase()),
-                                VisibilityQuestion.isPresent(
-                                        NumericScreen.TITLE.of(functionality.toUpperCase())))
-                        .isTrue(),
-                LoginAsTasks.fillClerkID(functionality.toUpperCase(), clerkID));
+                                "Should see the name of the functionality in the title: '%s'"
+                                        .formatted(expectedTitle),
+                                VisibilityQuestion.isPresent(NumericScreen.TITLE.of(expectedTitle)))
+                        .isTrue());
 
-        if (VisibilityQuestion.isPresent(NumericScreen.LABEL_REASON.of("Enter your Password"))
-                .answeredBy(actor)
-                .equals(true)) {
-            actor.attemptsTo(LoginAsTasks.fillPassword(functionality.toUpperCase(), password));
+        // Fill in the Clerk ID
+        actor.attemptsTo(LoginAsTasks.fillClerkID(expectedTitle, clerkID));
+
+        boolean isPasswordPromptVisible =
+                actor.asksFor(
+                        VisibilityQuestion.isPresent(
+                                NumericScreen.LABEL_REASON.of("Enter your Password")));
+        // Check if the "Enter your Password" label is visible and fill the password
+        if (isPasswordPromptVisible) {
+            actor.attemptsTo(LoginAsTasks.fillPassword(expectedTitle, password));
         }
     }
 

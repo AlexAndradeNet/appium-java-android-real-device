@@ -25,6 +25,7 @@ Feature: As Aureliano (Admin), I want notable transactions to be password-protec
     Then he should see all toggles were deactivated.
 
   #@ignore
+  @flaky
   Scenario Outline: 4: Check minimum access level for Admin
     Given Aureliano defined the minimum access level for password-protected functionalities as Admin,
     # TODO: implement VHQ

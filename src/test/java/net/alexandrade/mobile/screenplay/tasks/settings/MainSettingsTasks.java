@@ -14,8 +14,8 @@ from Nuvei Inc.
 package net.alexandrade.mobile.screenplay.tasks.settings;
 
 import net.alexandrade.mobile.screenplay.interactions.ClickAction;
+import net.alexandrade.mobile.screenplay.tasks.MainTileScreenTasks;
 import net.alexandrade.mobile.screenplay.tasks.commons.CommonTasks;
-import net.alexandrade.mobile.screenplay.ui.MainTileScreen;
 import net.alexandrade.mobile.screenplay.ui.settings.MainSettingsScreen;
 import net.alexandrade.mobile.screenplay.ui.settings.transactionoptions.MainTransactionOptionsScreen;
 import net.serenitybdd.screenplay.Performable;
@@ -30,7 +30,7 @@ public class MainSettingsTasks {
     public static Performable openTransactionFlowScreen() {
         return Task.where(
                 "{0} opens the Transaction Options > Transaction Flow screen",
-                ClickAction.on(MainTileScreen.BUTTON_SETTINGS_TRANSACTION),
+                MainTileScreenTasks.openSettings(),
                 ClickAction.on(MainSettingsScreen.BUTTON_TRANSACTION_OPTIONS),
                 ClickAction.on(MainTransactionOptionsScreen.BUTTON_TRANSACTION_FLOW));
     }
@@ -38,7 +38,7 @@ public class MainSettingsTasks {
     public static Performable openTipsOptionsScreen() {
         return Task.where(
                 "{0} opens the Transaction Options > Transaction Flow screen",
-                ClickAction.on(MainTileScreen.BUTTON_SETTINGS_TRANSACTION),
+                MainTileScreenTasks.openSettings(),
                 ClickAction.on(MainSettingsScreen.BUTTON_TRANSACTION_OPTIONS),
                 ClickAction.on(MainTransactionOptionsScreen.BUTTON_TIPPING_OPTIONS));
     }
@@ -46,15 +46,16 @@ public class MainSettingsTasks {
     public static Performable openClerkManagementScreen() {
         return Task.where(
                 "{0} opens the Sale main tile",
-                ClickAction.on(MainTileScreen.BUTTON_SETTINGS_TRANSACTION),
+                MainTileScreenTasks.openSettings(),
                 ClickAction.on(MainSettingsScreen.BUTTON_CLERK_MANAGEMENT));
     }
 
     public static Performable openSemiIntegrationOptionsScreen() {
         return Task.where(
                 "{0} opens the Sale main tile",
-                ClickAction.on(MainTileScreen.BUTTON_SETTINGS_TRANSACTION),
-                CommonTasks.navigateMenuUntilElementIsVisibleAndTapOnIt(
-                        MainSettingsScreen.BUTTON_SEMI_INTEGRATION));
+                MainTileScreenTasks.openSettings(),
+                CommonTasks.navigateMenuUntilElementIsVisible(
+                        MainSettingsScreen.BUTTON_SEMI_INTEGRATION),
+                ClickAction.on(MainSettingsScreen.BUTTON_SEMI_INTEGRATION));
     }
 }

@@ -69,15 +69,15 @@ public class ClickAction implements Interaction {
         return instrumented(ClickAction.class, target, null, 0);
     }
 
-    protected static ClickAction on(WebElement webElement) {
+    public static ClickAction on(WebElement webElement) {
         return instrumented(ClickAction.class, null, webElement, 0);
     }
 
-    protected static ClickAction withLongPressOn(Target target) {
+    public static ClickAction withLongPressOn(Target target) {
         return instrumented(ClickAction.class, target, null, 100);
     }
 
-    protected static ClickAction withLongPressOn(WebElement webElement) {
+    public static ClickAction withLongPressOn(WebElement webElement) {
         return instrumented(ClickAction.class, null, webElement, 100);
     }
 }

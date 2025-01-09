@@ -22,6 +22,7 @@ import net.alexandrade.mobile.screenplay.questions.VisibilityQuestion;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Performable;
 import net.serenitybdd.screenplay.Task;
+import net.serenitybdd.screenplay.ensure.Ensure;
 import net.serenitybdd.screenplay.targets.Target;
 import net.serenitybdd.screenplay.waits.WaitUntil;
 import org.openqa.selenium.NoSuchElementException;
@@ -53,8 +54,7 @@ public class MainTileScreenTasks {
 
     public static Performable openBatchOrSettle() {
         return Task.where(
-                "{0} opens the Batch or Settle main tile",
-                ClickAction.on(BUTTON_BATCH_OR_SETTLE_TRANSACTION));
+                "{0} opens the Batch or Settle main tile", ClickAction.on(BUTTON_BATCH_OR_SETTLE));
     }
 
     public static Performable openVoid() {
@@ -75,19 +75,42 @@ public class MainTileScreenTasks {
                 actor -> navigateUntilElementIsVisibleAndTapOnIt(actor, BUTTON_TID));
     }
 
+    public static Performable openSettings() {
+        return Task.where(
+                "{0} opens the TID info tile",
+                actor -> navigateUntilElementIsVisibleAndTapOnIt(actor, BUTTON_SETTINGS));
+    }
+
     private static void navigateUntilElementIsVisibleAndTapOnIt(Actor actor, Target target) {
+        final int MAX_SCREENS = 3;
+        int currentScreen = 1;
         do {
             // The element could be present since the second screen
             try {
-                actor.attemptsTo(SwipeAction.toLeft());
-
-                if (VisibilityQuestion.isPresent(target).answeredBy(actor)) {
+                if (actor.asksFor(VisibilityQuestion.isPresent(target))
+                        || currentScreen >= MAX_SCREENS) {
                     actor.attemptsTo(ClickAction.on(target));
                     break;
                 }
+                actor.attemptsTo(SwipeAction.toLeft());
+                currentScreen++;
             } catch (NoSuchElementException ignored) {
                 // Do nothing
             }
         } while (true);
+    }
+
+    public static Performable returnToInitialScreen() {
+        return Task.where(
+                "{0} navigates back to the main screen",
+                actor -> {
+                    try {
+                        while (actor.asksFor(VisibilityQuestion.isPresent(BUTTON_PREVIOUS))) {
+                            actor.attemptsTo(SwipeAction.toRight());
+                        }
+                    } catch (NoSuchElementException ignored) {
+                        // Do nothing
+                    }
+                });
     }
 }

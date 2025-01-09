@@ -35,7 +35,12 @@ public class ClerkManagementTasks {
     public static Performable openAccountDetailsForProfile(String clerkId) {
         return Task.where(
                 "{0} opens the Transaction Options > Transaction Flow screen",
-                ClickAction.on(MainClerkManagementScreen.BUTTON_USER_PROFILE_ID.of(clerkId)));
+                actor -> {
+                    Target target = MainClerkManagementScreen.BUTTON_USER_PROFILE_ID.of(clerkId);
+                    actor.attemptsTo(
+                            CommonTasks.navigateMenuUntilElementIsVisible(target),
+                            ClickAction.on(target));
+                });
     }
 
     public static Performable changePassword(String password, String confirmationPassword) {
@@ -174,12 +179,11 @@ public class ClerkManagementTasks {
         return Task.where(
                 "{0} cleans all clerks",
                 actor -> {
-                    while (VisibilityQuestion.isPresent(
+                    while (actor.asksFor(
+                            VisibilityQuestion.isPresent(
                                     MainClerkManagementScreen
                                             .BUTTON_USER_FIRST_PROFILE_ID_DIFFERENT_THAN
-                                            .of(clerkId))
-                            .answeredBy(actor)
-                            .equals(true)) {
+                                            .of(clerkId)))) {
                         actor.attemptsTo(
                                 ClickAction.on(
                                         MainClerkManagementScreen

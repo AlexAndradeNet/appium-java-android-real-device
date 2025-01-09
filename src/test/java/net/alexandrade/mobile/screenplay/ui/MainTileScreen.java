@@ -42,11 +42,15 @@ public class MainTileScreen {
             Target.the("Void")
                     .located(AppiumBy.androidUIAutomator(BASE_SELECTOR.formatted("Void")));
 
-    public static final Target BUTTON_BATCH_OR_SETTLE_TRANSACTION =
+    public static final Target BUTTON_CRYPTO_TRANSACTION =
+            Target.the("Crypto")
+                    .located(AppiumBy.androidUIAutomator(BASE_SELECTOR.formatted("Crypto")));
+
+    public static final Target BUTTON_BATCH_OR_SETTLE =
             Target.the("Batch or Settle")
                     .located(AppiumBy.androidUIAutomator(BASE_SELECTOR.formatted("Settle")));
 
-    public static final Target BUTTON_SETTINGS_TRANSACTION =
+    public static final Target BUTTON_SETTINGS =
             Target.the("Settings")
                     .located(AppiumBy.androidUIAutomator(BASE_SELECTOR.formatted("Settings")));
 
@@ -57,4 +61,8 @@ public class MainTileScreen {
     public static final Target BUTTON_TID =
             Target.the("TID info")
                     .located(AppiumBy.androidUIAutomator(BASE_SELECTOR.formatted("TID")));
+
+    public static final Target BUTTON_PREVIOUS =
+            Target.the("Button Previous")
+                    .located(AppiumBy.androidUIAutomator(BASE_SELECTOR.formatted("Previous")));
 }

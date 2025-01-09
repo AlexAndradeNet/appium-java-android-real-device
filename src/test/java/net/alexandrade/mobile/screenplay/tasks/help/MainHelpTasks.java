@@ -97,6 +97,6 @@ public class MainHelpTasks {
 
         return Task.where(
                 "{0} fills super password: " + superPassword,
-                LoginAsTasks.fillPassword(true, superPassword));
+                LoginAsTasks.fillPassword(superPassword));
     }
 }
