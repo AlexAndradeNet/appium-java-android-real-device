@@ -60,11 +60,10 @@ Follow these steps to run the tests on an Android device:
 
 1. Open a terminal.
 2. Navigate to the root directory of the project.
-3. Execute the following command to clean, run the tests, and generate an
-   aggregated report:
+3. Execute the following command to clean, run the tests:
 
    ```bash
-   ./gradlew clean test aggregate
+   sh runRobot.sh
    ```
 
 ### Running a Feature from IntelliJ
