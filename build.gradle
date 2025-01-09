@@ -21,13 +21,13 @@ java {
 
 ext {
     versions = [
-            serenityCore : '4.2.9',
+            serenityCore : '4.2.11',
             cucumber     : '7.20.1',
-            junit        : '5.11.3',
-            junitPlatform: '1.11.3',
+            junit        : '5.11.4',
+            junitPlatform: '1.11.4',
             aeonbits     : '1.0.12',
-            gson         : '2.10.1',
-            slf4j        : '2.0.13',
+            gson         : '2.11.0',
+            slf4j        : '2.0.16',
             appium       : '9.3.0',
             googleFormat : '1.25.2'
     ]
@@ -101,7 +101,7 @@ test {
         gradle.startParameter.taskNames.contains('test')
     }
     useJUnitPlatform()
-    failFast = true
+    failFast = false
     testLogging {
         showStandardStreams = false
         events "PASSED", "FAILED", "SKIPPED"

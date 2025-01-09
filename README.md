@@ -75,29 +75,50 @@ Follow these steps to run the tests on an Android device:
 4. In the 'Edit Configuration Settings' window, set the main class to
    `net.serenitybdd.cucumber.cli.Main`.
 5. Set the Glue field to the root package of your project (or the location of
-   your step definitions).
+   your step definitions): `net.alexandrade.mobile.features.steps`.
 6. Click **Apply**.
 
 For more details,
 visit [John Ferguson Smart's blog on running Cucumber Serenity feature files in IntelliJ](https://johnfergusonsmart.com/running-cucumber-serenity-feature-files-directly-intellij/).
 
+#### Optional: Running a Single Scenario
+
+To create a template for all the scenarios in a feature file, create a file in
+`.run/Template Cucumber Java.run.xml` with the following content:
+
+```xml
+<component name="ProjectRunConfigurationManager">
+  <configuration default="true" type="CucumberJavaRunConfigurationType" factoryName="Cucumber java">
+    <option name="FILE_PATH" value="features" />
+    <option name="GLUE" value="net.serenitybdd.cucumber.actors net.alexandrade.mobile.features.steps" />
+    <option name="MAIN_CLASS_NAME" value="net.serenitybdd.cucumber.cli.Main" />
+    <shortenClasspath name="NONE" />
+    <option name="VM_PARAMETERS" value="-Denvironment=uk" />
+    <option name="WORKING_DIRECTORY" value="$MODULE_WORKING_DIR$" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
+```
+
 ---
 
 ## 📊 Reporting
 
-Test execution reports are generated in the `target/site/serenity` directory. To
+Test execution reports are generated in the `build/reports/tests/test` directory. To
 open the report in your browser:
 
 - **On Mac:**
 
   ```bash
-  open target/site/serenity/index.html
+  open build/reports/tests/test/index.html
   ```
 
 - **On Windows:**
 
   ```powershell
-  start target/site/serenity/index.html
+  start build/reports/tests/test/index.html
   ```
 
 ---
@@ -137,5 +158,5 @@ available in the `.gherkin-lintrc` file. Use the following command to lint the
 Gherkin files:
 
 ```bash
-sh gherkin_check.sh
+sh scripts/gherkin_check.sh
 ```

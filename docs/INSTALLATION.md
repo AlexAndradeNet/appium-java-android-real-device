@@ -29,7 +29,7 @@ the [Android Studio setup guide](https://developer.android.com/studio/install).
 
    ```bash
    brew update
-   brew install openjdk@17
+   brew install --cask corretto@17
    brew install android-commandlinetools --cask
    ```
 

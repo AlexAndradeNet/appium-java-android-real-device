@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ExternalDependencies">
+    <plugin id="org.editorconfig.editorconfigjetbrains" />
+    <plugin id="com.intellij.gradle" />
     <plugin id="JUnit" />
     <plugin id="Lombook Plugin" />
-    <plugin id="org.jetbrains.idea.maven" />
+    <plugin id="cucumber-java" />
     <plugin id="org.sonarlint.idea" />
   </component>
 </project>

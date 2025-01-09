@@ -27,6 +27,7 @@ target/
 build/
 out/
 .gradle
+.run
 
 # Log files
 logs/
@@ -53,3 +54,6 @@ gradle/wrapper/gradle-wrapper.jar
 
 # Node
 node_modules/
+
+# Scripting
+.runRobot_last_run_options
