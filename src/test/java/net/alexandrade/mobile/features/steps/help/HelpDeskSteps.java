@@ -15,6 +15,7 @@ package net.alexandrade.mobile.features.steps.help;
 
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import net.alexandrade.mobile.screenplay.interactions.SwipeAction;
 import net.alexandrade.mobile.screenplay.questions.TextQuestion;
 import net.alexandrade.mobile.screenplay.questions.VisibilityQuestion;
 import net.alexandrade.mobile.screenplay.tasks.MainTileScreenTasks;
@@ -36,6 +37,8 @@ public class HelpDeskSteps {
         String tid = actor.asksFor(TextQuestion.of(MainTIDScreen.LABEL_TID));
         actor.attemptsTo(
                 CommonTasks.tapBackArrow(),
+                SwipeAction.toRight(), // For M-Series
+                SwipeAction.toRight(), // For M-Series
                 MainTileScreenTasks.openHelpDeskMenu(),
                 MainHelpTasks.resolveSuperPassword(tid));
     }

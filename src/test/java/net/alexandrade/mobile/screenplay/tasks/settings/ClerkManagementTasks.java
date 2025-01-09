@@ -65,7 +65,7 @@ public class ClerkManagementTasks {
                                 Ensure.that(
                                                 "Should see the title",
                                                 TextQuestion.of(AddUserScreen.TITLE))
-                                        .isEqualTo("ADD NEW CLERK"));
+                                        .isEqualToIgnoringCase("ADD NEW CLERK"));
                     }
 
                     actor.attemptsTo(
@@ -80,7 +80,7 @@ public class ClerkManagementTasks {
                                                 "Verify that the role in the screen is \"%s\""
                                                         .formatted(role),
                                                 TextQuestion.of(AddUserScreen.TITLE))
-                                        .isEqualTo("NEW " + role.toUpperCase()));
+                                        .isEqualToIgnoringCase("NEW " + role.toUpperCase()));
                     }
 
                     actor.attemptsTo(

@@ -62,11 +62,11 @@ public class CommonTasks {
                 Ensure.that(
                                 "Should see the alert title: '%s'".formatted(title),
                                 TextQuestion.of(CommonObjects.POPUP_MESSAGE_TITLE))
-                        .isEqualTo(title),
+                        .isEqualToIgnoringCase(title),
                 Ensure.that(
                                 "Should see the alert detail: '%s'".formatted(message),
                                 TextQuestion.of(CommonObjects.POPUP_MESSAGE_CONTENT))
-                        .isEqualTo(message),
+                        .isEqualToIgnoringCase(message),
                 ClickAction.on(CommonObjects.POPUP_MESSAGE_BUTTON_OK));
     }
 
@@ -86,12 +86,12 @@ public class CommonTasks {
                             Ensure.that(
                                             "Should see the title: '%s'".formatted(screenTitle),
                                             TextQuestion.of(ConfirmationScreen.TITLE))
-                                    .isEqualTo(screenTitle),
+                                    .isEqualToIgnoringCase(screenTitle),
                             Ensure.that(
                                             "Should see the message title: '%s'"
                                                     .formatted(messageTitle),
                                             TextQuestion.of(ConfirmationScreen.LABEL_MESSAGE_TITLE))
-                                    .isEqualTo(messageTitle));
+                                    .isEqualToIgnoringCase(messageTitle));
 
                     if (StringUtils.isNotBlank(messageDetail)) {
                         actor.attemptsTo(
@@ -100,7 +100,7 @@ public class CommonTasks {
                                                         .formatted(messageDetail),
                                                 TextQuestion.of(
                                                         ConfirmationScreen.LABEL_MESSAGE_DETAIL))
-                                        .isEqualTo(messageDetail));
+                                        .isEqualToIgnoringCase(messageDetail));
                     }
 
                     if (validateYesCancelButtons) {

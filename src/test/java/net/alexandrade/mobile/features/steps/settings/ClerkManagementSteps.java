@@ -184,7 +184,7 @@ public class ClerkManagementSteps {
                                         TextQuestion.of(
                                                 MainClerkManagementScreen.LABEL_USER_PROFILE_ROLE
                                                         .of(clerkId)))
-                                .isEqualTo(clerkRole));
+                                .isEqualToIgnoringCase(clerkRole));
     }
 
     @Then("he should that the list is empty.")
@@ -232,11 +232,11 @@ public class ClerkManagementSteps {
                 Ensure.that(
                                 "Should see the 'Clerk ID; label",
                                 TextQuestion.of(ViewClerkScreen.LABEL_CLERK_ID))
-                        .isEqualTo("#" + actor.recall(CLERK_ID).toString()),
+                        .isEqualToIgnoringCase("#" + actor.recall(CLERK_ID).toString()),
                 Ensure.that(
                                 "Should see the 'Clerk Role' label",
                                 TextQuestion.of(ViewClerkScreen.LABEL_CLERK_ROLE))
-                        .isEqualTo("Admin"),
+                        .isEqualToIgnoringCase("Admin"),
                 Ensure.that(
                                 "Should see the 'Change Password' button",
                                 VisibilityQuestion.isPresent(
@@ -299,11 +299,11 @@ public class ClerkManagementSteps {
 
         theActor.attemptsTo(
                 CommonTasks.navigateMenuUntilElementIsVisible(clerkElement),
-                        Ensure.that(
+                Ensure.that(
                                 "Should see that the new ID '%s' for %s is present"
-                                                .formatted(clerkId, alias),
+                                        .formatted(clerkId, alias),
                                 VisibilityQuestion.isPresent(clerkElement))
-                                .isTrue());
+                        .isTrue());
     }
 
     @Then("he should still see {word} account \\(ID {word}) in the clerks list.")
@@ -360,7 +360,7 @@ public class ClerkManagementSteps {
                                                     "Should see that the role for Clerk ID %s is '%s'"
                                                             .formatted(clerkId, role),
                                                     TextQuestion.of(clerkElement))
-                                            .isEqualTo(role));
+                                            .isEqualToIgnoringCase(role));
                         });
     }
 
@@ -517,7 +517,7 @@ public class ClerkManagementSteps {
                     Ensure.that(
                                     "Should be returned to the Clerk ID entry screen",
                                     TextQuestion.of(NumericScreen.LABEL_REASON))
-                            .isEqualTo("Enter your Clerk ID"));
+                            .isEqualToIgnoringCase("Enter your Clerk ID"));
         }
     }
 

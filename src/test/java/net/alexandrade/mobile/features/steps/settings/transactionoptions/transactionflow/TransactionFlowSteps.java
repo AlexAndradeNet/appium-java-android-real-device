@@ -19,6 +19,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import net.alexandrade.mobile.screenplay.interactions.ClickAction;
 import net.alexandrade.mobile.screenplay.interactions.ToggleAction;
+import net.alexandrade.mobile.screenplay.questions.VisibilityQuestion;
 import net.alexandrade.mobile.screenplay.tasks.commons.CommonTasks;
 import net.alexandrade.mobile.screenplay.tasks.settings.MainSettingsTasks;
 import net.alexandrade.mobile.screenplay.ui.settings.transactionoptions.MainTransactionOptionsScreen;
@@ -48,11 +49,18 @@ public class TransactionFlowSteps {
                 MainSettingsTasks.openTransactionFlowScreen(),
                 CommonTasks.turnOffAllTogglesOnTheScreen(),
                 CommonTasks.tapBackArrow(),
-                ClickAction.on(MainTransactionOptionsScreen.BUTTON_TIPPING_OPTIONS),
-                CommonTasks.turnOffAllTogglesOnTheScreen(),
-                CommonTasks.tapBackArrow(),
                 ClickAction.on(MainTransactionOptionsScreen.BUTTON_SPLIT_PAYMENT),
-                CommonTasks.turnOffAllTogglesOnTheScreen());
+                CommonTasks.turnOffAllTogglesOnTheScreen(),
+                CommonTasks.tapBackArrow());
+
+        if (actor.asksFor(
+                VisibilityQuestion.isPresent(
+                        MainTransactionOptionsScreen.BUTTON_TIPPING_OPTIONS))) {
+            // Tipping could be optional in some cases like when Crypto is enabled
+            actor.attemptsTo(
+                    ClickAction.on(MainTransactionOptionsScreen.BUTTON_TIPPING_OPTIONS),
+                    CommonTasks.turnOffAllTogglesOnTheScreen());
+        }
     }
 
     @Then("he should see all toggles were deactivated.")

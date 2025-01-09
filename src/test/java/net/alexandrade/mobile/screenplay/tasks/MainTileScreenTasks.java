@@ -44,8 +44,19 @@ public class MainTileScreenTasks {
     }
 
     public static Performable openRefund() {
+        // Refund is not available when Crypto is enabled
         return Task.where(
-                "{0} opens the Refund main tile", ClickAction.on(BUTTON_REFUND_TRANSACTION));
+                "{0} opens the Refund main tile",
+                actor -> {
+                    // Check that Crypto is not enabled before proceeding
+                    actor.attemptsTo(
+                            Ensure.that(
+                                            "Crypto should be disabled to test Refund",
+                                            VisibilityQuestion.notPresent(
+                                                    BUTTON_CRYPTO_TRANSACTION))
+                                    .isTrue(),
+                            ClickAction.on(BUTTON_REFUND_TRANSACTION));
+                });
     }
 
     public static Performable openMoto() {

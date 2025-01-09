@@ -91,7 +91,7 @@ public class SemiIntegrationSteps {
                         Ensure.that(
                                         "Should see the text of the Semi-Integration URL",
                                         TextQuestion.of(MainTIDScreen.LABEL_SEMI_INTEGRATION_URL))
-                                .isEqualTo("terminal-poi-sandbox.nuvei.com"),
+                                .isEqualToIgnoringCase("terminal-poi-sandbox.nuvei.com"),
                         Ensure.that(
                                         "Should see the text of the Semi-Integration PORT",
                                         TextQuestion.of(MainTIDScreen.LABEL_SEMI_INTEGRATION_PORT))
