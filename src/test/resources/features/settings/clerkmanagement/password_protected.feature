@@ -29,12 +29,13 @@ Feature: Password-protected notable transactions
   #@ignore
   @flaky
   Scenario Outline: 4: Check minimum access level for Admin
-    Given Aureliano defined the minimum access level for password-protected functionalities as Admin,
+    Given Aureliano defined the minimum access level as Admin and opened the <functionality> option,
     # TODO: implement VHQ
-    When he attempts to do a <Functionality> using the <Role>, with ID <Clerk ID> and Password <Password>,
-    Then he should <Access> access the <Functionality> option as <Role>.
+    When he attempts to login in <functionality> using the <role>, with ID <clerk_id> and Password <password>,
+    Then he should <access> access the <functionality> option as <role>.
+
     Examples:
-      | Functionality | Clerk ID | Role     | Password | Access  |
+      | functionality | clerk_id | role     | password | access  |
       # Refund
       | Refund        | 1        | Admin    | 111111   | have    |
       | Refund        | 2        | Manager  | 111111   | haven't |
@@ -44,7 +45,7 @@ Feature: Password-protected notable transactions
       | Moto          | 2        | Manager  | 111111   | haven't |
       | Moto          | 3        | Employee | 111111   | haven't |
       # Batch
-      | Settle         | 1        | Admin    | 111111   | have    |
+      | Settle        | 1        | Admin    | 111111   | have    |
       | Settle        | 2        | Manager  | 111111   | haven't |
       | Settle        | 3        | Employee | 111111   | haven't |
       # Void

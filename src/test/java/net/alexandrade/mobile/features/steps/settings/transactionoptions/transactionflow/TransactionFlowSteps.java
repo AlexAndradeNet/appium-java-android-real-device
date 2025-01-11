@@ -31,10 +31,10 @@ public class TransactionFlowSteps {
 
     @When("he enables the Order Number toggle,")
     public void heEnablesTheOrderNumberPrompt() {
-        OnStage.theActorInTheSpotlight()
-                .attemptsTo(
-                        MainSettingsTasks.openTransactionFlowScreen(),
-                        ToggleAction.toOn(TOGGLE_ORDER_NUMBER));
+        Actor actor = OnStage.theActorInTheSpotlight();
+        actor.attemptsTo(
+                MainSettingsTasks.openTransactionFlowScreen(actor),
+                ToggleAction.toOn(TOGGLE_ORDER_NUMBER));
     }
 
     @Then("he see the Order Number prompt is prompted in Sales.")
@@ -46,12 +46,12 @@ public class TransactionFlowSteps {
     public void heDeactivatesAllTogglesOptions() {
         Actor actor = OnStage.theActorInTheSpotlight();
         actor.attemptsTo(
-                MainSettingsTasks.openTransactionFlowScreen(),
-                CommonTasks.turnOffAllTogglesOnTheScreen(),
-                CommonTasks.tapBackArrow(),
+                MainSettingsTasks.openTransactionFlowScreen(actor),
+                CommonTasks.turnOffAllTogglesOnTheScreen(actor),
+                CommonTasks.tapBackArrow(actor),
                 ClickAction.on(MainTransactionOptionsScreen.BUTTON_SPLIT_PAYMENT),
-                CommonTasks.turnOffAllTogglesOnTheScreen(),
-                CommonTasks.tapBackArrow());
+                CommonTasks.turnOffAllTogglesOnTheScreen(actor),
+                CommonTasks.tapBackArrow(actor));
 
         if (actor.asksFor(
                 VisibilityQuestion.isPresent(
@@ -59,7 +59,7 @@ public class TransactionFlowSteps {
             // Tipping could be optional in some cases like when Crypto is enabled
             actor.attemptsTo(
                     ClickAction.on(MainTransactionOptionsScreen.BUTTON_TIPPING_OPTIONS),
-                    CommonTasks.turnOffAllTogglesOnTheScreen());
+                    CommonTasks.turnOffAllTogglesOnTheScreen(actor));
         }
     }
 

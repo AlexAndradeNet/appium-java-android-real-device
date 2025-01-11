@@ -33,14 +33,14 @@ public class HelpDeskSteps {
     @When("he attempts to open the help menu with a calculated super-password,")
     public void heAttemptsToOpenTheHelpMenuWithACalculatedSuperPassword() {
         Actor actor = OnStage.theActorInTheSpotlight();
-        actor.attemptsTo(MainTileScreenTasks.openTIDInfo());
+        actor.attemptsTo(MainTileScreenTasks.openTIDInfo(actor));
         String tid = actor.asksFor(TextQuestion.of(MainTIDScreen.LABEL_TID));
         actor.attemptsTo(
-                CommonTasks.tapBackArrow(),
+                CommonTasks.tapBackArrow(actor),
                 SwipeAction.toRight(), // For M-Series
                 SwipeAction.toRight(), // For M-Series
-                MainTileScreenTasks.openHelpDeskMenu(),
-                MainHelpTasks.resolveSuperPassword(tid));
+                MainTileScreenTasks.openHelpDeskMenu(actor),
+                MainHelpTasks.resolveSuperPassword(actor, tid));
     }
 
     @Then("he should have access to the help menu.")
@@ -56,34 +56,33 @@ public class HelpDeskSteps {
 
     @When("he attempts to open the help menu with password {word},")
     public void heAttemptsToOpenTheHelpMenuWithPassword(String password) {
-        OnStage.theActorInTheSpotlight()
-                .attemptsTo(
-                        MainTileScreenTasks.openHelpDeskMenu(),
-                        Ensure.that(
-                                        "Should see the Help Desk title",
-                                        VisibilityQuestion.isPresent(
-                                                NumericScreen.TITLE.of("HELP")))
-                                .isTrue(),
-                        Ensure.that(
-                                        "Should see the Help Desk subtitle",
-                                        VisibilityQuestion.isPresent(
-                                                NumericScreen.LABEL_REASON.of(
-                                                        "Enter Super Password")))
-                                .isTrue(),
-                        LoginAsTasks.fillPassword(password));
+        Actor actor = OnStage.theActorInTheSpotlight();
+
+        actor.attemptsTo(
+                MainTileScreenTasks.openHelpDeskMenu(actor),
+                Ensure.that(
+                                "Should see the Help Desk title",
+                                VisibilityQuestion.isPresent(NumericScreen.TITLE.of("HELP")))
+                        .isTrue(),
+                Ensure.that(
+                                "Should see the Help Desk subtitle",
+                                VisibilityQuestion.isPresent(
+                                        NumericScreen.LABEL_REASON.of("Enter Super Password")))
+                        .isTrue(),
+                LoginAsTasks.fillPassword(actor, password));
     }
 
     @Then("he should see the message {string} with description {string}.")
     public void heShouldSeeTheMessage(String alertTitle, String alertDescription) {
-        OnStage.theActorInTheSpotlight()
-                .attemptsTo(
-                        CommonTasks.validateAndDismissPopupAlertWithOkButton(
-                                alertTitle, alertDescription),
-                        Ensure.that(
-                                        "Should see the Help Desk subtitle",
-                                        VisibilityQuestion.isPresent(
-                                                NumericScreen.LABEL_REASON.of(
-                                                        "Enter Super Password")))
-                                .isTrue());
+        Actor actor = OnStage.theActorInTheSpotlight();
+
+        actor.attemptsTo(
+                CommonTasks.validateAndDismissPopupAlertWithOkButton(
+                        actor, alertTitle, alertDescription),
+                Ensure.that(
+                                "Should see the Help Desk subtitle",
+                                VisibilityQuestion.isPresent(
+                                        NumericScreen.LABEL_REASON.of("Enter Super Password")))
+                        .isTrue());
     }
 }

@@ -18,6 +18,7 @@ import net.alexandrade.mobile.screenplay.tasks.MainTileScreenTasks;
 import net.alexandrade.mobile.screenplay.tasks.commons.CommonTasks;
 import net.alexandrade.mobile.screenplay.ui.settings.MainSettingsScreen;
 import net.alexandrade.mobile.screenplay.ui.settings.transactionoptions.MainTransactionOptionsScreen;
+import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Performable;
 import net.serenitybdd.screenplay.Task;
 
@@ -27,35 +28,39 @@ public class MainSettingsTasks {
         throw new IllegalStateException("Utility class - cannot be instantiated");
     }
 
-    public static Performable openTransactionFlowScreen() {
-        return Task.where(
-                "{0} opens the Transaction Options > Transaction Flow screen",
-                MainTileScreenTasks.openSettings(),
+    public static Performable openTransactionFlowScreen(Actor actor) {
+        actor.attemptsTo(
+                MainTileScreenTasks.openSettings(actor),
                 ClickAction.on(MainSettingsScreen.BUTTON_TRANSACTION_OPTIONS),
                 ClickAction.on(MainTransactionOptionsScreen.BUTTON_TRANSACTION_FLOW));
+
+        return Task.where("{0} opens the Transaction Options > Transaction Flow screen");
     }
 
-    public static Performable openTipsOptionsScreen() {
-        return Task.where(
-                "{0} opens the Transaction Options > Transaction Flow screen",
-                MainTileScreenTasks.openSettings(),
+    public static Performable openTipsOptionsScreen(Actor actor) {
+        actor.attemptsTo(
+                MainTileScreenTasks.openSettings(actor),
                 ClickAction.on(MainSettingsScreen.BUTTON_TRANSACTION_OPTIONS),
                 ClickAction.on(MainTransactionOptionsScreen.BUTTON_TIPPING_OPTIONS));
+
+        return Task.where("{0} opens the Transaction Options > Transaction Flow screen");
     }
 
-    public static Performable openClerkManagementScreen() {
-        return Task.where(
-                "{0} opens the Sale main tile",
-                MainTileScreenTasks.openSettings(),
+    public static Performable openClerkManagementScreen(Actor actor) {
+        actor.attemptsTo(
+                MainTileScreenTasks.openSettings(actor),
                 ClickAction.on(MainSettingsScreen.BUTTON_CLERK_MANAGEMENT));
+
+        return Task.where("{0} opens the Sale main tile");
     }
 
-    public static Performable openSemiIntegrationOptionsScreen() {
-        return Task.where(
-                "{0} opens the Sale main tile",
-                MainTileScreenTasks.openSettings(),
+    public static Performable openSemiIntegrationOptionsScreen(Actor actor) {
+        actor.attemptsTo(
+                MainTileScreenTasks.openSettings(actor),
                 CommonTasks.navigateMenuUntilElementIsVisible(
-                        MainSettingsScreen.BUTTON_SEMI_INTEGRATION),
+                        actor, MainSettingsScreen.BUTTON_SEMI_INTEGRATION),
                 ClickAction.on(MainSettingsScreen.BUTTON_SEMI_INTEGRATION));
+
+        return Task.where("{0} opens the Sale main tile");
     }
 }

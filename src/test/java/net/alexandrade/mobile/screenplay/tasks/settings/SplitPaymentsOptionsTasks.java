@@ -14,6 +14,7 @@ from Nuvei Inc.
 package net.alexandrade.mobile.screenplay.tasks.settings;
 
 import net.alexandrade.mobile.screenplay.tasks.commons.CommonTasks;
+import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Performable;
 
 public class SplitPaymentsOptionsTasks {
@@ -21,7 +22,7 @@ public class SplitPaymentsOptionsTasks {
         throw new IllegalStateException("Utility class - cannot be instantiated");
     }
 
-    public static Performable turnOffAllTogglesOnTheScreen() {
-        return CommonTasks.turnOffAllTogglesOnTheScreen();
+    public static Performable turnOffAllTogglesOnTheScreen(Actor actor) {
+        return CommonTasks.turnOffAllTogglesOnTheScreen(actor);
     }
 }

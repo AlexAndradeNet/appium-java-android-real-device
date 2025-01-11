@@ -18,6 +18,7 @@ import java.time.format.DateTimeFormatter;
 import net.alexandrade.mobile.features.steps.Hooks;
 import net.alexandrade.mobile.screenplay.tasks.commons.LoginAsTasks;
 import net.alexandrade.utils.SimpleLogger;
+import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Performable;
 import net.serenitybdd.screenplay.Task;
 
@@ -87,7 +88,7 @@ public class MainHelpTasks {
         return currentDate.format(formatter);
     }
 
-    public static Performable resolveSuperPassword(String terminalId) {
+    public static Performable resolveSuperPassword(Actor actor, String terminalId) {
         String currentDate = getCurrentDateInYYYYmmdd();
         String superPassword = calculateSuperPassword(currentDate, terminalId);
 
@@ -95,8 +96,7 @@ public class MainHelpTasks {
                 "Super password for today '%s' for TID '%s' is: %s"
                         .formatted(currentDate, terminalId, superPassword));
 
-        return Task.where(
-                "{0} fills super password: " + superPassword,
-                LoginAsTasks.fillPassword(superPassword));
+        actor.attemptsTo(LoginAsTasks.fillPassword(actor, superPassword));
+        return Task.where("{0} fills super password: " + superPassword);
     }
 }

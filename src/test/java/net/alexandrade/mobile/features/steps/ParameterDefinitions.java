@@ -20,13 +20,14 @@ import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.abilities.BrowseTheWeb;
 import net.serenitybdd.screenplay.actors.OnStage;
 
+// Do not delete this file
 public class ParameterDefinitions {
 
     @ParameterType("Aureliano|Arcadio|Melquiades|Eusebia|Sebastian")
-    public Actor actor(String actor) {
-        Actor theActor = OnStage.theActorCalled(actor);
-        theActor.can(BrowseTheWeb.with(Serenity.getDriver()));
-        theActor.attemptsTo(MainTileScreenTasks.waitTheAppIsFullyLoaded());
-        return theActor;
+    public Actor actor(String actorName) {
+        Actor actor = OnStage.theActorCalled(actorName);
+        actor.can(BrowseTheWeb.with(Serenity.getDriver()));
+        actor.attemptsTo(MainTileScreenTasks.waitTheAppIsFullyLoaded(actor));
+        return actor;
     }
 }

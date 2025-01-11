@@ -33,95 +33,87 @@ public class MainTileScreenTasks {
         throw new IllegalStateException("Utility class - cannot be instantiated");
     }
 
-    public static Performable waitTheAppIsFullyLoaded() {
-        return Task.where(
-                "{0} waits the app is fully loaded",
-                WaitUntil.the(SPINNER, isNotPresent()).forNoMoreThan(100).seconds());
+    public static Performable waitTheAppIsFullyLoaded(Actor actor) {
+        actor.attemptsTo(WaitUntil.the(SPINNER, isNotPresent()).forNoMoreThan(100).seconds());
+
+        return Task.where("{0} waits the app is fully loaded");
     }
 
-    public static Performable openSale() {
-        return Task.where("{0} opens the Sale main tile", ClickAction.on(BUTTON_SALE_TRANSACTION));
+    public static Performable openSale(Actor actor) {
+        actor.attemptsTo(ClickAction.on(BUTTON_SALE_TRANSACTION));
+        return Task.where("{0} opens the Sale main tile");
     }
 
-    public static Performable openRefund() {
+    public static Performable openRefund(Actor actor) {
         // Refund is not available when Crypto is enabled
-        return Task.where(
-                "{0} opens the Refund main tile",
-                actor -> {
-                    // Check that Crypto is not enabled before proceeding
-                    actor.attemptsTo(
-                            Ensure.that(
-                                            "Crypto should be disabled to test Refund",
-                                            VisibilityQuestion.notPresent(
-                                                    BUTTON_CRYPTO_TRANSACTION))
-                                    .isTrue(),
-                            ClickAction.on(BUTTON_REFUND_TRANSACTION));
-                });
+        actor.attemptsTo(
+                Ensure.that(
+                                "Refund is not available when Crypto is enabled",
+                                VisibilityQuestion.notPresent(BUTTON_CRYPTO_TRANSACTION))
+                        .isTrue(),
+                ClickAction.on(BUTTON_REFUND_TRANSACTION));
+
+        return Task.where("{0} opens the Refund main tile");
     }
 
-    public static Performable openMoto() {
-        return Task.where("{0} opens the Moto main tile", ClickAction.on(BUTTON_MOTO_TRANSACTION));
+    public static Performable openMoto(Actor actor) {
+        actor.attemptsTo(ClickAction.on(BUTTON_MOTO_TRANSACTION));
+        return Task.where("{0} opens the Moto main tile");
     }
 
-    public static Performable openBatchOrSettle() {
-        return Task.where(
-                "{0} opens the Batch or Settle main tile", ClickAction.on(BUTTON_BATCH_OR_SETTLE));
+    public static Performable openBatchOrSettle(Actor actor) {
+        actor.attemptsTo(ClickAction.on(BUTTON_BATCH_OR_SETTLE));
+
+        return Task.where("{0} opens the Batch or Settle main tile");
     }
 
-    public static Performable openVoid() {
-        return Task.where(
-                "{0} opens the Void main tile",
-                actor -> navigateUntilElementIsVisibleAndTapOnIt(actor, BUTTON_VOID_TRANSACTION));
-    }
-
-    public static Performable openHelpDeskMenu() {
-        return Task.where(
-                "{0} opens the Help main tile",
-                actor -> navigateUntilElementIsVisibleAndTapOnIt(actor, BUTTON_HELP_DESK));
-    }
-
-    public static Performable openTIDInfo() {
-        return Task.where(
-                "{0} opens the TID info tile",
-                actor -> navigateUntilElementIsVisibleAndTapOnIt(actor, BUTTON_TID));
-    }
-
-    public static Performable openSettings() {
-        return Task.where(
-                "{0} opens the TID info tile",
-                actor -> navigateUntilElementIsVisibleAndTapOnIt(actor, BUTTON_SETTINGS));
-    }
-
-    private static void navigateUntilElementIsVisibleAndTapOnIt(Actor actor, Target target) {
+    private static Performable navigateUntilElementIsVisibleAndTapOnIt(Actor actor, Target target) {
         final int MAX_SCREENS = 3;
+
         int currentScreen = 1;
-        do {
-            // The element could be present since the second screen
-            try {
-                if (actor.asksFor(VisibilityQuestion.isPresent(target))
-                        || currentScreen >= MAX_SCREENS) {
-                    actor.attemptsTo(ClickAction.on(target));
-                    break;
-                }
-                actor.attemptsTo(SwipeAction.toLeft());
-                currentScreen++;
-            } catch (NoSuchElementException ignored) {
-                // Do nothing
-            }
-        } while (true);
+        while (actor.asksFor(VisibilityQuestion.notPresent(target))
+                && currentScreen < MAX_SCREENS) {
+            actor.attemptsTo(SwipeAction.toLeft());
+            currentScreen++;
+        }
+        actor.attemptsTo(ClickAction.on(target));
+
+        return Task.where("{0} navigates until the element is visible and taps on it");
     }
 
-    public static Performable returnToInitialScreen() {
-        return Task.where(
-                "{0} navigates back to the main screen",
-                actor -> {
-                    try {
-                        while (actor.asksFor(VisibilityQuestion.isPresent(BUTTON_PREVIOUS))) {
-                            actor.attemptsTo(SwipeAction.toRight());
-                        }
-                    } catch (NoSuchElementException ignored) {
-                        // Do nothing
-                    }
-                });
+    public static Performable openVoid(Actor actor) {
+        actor.attemptsTo(navigateUntilElementIsVisibleAndTapOnIt(actor, BUTTON_VOID_TRANSACTION));
+
+        return Task.where("{0} opens the Void main tile");
+    }
+
+    public static Performable openHelpDeskMenu(Actor actor) {
+        actor.attemptsTo(navigateUntilElementIsVisibleAndTapOnIt(actor, BUTTON_HELP_DESK));
+
+        return Task.where("{0} opens the Help main tile");
+    }
+
+    public static Performable openTIDInfo(Actor actor) {
+        actor.attemptsTo(navigateUntilElementIsVisibleAndTapOnIt(actor, BUTTON_TID));
+
+        return Task.where("{0} opens the TID info tile");
+    }
+
+    public static Performable openSettings(Actor actor) {
+        actor.attemptsTo(navigateUntilElementIsVisibleAndTapOnIt(actor, BUTTON_SETTINGS));
+
+        return Task.where("{0} opens the TID info tile");
+    }
+
+    public static Performable returnToInitialScreen(Actor actor) {
+        try {
+            while (actor.asksFor(VisibilityQuestion.isPresent(BUTTON_PREVIOUS))) {
+                actor.attemptsTo(SwipeAction.toRight());
+            }
+        } catch (NoSuchElementException ignored) {
+            // Do nothing
+        }
+
+        return Task.where("{0} navigates back to the main screen");
     }
 }

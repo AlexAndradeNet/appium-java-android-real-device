@@ -26,6 +26,7 @@ import net.alexandrade.mobile.screenplay.questions.VisibilityQuestion;
 import net.alexandrade.mobile.screenplay.ui.CommonObjects;
 import net.alexandrade.mobile.screenplay.ui.ConfirmationScreen;
 import net.serenitybdd.core.pages.WebElementFacade;
+import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Performable;
 import net.serenitybdd.screenplay.Task;
 import net.serenitybdd.screenplay.ensure.Ensure;
@@ -45,18 +46,17 @@ public class CommonTasks {
                 actor -> AppiumDriver.getDriver().navigate().back());
     }
 
-    public static Performable tapBackArrow() {
-        return Task.where(
-                "{0} tap the Back Arrow on Screen",
-                ClickAction.on(CommonObjects.BUTTON_ARROW_BACK));
+    public static Performable tapBackArrow(Actor actor) {
+        actor.attemptsTo(ClickAction.on(CommonObjects.BUTTON_ARROW_BACK));
+        return Task.where("{0} tap the Back Arrow on Screen");
     }
 
     public static Performable validateAndDismissPopupAlertWithOkButton(
-            String title, String message) {
-        return Task.where(
-                "{0} validate the popup alert on the screen",
+            Actor actor, String title, String message) {
+
+        actor.attemptsTo(
                 Ensure.that(
-                                "Should see the alert title is present",
+                                "Should see the alert title '%s'".formatted(title),
                                 VisibilityQuestion.isPresent(CommonObjects.POPUP_MESSAGE_TITLE))
                         .isTrue(),
                 Ensure.that(
@@ -68,150 +68,140 @@ public class CommonTasks {
                                 TextQuestion.of(CommonObjects.POPUP_MESSAGE_CONTENT))
                         .isEqualToIgnoringCase(message),
                 ClickAction.on(CommonObjects.POPUP_MESSAGE_BUTTON_OK));
+
+        return Task.where("{0} validate the popup alert on the screen");
     }
 
     public static Performable validateConfirmationScreen(
+            Actor actor,
             String screenTitle,
             String messageTitle,
             String messageDetail,
             boolean validateYesCancelButtons) {
-        return Task.where(
-                "{0} validates the confirmation screen",
-                actor -> {
-                    actor.attemptsTo(
-                            Ensure.that(
-                                            "Should see the confirmation screen title",
-                                            VisibilityQuestion.isPresent(ConfirmationScreen.TITLE))
-                                    .isTrue(),
-                            Ensure.that(
-                                            "Should see the title: '%s'".formatted(screenTitle),
-                                            TextQuestion.of(ConfirmationScreen.TITLE))
-                                    .isEqualToIgnoringCase(screenTitle),
-                            Ensure.that(
-                                            "Should see the message title: '%s'"
-                                                    .formatted(messageTitle),
-                                            TextQuestion.of(ConfirmationScreen.LABEL_MESSAGE_TITLE))
-                                    .isEqualToIgnoringCase(messageTitle));
 
-                    if (StringUtils.isNotBlank(messageDetail)) {
-                        actor.attemptsTo(
-                                Ensure.that(
-                                                "Should see the message detail: '%s'"
-                                                        .formatted(messageDetail),
-                                                TextQuestion.of(
-                                                        ConfirmationScreen.LABEL_MESSAGE_DETAIL))
-                                        .isEqualToIgnoringCase(messageDetail));
-                    }
+        actor.attemptsTo(
+                Ensure.that(
+                                "Should see the confirmation screen title",
+                                VisibilityQuestion.isPresent(ConfirmationScreen.TITLE))
+                        .isTrue(),
+                Ensure.that(
+                                "Should see the title: '%s'".formatted(screenTitle),
+                                TextQuestion.of(ConfirmationScreen.TITLE))
+                        .isEqualToIgnoringCase(screenTitle),
+                Ensure.that(
+                                "Should see the message title: '%s'".formatted(messageTitle),
+                                TextQuestion.of(ConfirmationScreen.LABEL_MESSAGE_TITLE))
+                        .isEqualToIgnoringCase(messageTitle));
 
-                    if (validateYesCancelButtons) {
-                        actor.attemptsTo(
-                                Ensure.that(
-                                                "Should see the cancel button",
-                                                VisibilityQuestion.isPresent(
-                                                        ConfirmationScreen.BUTTON_CANCEL))
-                                        .isTrue(),
-                                Ensure.that(
-                                                "Should see the yes button",
-                                                VisibilityQuestion.isPresent(
-                                                        ConfirmationScreen.BUTTON_YES))
-                                        .isTrue());
-                    }
-                });
+        if (StringUtils.isNotBlank(messageDetail)) {
+            actor.attemptsTo(
+                    Ensure.that(
+                                    "Should see the message detail: '%s'".formatted(messageDetail),
+                                    TextQuestion.of(ConfirmationScreen.LABEL_MESSAGE_DETAIL))
+                            .isEqualToIgnoringCase(messageDetail));
+        }
+
+        if (validateYesCancelButtons) {
+            actor.attemptsTo(
+                    Ensure.that(
+                                    "Should see the cancel button",
+                                    VisibilityQuestion.isPresent(ConfirmationScreen.BUTTON_CANCEL))
+                            .isTrue(),
+                    Ensure.that(
+                                    "Should see the yes button",
+                                    VisibilityQuestion.isPresent(ConfirmationScreen.BUTTON_YES))
+                            .isTrue());
+        }
+
+        return Task.where("{0} validates the confirmation screen");
     }
 
     public static Performable validateConfirmationScreen(
-            String screenTitle, String messageTitle, String messageDetail) {
-        return validateConfirmationScreen(screenTitle, messageTitle, messageDetail, false);
+            Actor actor, String screenTitle, String messageTitle, String messageDetail) {
+        return validateConfirmationScreen(actor, screenTitle, messageTitle, messageDetail, false);
     }
 
     public static Performable validateAndDismissConfirmationScreenWithDoneButton(
-            String title, String messageTitle, String messageDetail) {
-        return Task.where(
-                "{0} validates and dismisses the confirmation screen",
-                validateConfirmationScreen(title, messageTitle, messageDetail, false),
+            Actor actor, String title, String messageTitle, String messageDetail) {
+        actor.attemptsTo(
+                validateConfirmationScreen(actor, title, messageTitle, messageDetail, false),
                 ClickAction.on(ConfirmationScreen.BUTTON_DONE));
+        return Task.where("{0} validates and dismisses the confirmation screen");
     }
 
-    private static Performable modifyAllTogglesOnTheScreen(boolean toggleOn) {
-        return Task.where(
-                "{0} deactivates all toggles in the screen",
-                actor -> {
-                    int previousSize = 0;
-                    Set<WebElementFacade> togglesList = new LinkedHashSet<>();
-                    Set<String> uniqueToglesLables = new LinkedHashSet<>();
+    private static Performable modifyAllTogglesOnTheScreen(Actor actor, boolean toggleOn) {
+        int previousSize = 0;
+        Set<WebElementFacade> togglesList = new LinkedHashSet<>();
+        Set<String> uniqueToglesLables = new LinkedHashSet<>();
 
-                    do {
-                        uniqueToglesLables.addAll(
-                                CommonObjects.TOGGLE_LABEL_LIST.resolveAllFor(actor).texts());
-                        togglesList.addAll(CommonObjects.TOGGLE_LIST.resolveAllFor(actor));
+        do {
+            uniqueToglesLables.addAll(CommonObjects.TOGGLE_LABEL_LIST.resolveAllFor(actor).texts());
+            togglesList.addAll(CommonObjects.TOGGLE_LIST.resolveAllFor(actor));
 
-                        int currentSize = uniqueToglesLables.size();
+            int currentSize = uniqueToglesLables.size();
 
-                        if (currentSize > previousSize) {
-                            // Process only the newly discovered toggles
-                            togglesList.stream()
-                                    .skip(previousSize) // Skip already processed toggles
-                                    .forEach(
-                                            toggle -> {
-                                                if (toggleOn) {
-                                                    actor.attemptsTo(ToggleAction.toOn(toggle));
-                                                } else {
-                                                    actor.attemptsTo(ToggleAction.toOff(toggle));
-                                                }
-                                            });
+            if (currentSize > previousSize) {
+                // Process only the newly discovered toggles
+                togglesList.stream()
+                        .skip(previousSize) // Skip already processed toggles
+                        .forEach(
+                                toggle -> {
+                                    if (toggleOn) {
+                                        actor.attemptsTo(ToggleAction.toOn(toggle));
+                                    } else {
+                                        actor.attemptsTo(ToggleAction.toOff(toggle));
+                                    }
+                                });
 
-                            // Update the previous size to reflect the processed toggles
-                            previousSize = currentSize;
-                            actor.attemptsTo(SwipeAction.toUp());
-                        } else {
-                            break;
-                        }
-                    } while (true);
-                });
+                // Update the previous size to reflect the processed toggles
+                previousSize = currentSize;
+                actor.attemptsTo(SwipeAction.toUp());
+            } else {
+                break;
+            }
+        } while (true);
+
+        return Task.where("{0} deactivates all toggles in the screen");
     }
 
-    public static Performable turnOffAllTogglesOnTheScreen() {
-        return modifyAllTogglesOnTheScreen(false);
+    public static Performable turnOffAllTogglesOnTheScreen(Actor actor) {
+        return modifyAllTogglesOnTheScreen(actor, false);
     }
 
-    public static Performable turnOnAllTogglesOnTheScreen() {
-        return modifyAllTogglesOnTheScreen(true);
+    public static Performable turnOnAllTogglesOnTheScreen(Actor actor) {
+        return modifyAllTogglesOnTheScreen(actor, true);
     }
 
-    public static Performable navigateMenuUntilElementIsVisible(Target target) {
-        return Task.where(
-                actor -> {
-                    WebElement element = target.resolveFor(actor);
-                    actor.attemptsTo(navigateMenuUntilElementIsVisible(element));
-                });
+    public static Performable navigateMenuUntilElementIsVisible(Actor actor, Target target) {
+        WebElement element = target.resolveFor(actor);
+        actor.attemptsTo(navigateMenuUntilElementIsVisible(actor, element));
+
+        return Task.where("{0} navigates the menu until the element is visible and taps on it");
     }
 
-    public static Performable navigateMenuUntilElementIsVisible(WebElement element) {
-        return Task.where(
-                "{0} navigates the menu until the element is visible and taps on it",
-                actor -> {
-                    final int MAX_SCREENS = 3;
-                    int currentScreen = 1;
+    public static Performable navigateMenuUntilElementIsVisible(Actor actor, WebElement element) {
+        final int MAX_SCREENS = 3;
 
-                    while (actor.asksFor(VisibilityQuestion.notPresent(element))
-                            && currentScreen < MAX_SCREENS) {
-                        actor.attemptsTo(SwipeAction.toUp());
-                        currentScreen++;
-                    }
-                });
+        int currentScreen = 1;
+
+        while (actor.asksFor(VisibilityQuestion.notPresent(element))
+                && currentScreen < MAX_SCREENS) {
+            actor.attemptsTo(SwipeAction.toUp());
+            currentScreen++;
+        }
+
+        return Task.where("{0} navigates the menu until the element is visible and taps on it");
     }
 
-    public static Performable returnToMainScreen() {
-        return Task.where(
-                "{0} navigates back to the main screen",
-                actor -> {
-                    try {
-                        while (actor.asksFor(VisibilityQuestion.isPresent(BUTTON_ARROW_BACK))) {
-                            actor.attemptsTo(ClickAction.on(BUTTON_ARROW_BACK));
-                        }
-                    } catch (NoSuchElementException ignored) {
-                        // Do nothing
-                    }
-                });
+    public static Performable returnToMainScreen(Actor actor) {
+        try {
+            while (actor.asksFor(VisibilityQuestion.isPresent(BUTTON_ARROW_BACK))) {
+                actor.attemptsTo(ClickAction.on(BUTTON_ARROW_BACK));
+            }
+        } catch (NoSuchElementException ignored) {
+            // Do nothing
+        }
+
+        return Task.where("{0} navigates back to the main screen");
     }
 }
