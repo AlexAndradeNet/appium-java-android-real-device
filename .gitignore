@@ -27,7 +27,8 @@ target/
 build/
 out/
 .gradle
-.run
+**/.run/*
+!**/.run/Template Cucumber Java.run.xml
 
 # Log files
 logs/

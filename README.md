@@ -80,26 +80,9 @@ Follow these steps to run the tests on an Android device:
 For more details,
 visit [John Ferguson Smart's blog on running Cucumber Serenity feature files in IntelliJ](https://johnfergusonsmart.com/running-cucumber-serenity-feature-files-directly-intellij/).
 
-#### Optional: Running a Single Scenario
+#### Optional: Modify the template for running scenarios
 
-To create a template for all the scenarios in a feature file, create a file in
-`.run/Template Cucumber Java.run.xml` with the following content:
-
-```xml
-<component name="ProjectRunConfigurationManager">
-  <configuration default="true" type="CucumberJavaRunConfigurationType" factoryName="Cucumber java">
-    <option name="FILE_PATH" value="features" />
-    <option name="GLUE" value="net.serenitybdd.cucumber.actors net.alexandrade.mobile.features.steps" />
-    <option name="MAIN_CLASS_NAME" value="net.serenitybdd.cucumber.cli.Main" />
-    <shortenClasspath name="NONE" />
-    <option name="VM_PARAMETERS" value="-Denvironment=uk" />
-    <option name="WORKING_DIRECTORY" value="$MODULE_WORKING_DIR$" />
-    <method v="2">
-      <option name="Make" enabled="true" />
-    </method>
-  </configuration>
-</component>
-```
+The template is located at `.run/Template Cucumber Java.run.xml`.
 
 ---
 
