@@ -136,10 +136,7 @@ public class ClerkManagementTasks {
 
     public static Performable deleteClerk(
             Actor actor, boolean withValidationOfTexts, boolean confirmDeletion) {
-        actor.attemptsTo(
-                ClickAction.on(ViewClerkScreen.BUTTON_DELETE_USER)
-                // WaitSpecificTime.forSeconds(2)
-                );
+        actor.attemptsTo(ClickAction.on(ViewClerkScreen.BUTTON_DELETE_USER));
 
         if (withValidationOfTexts) {
             actor.attemptsTo(
@@ -181,7 +178,8 @@ public class ClerkManagementTasks {
             actor.attemptsTo(
                     ClickAction.on(
                             MainClerkManagementScreen.BUTTON_USER_FIRST_PROFILE_ID_DIFFERENT_THAN
-                                    .of(clerkId)),
+                                    .of(clerkId)));
+            actor.attemptsTo(
                     deleteClerk(actor, false, true),
                     dismissSuccessConfirmationAfterDeletingClerk(actor, false));
         }

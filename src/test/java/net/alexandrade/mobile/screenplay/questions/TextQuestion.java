@@ -15,6 +15,7 @@ package net.alexandrade.mobile.screenplay.questions;
 
 import net.serenitybdd.screenplay.Question;
 import net.serenitybdd.screenplay.targets.Target;
+import org.junit.platform.commons.util.StringUtils;
 import org.openqa.selenium.WebElement;
 
 public class TextQuestion {
@@ -34,11 +35,11 @@ public class TextQuestion {
         return actor -> {
             String value = element.getText();
 
-            if (value.isEmpty()) {
-                value = element.getAttribute("value");
+            if (StringUtils.isBlank(value)) {
+                value = element.getDomProperty("value");
             }
 
-            return value;
+            return StringUtils.nullSafeToString(value);
         };
     }
 }

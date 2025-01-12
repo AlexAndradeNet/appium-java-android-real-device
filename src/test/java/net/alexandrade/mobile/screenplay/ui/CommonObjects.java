@@ -53,7 +53,7 @@ public class CommonObjects {
             Target.the("List of labels for toggle")
                     .located(AppiumBy.xpath("(//android.view.ViewGroup/android.widget.TextView)"));
 
-    public static final Target TOGGLE_LIST =
-            Target.the("List of toggles")
-                    .located(AppiumBy.xpath("(//android.view.ViewGroup/android.widget.Switch)"));
+    public static final Target TOGGLE =
+            Target.the("Toggle {0}")
+                    .locatedBy("//android.widget.TextView[@text=\"{0}\"]/following-sibling::*[1]");
 }

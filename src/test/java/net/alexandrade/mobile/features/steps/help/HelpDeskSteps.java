@@ -39,8 +39,8 @@ public class HelpDeskSteps {
                 CommonTasks.tapBackArrow(actor),
                 SwipeAction.toRight(), // For M-Series
                 SwipeAction.toRight(), // For M-Series
-                MainTileScreenTasks.openHelpDeskMenu(actor),
-                MainHelpTasks.resolveSuperPassword(actor, tid));
+                MainTileScreenTasks.openHelpDeskMenu(actor, true));
+        actor.attemptsTo(MainHelpTasks.resolveSuperPassword(actor, tid));
     }
 
     @Then("he should have access to the help menu.")
@@ -48,7 +48,7 @@ public class HelpDeskSteps {
         OnStage.theActorInTheSpotlight()
                 .attemptsTo(
                         Ensure.that(
-                                        "Should see the options into the Help Menu",
+                                        "Should see the Clear Reversal Option from the Help Menu",
                                         VisibilityQuestion.isPresent(
                                                 MainHelpScreen.OPTION_CLEAR_REVERSAL))
                                 .isTrue());
@@ -59,16 +59,7 @@ public class HelpDeskSteps {
         Actor actor = OnStage.theActorInTheSpotlight();
 
         actor.attemptsTo(
-                MainTileScreenTasks.openHelpDeskMenu(actor),
-                Ensure.that(
-                                "Should see the Help Desk title",
-                                VisibilityQuestion.isPresent(NumericScreen.TITLE.of("HELP")))
-                        .isTrue(),
-                Ensure.that(
-                                "Should see the Help Desk subtitle",
-                                VisibilityQuestion.isPresent(
-                                        NumericScreen.LABEL_REASON.of("Enter Super Password")))
-                        .isTrue(),
+                MainTileScreenTasks.openHelpDeskMenu(actor, true),
                 LoginAsTasks.fillPassword(actor, password));
     }
 

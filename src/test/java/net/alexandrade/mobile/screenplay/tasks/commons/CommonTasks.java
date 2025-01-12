@@ -25,7 +25,6 @@ import net.alexandrade.mobile.screenplay.questions.TextQuestion;
 import net.alexandrade.mobile.screenplay.questions.VisibilityQuestion;
 import net.alexandrade.mobile.screenplay.ui.CommonObjects;
 import net.alexandrade.mobile.screenplay.ui.ConfirmationScreen;
-import net.serenitybdd.core.pages.WebElementFacade;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Performable;
 import net.serenitybdd.screenplay.Task;
@@ -131,25 +130,27 @@ public class CommonTasks {
 
     private static Performable modifyAllTogglesOnTheScreen(Actor actor, boolean toggleOn) {
         int previousSize = 0;
-        Set<WebElementFacade> togglesList = new LinkedHashSet<>();
-        Set<String> uniqueToglesLables = new LinkedHashSet<>();
+        Set<String> uniqueTogglesLabels = new LinkedHashSet<>();
 
         do {
-            uniqueToglesLables.addAll(CommonObjects.TOGGLE_LABEL_LIST.resolveAllFor(actor).texts());
-            togglesList.addAll(CommonObjects.TOGGLE_LIST.resolveAllFor(actor));
+            uniqueTogglesLabels.addAll(
+                    CommonObjects.TOGGLE_LABEL_LIST.resolveAllFor(actor).texts());
 
-            int currentSize = uniqueToglesLables.size();
+            int currentSize = uniqueTogglesLabels.size();
+            boolean isQuantityOfElementsGrowing = currentSize > previousSize;
 
-            if (currentSize > previousSize) {
+            if (isQuantityOfElementsGrowing) {
                 // Process only the newly discovered toggles
-                togglesList.stream()
+                uniqueTogglesLabels.stream()
                         .skip(previousSize) // Skip already processed toggles
                         .forEach(
-                                toggle -> {
+                                toggleLabel -> {
+                                    Target toggleTarget = CommonObjects.TOGGLE.of(toggleLabel);
+
                                     if (toggleOn) {
-                                        actor.attemptsTo(ToggleAction.toOn(toggle));
+                                        actor.attemptsTo(ToggleAction.toOn(toggleTarget));
                                     } else {
-                                        actor.attemptsTo(ToggleAction.toOff(toggle));
+                                        actor.attemptsTo(ToggleAction.toOff(toggleTarget));
                                     }
                                 });
 

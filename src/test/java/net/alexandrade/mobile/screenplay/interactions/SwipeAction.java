@@ -25,7 +25,7 @@ import org.openqa.selenium.interactions.Sequence;
 
 public class SwipeAction implements Interaction {
 
-    private enum SwipeDirection {
+    protected enum SwipeDirection {
         UP,
         DOWN,
         LEFT,
@@ -35,7 +35,7 @@ public class SwipeAction implements Interaction {
     private static final int SWIPE_SPEED = 101;
     private final SwipeDirection direction;
 
-    public SwipeAction(SwipeDirection direction) {
+    protected SwipeAction(SwipeDirection direction) {
         this.direction = direction;
     }
 
@@ -58,8 +58,8 @@ public class SwipeAction implements Interaction {
             }
             case UP -> {
                 startX = windowSize.width / 2; // Start horizontally in the center
-                startY = (int) (windowSize.height * 0.6); // Start near the bottom
-                endY = (int) (windowSize.height * 0.5); // End near the top
+                startY = (int) (windowSize.height * 0.65); // Start near the bottom
+                endY = (int) (windowSize.height * 0.45); // End near the top
             }
             case LEFT -> {
                 startY = windowSize.height / 2; // Start vertically in the center

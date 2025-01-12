@@ -18,6 +18,9 @@ import net.serenitybdd.screenplay.targets.Target;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 
+/*
+ *  Nuvei App doesn't respond to the Displayed method, so we need to create a custom method to check if an element is present.
+ */
 public class VisibilityQuestion {
 
     private VisibilityQuestion() {

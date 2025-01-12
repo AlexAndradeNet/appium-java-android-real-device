@@ -19,6 +19,7 @@ import static net.serenitybdd.screenplay.matchers.WebElementStateMatchers.*;
 import net.alexandrade.mobile.screenplay.interactions.ClickAction;
 import net.alexandrade.mobile.screenplay.interactions.SwipeAction;
 import net.alexandrade.mobile.screenplay.questions.VisibilityQuestion;
+import net.alexandrade.mobile.screenplay.ui.NumericScreen;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Performable;
 import net.serenitybdd.screenplay.Task;
@@ -87,10 +88,27 @@ public class MainTileScreenTasks {
         return Task.where("{0} opens the Void main tile");
     }
 
-    public static Performable openHelpDeskMenu(Actor actor) {
+    public static Performable openHelpDeskMenu(Actor actor, boolean withVerification) {
         actor.attemptsTo(navigateUntilElementIsVisibleAndTapOnIt(actor, BUTTON_HELP_DESK));
 
+        if (withVerification) {
+            actor.attemptsTo(
+                    Ensure.that(
+                                    "Should see the Help Desk title",
+                                    VisibilityQuestion.isPresent(NumericScreen.TITLE.of("HELP")))
+                            .isTrue(),
+                    Ensure.that(
+                                    "Should see the Help Desk subtitle",
+                                    VisibilityQuestion.isPresent(
+                                            NumericScreen.LABEL_REASON.of("Enter Super Password")))
+                            .isTrue());
+        }
+
         return Task.where("{0} opens the Help main tile");
+    }
+
+    public static Performable openHelpDeskMenu(Actor actor) {
+        return openHelpDeskMenu(actor, false);
     }
 
     public static Performable openTIDInfo(Actor actor) {

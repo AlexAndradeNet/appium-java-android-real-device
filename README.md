@@ -71,24 +71,30 @@ Follow these steps to run the tests on an Android device:
 1. Open the `feature` file you want to run.
 2. Go to the **Run** menu and select **Run...**.
 3. In the contextual menu, select the feature, then choose **Edit...**.
-4. In the 'Edit Configuration Settings' window, set the main class to
+4. In the 'Edit Configuration Settings' window, set the **main class** to
    `net.serenitybdd.cucumber.cli.Main`.
-5. Set the Glue field to the root package of your project (or the location of
+5. Set the **Glue** field to the root package of your project (or the location
+   of
    your step definitions): `net.alexandrade.mobile.features.steps`.
-6. Click **Apply**.
+6. Set the **VM Options** to `-Denvironment=uk`.
+7. Click **Apply**.
 
 For more details,
 visit [John Ferguson Smart's blog on running Cucumber Serenity feature files in IntelliJ](https://johnfergusonsmart.com/running-cucumber-serenity-feature-files-directly-intellij/).
 
-#### Optional: Modify the template for running scenarios
+#### Optional: Customize Scenario Execution Template
 
-The template is located at `.run/Template Cucumber Java.run.xml`.
+You can customize the default settings for running Cucumber Java scenarios:
+
+1. Navigate: Go to Run > Edit Configurations > Edit Configuration Templates >
+   Cucumber Java.
 
 ---
 
 ## 📊 Reporting
 
-Test execution reports are generated in the `build/reports/tests/test` directory. To
+Test execution reports are generated in the `build/reports/tests/test`
+directory. To
 open the report in your browser:
 
 - **On Mac:**
@@ -111,10 +117,11 @@ Maintaining a consistent coding style is crucial for readability and
 collaboration.
 
 > "The ratio of time spent reading versus writing is well over 10 to 1. We are
-> constantly reading old code as part of the effort to write new code. …making it
+> constantly reading old code as part of the effort to write new code. …making
+> it
 > easy to read makes it easier to write."
 >
-> _Robert C. Martin (a.k.a Uncle Bob)_
+> _Robert C. Martin (a.k.a. Uncle Bob)_
 
 ### Java
 
