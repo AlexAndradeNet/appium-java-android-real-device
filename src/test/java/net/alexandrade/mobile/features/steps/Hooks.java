@@ -19,6 +19,7 @@ import io.cucumber.java.Before;
 import io.cucumber.java.BeforeAll;
 import net.alexandrade.mobile.screenplay.tasks.commons.CommonTasks;
 import net.alexandrade.utils.SimpleLogger;
+import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.actors.OnlineCast;
 
@@ -37,16 +38,18 @@ public class Hooks {
         logger.info(
                 "####################### Cucumber Execution Order: "
                         + System.getProperty("cucumber.execution.order"));
+        OnStage.drawTheCurtain(); // Clears all actors and contexts
+        OnStage.setTheStage(new OnlineCast()); // Re-initialize actors
     }
 
     @After(order = 1)
     public void afterEachScenario() {
-        OnStage.theActorInTheSpotlight().attemptsTo(CommonTasks.returnToMainScreen());
+        Actor actor = OnStage.theActorInTheSpotlight();
+        actor.attemptsTo(CommonTasks.returnToMainScreen(actor));
     }
 
     @AfterAll
     public static void afterAll() {
-        OnStage.drawTheCurtain();
         logger.info("####################### AFTER ALL Cucumber");
     }
 }

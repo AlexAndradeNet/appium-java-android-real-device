@@ -45,10 +45,12 @@ public class ElementListQuestion {
 
                 // Check if the size has grown
                 int currentSize = uniqueTexts.size();
-                if (currentSize > previousSize) {
+                boolean isQuantityOfElementsGrowing = currentSize > previousSize;
+
+                if (isQuantityOfElementsGrowing) {
                     // Update the previous size and continue scrolling
                     previousSize = currentSize;
-                    SwipeAction.toUp().performAs(actor);
+                    actor.attemptsTo(SwipeAction.toUp());
                 } else {
                     // Break if no growth in size
                     break;

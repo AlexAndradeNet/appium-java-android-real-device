@@ -27,65 +27,58 @@ import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.ensure.Ensure;
 
-public class PasswordProtected {
-    @Given(
-            "{actor} defined the minimum access level for password-protected functionalities as"
-                    + " {word},")
+public class PasswordProtectedSteps {
+    @Given("{actor} defined the minimum access level as {word} and opened the {word} option,")
     public void theCompanyDefinedThatTheMinimumAccessLevelForFunctionIsAdmin(
-            Actor actor, String role) {
-        // Pending implementation
-    }
-
-    @When("he attempts to do a {word} using the {word}, with ID {word} and Password {word},")
-    public void heAttemptsToDoAFunctionalityUsingTheRoleWithIDClerkIDAndPasswordPassword(
-            String functionality, String role, String clerkID, String password) {
-        Actor actor = OnStage.theActorInTheSpotlight();
+            Actor actor, String role, String functionality) {
+        // Pending VHQ implementation
 
         switch (functionality) {
-            case "Refund":
-                actor.attemptsTo(MainTileScreenTasks.openRefund());
-                break;
-            case "Moto":
-                actor.attemptsTo(MainTileScreenTasks.openMoto());
-                break;
-            case "Settle":
-                actor.attemptsTo(MainTileScreenTasks.openBatchOrSettle());
-                break;
-            case "Void":
-                actor.attemptsTo(MainTileScreenTasks.openVoid());
-                break;
-            default:
-                throw new IllegalArgumentException("Invalid functionality: " + functionality);
+            case "Refund" -> actor.attemptsTo(MainTileScreenTasks.openRefund(actor));
+            case "Moto" -> actor.attemptsTo(MainTileScreenTasks.openMoto(actor));
+            case "Settle" -> actor.attemptsTo(MainTileScreenTasks.openBatchOrSettle(actor));
+            case "Void" -> actor.attemptsTo(MainTileScreenTasks.openVoid(actor));
+            default ->
+                    throw new IllegalArgumentException("Invalid functionality: " + functionality);
         }
+    }
 
-        actor.attemptsTo(
-                Ensure.that(
-                                "Should see the name of the functionally in the title: '%s'"
-                                        .formatted(functionality.toUpperCase()),
-                                VisibilityQuestion.isPresent(
-                                        NumericScreen.TITLE.of(functionality.toUpperCase())))
-                        .isTrue(),
-                LoginAsTasks.fillClerkID(functionality.toUpperCase(), clerkID));
+    @When("he attempts to login in {word} using the {word}, with ID {word} and Password {word},")
+    public void heAttemptsToDoAFunctionalityUsingTheRoleWithIDClerkIDAndPasswordPassword(
+            String functionality, String role, String clerkID, String password) {
 
-        if (VisibilityQuestion.isPresent(NumericScreen.LABEL_REASON.of("Enter your Password"))
-                .answeredBy(actor)
-                .equals(true)) {
-            actor.attemptsTo(LoginAsTasks.fillPassword(functionality.toUpperCase(), password));
+        Actor actor = OnStage.theActorInTheSpotlight();
+        // Ensure the title matches the expected functionality
+        String expectedTitle = functionality.toUpperCase();
+
+        actor.attemptsTo(LoginAsTasks.fillClerkID(actor, expectedTitle, clerkID));
+
+        boolean wasTheUserAllowedToContinue =
+                actor.asksFor(
+                        VisibilityQuestion.isPresent(
+                                NumericScreen.LABEL_REASON.of("Enter your Password")));
+
+        // Check if the "Enter your Password" label is visible and fill the password
+        if (wasTheUserAllowedToContinue) {
+            actor.attemptsTo(LoginAsTasks.fillPassword(actor, expectedTitle, password));
         }
     }
 
     @Then("he should {word} access the {word} option as {word}.")
     public void heShouldAccessAccessTheRefundOption(
             String access, String functionality, String role) {
+
         Actor actor = OnStage.theActorInTheSpotlight();
+
+        String expectedTitle = functionality.toUpperCase();
 
         if (access.equals("have")) {
             actor.attemptsTo(
                     Ensure.that(
-                                    "Should see the title: '%s'"
-                                            .formatted(functionality.toUpperCase()),
+                                    "Should see the title: '%s' meaning have access"
+                                            .formatted(expectedTitle),
                                     VisibilityQuestion.isPresent(
-                                            NumericScreen.TITLE.of(functionality.toUpperCase())))
+                                            NumericScreen.TITLE.of(expectedTitle)))
                             .isTrue());
 
             if (functionality.equals("Refund") || functionality.equals("Moto")) {
@@ -123,12 +116,12 @@ public class PasswordProtected {
         if (access.equals("haven't")) {
             actor.attemptsTo(
                     CommonTasks.validateAndDismissPopupAlertWithOkButton(
-                            "Alert Message", "Access Not Granted!"),
+                            actor, "Alert Message", "Access Not Granted!"),
                     Ensure.that(
                                     "Should see the main screen title: '%s'"
-                                            .formatted(functionality.toUpperCase()),
+                                            .formatted(expectedTitle),
                                     VisibilityQuestion.isPresent(
-                                            NumericScreen.TITLE.of(functionality.toUpperCase())))
+                                            NumericScreen.TITLE.of(expectedTitle)))
                             .isTrue(),
                     Ensure.that(
                                     "Should see the reason label: 'Enter your Clerk ID'",

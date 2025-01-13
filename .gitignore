@@ -27,6 +27,8 @@ target/
 build/
 out/
 .gradle
+**/.run/*
+!**/.run/Template Cucumber Java.run.xml
 
 # Log files
 logs/
@@ -53,3 +55,6 @@ gradle/wrapper/gradle-wrapper.jar
 
 # Node
 node_modules/
+
+# Scripting
+.runRobot_last_run_options

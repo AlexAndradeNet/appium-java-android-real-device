@@ -13,15 +13,15 @@ from Nuvei Inc.
 */
 package net.alexandrade.mobile.features.steps.settings.transactionoptions.transactionflow;
 
-import static net.alexandrade.mobile.screenplay.ui.settings.transactionoptions.TransactionFlowScreen.TOGGLE_ORDER_NUMBER;
-
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import net.alexandrade.mobile.screenplay.interactions.ClickAction;
 import net.alexandrade.mobile.screenplay.interactions.ToggleAction;
+import net.alexandrade.mobile.screenplay.questions.VisibilityQuestion;
 import net.alexandrade.mobile.screenplay.tasks.commons.CommonTasks;
 import net.alexandrade.mobile.screenplay.tasks.settings.MainSettingsTasks;
+import net.alexandrade.mobile.screenplay.tasks.settings.TransactionsOptionsTasks;
 import net.alexandrade.mobile.screenplay.ui.settings.transactionoptions.MainTransactionOptionsScreen;
+import net.alexandrade.mobile.screenplay.ui.settings.transactionoptions.TransactionFlowScreen;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.ensure.Ensure;
@@ -30,10 +30,10 @@ public class TransactionFlowSteps {
 
     @When("he enables the Order Number toggle,")
     public void heEnablesTheOrderNumberPrompt() {
-        OnStage.theActorInTheSpotlight()
-                .attemptsTo(
-                        MainSettingsTasks.openTransactionFlowScreen(),
-                        ToggleAction.toOn(TOGGLE_ORDER_NUMBER));
+        Actor actor = OnStage.theActorInTheSpotlight();
+        actor.attemptsTo(
+                MainSettingsTasks.openTransactionFlowScreen(actor),
+                ToggleAction.toOn(TransactionFlowScreen.TOGGLE_ORDER_NUMBER));
     }
 
     @Then("he see the Order Number prompt is prompted in Sales.")
@@ -45,14 +45,25 @@ public class TransactionFlowSteps {
     public void heDeactivatesAllTogglesOptions() {
         Actor actor = OnStage.theActorInTheSpotlight();
         actor.attemptsTo(
-                MainSettingsTasks.openTransactionFlowScreen(),
-                CommonTasks.turnOffAllTogglesOnTheScreen(),
-                CommonTasks.tapBackArrow(),
-                ClickAction.on(MainTransactionOptionsScreen.BUTTON_TIPPING_OPTIONS),
-                CommonTasks.turnOffAllTogglesOnTheScreen(),
-                CommonTasks.tapBackArrow(),
-                ClickAction.on(MainTransactionOptionsScreen.BUTTON_SPLIT_PAYMENT),
-                CommonTasks.turnOffAllTogglesOnTheScreen());
+                MainSettingsTasks.openTransactionFlowScreen(actor),
+                CommonTasks.turnOffAllTogglesOnTheScreen(actor),
+                CommonTasks.tapBackArrow(actor),
+                TransactionsOptionsTasks.openSplitPayment(actor),
+                CommonTasks.turnOffAllTogglesOnTheScreen(actor),
+                CommonTasks.tapBackArrow(actor));
+
+        boolean isTippingAvailable =
+                actor.asksFor(
+                        VisibilityQuestion.isPresent(
+                                MainTransactionOptionsScreen.BUTTON_TIPPING_OPTIONS));
+
+        if (isTippingAvailable) {
+            // Tipping could be optional in some cases like when Crypto is enabled
+            actor.attemptsTo(
+                    TransactionsOptionsTasks.openTipping(actor),
+                    CommonTasks.turnOffAllTogglesOnTheScreen(actor),
+                    CommonTasks.tapBackArrow(actor));
+        }
     }
 
     @Then("he should see all toggles were deactivated.")

@@ -1,6 +1,8 @@
 #@ignore
-Feature: As Aureliano (Admin), I want notable transactions to be password-protected so that I can manage who has access.
-  Acceptance Criteria
+Feature: Password-protected notable transactions
+  As Aureliano (Admin),
+  I want notable transactions to be password-protected,
+  So that I can manage who has access.
 
   #@ignore
   Scenario: 1: Setup - Clean the clerks list
@@ -14,8 +16,8 @@ Feature: As Aureliano (Admin), I want notable transactions to be password-protec
     When he attempts to add multiple clerks with the following data:
       | Alias      | Clerk ID | Role     | Password |
       #| Aureliano  | 1       | Admin  | 111111   |
-      | Melquiades | 22       | Manager  | 111111   |
-      | Eusebia    | 33       | Employee | 111111   |
+      | Melquiades | 2        | Manager  | 111111   |
+      | Eusebia    | 3        | Employee | 111111   |
     Then he should see the each new clerk was created correctly.
 
   #@ignore
@@ -26,25 +28,26 @@ Feature: As Aureliano (Admin), I want notable transactions to be password-protec
 
   #@ignore
   Scenario Outline: 4: Check minimum access level for Admin
-    Given Aureliano defined the minimum access level for password-protected functionalities as Admin,
+    Given Aureliano defined the minimum access level as Admin and opened the <functionality> option,
     # TODO: implement VHQ
-    When he attempts to do a <Functionality> using the <Role>, with ID <Clerk ID> and Password <Password>,
-    Then he should <Access> access the <Functionality> option as <Role>.
+    When he attempts to login in <functionality> using the <role>, with ID <clerk_id> and Password <password>,
+    Then he should <access> access the <functionality> option as <role>.
+
     Examples:
-      | Functionality | Clerk ID | Role     | Password | Access  |
+      | functionality | clerk_id | role     | password | access  |
       # Refund
       | Refund        | 1        | Admin    | 111111   | have    |
-      | Refund        | 22       | Manager  | 111111   | haven't |
-      | Refund        | 33       | Employee | 111111   | haven't |
+      | Refund        | 2        | Manager  | 111111   | haven't |
+      | Refund        | 3        | Employee | 111111   | haven't |
       # Moto
       | Moto          | 1        | Admin    | 111111   | have    |
-      | Moto          | 22       | Manager  | 111111   | haven't |
-      | Moto          | 33       | Employee | 111111   | haven't |
+      | Moto          | 2        | Manager  | 111111   | haven't |
+      | Moto          | 3        | Employee | 111111   | haven't |
       # Batch
-      | Settle         | 1        | Admin    | 111111   | have    |
-      | Settle         | 22       | Manager  | 111111   | haven't |
-      | Settle         | 33       | Employee | 111111   | haven't |
+      | Settle        | 1        | Admin    | 111111   | have    |
+      | Settle        | 2        | Manager  | 111111   | haven't |
+      | Settle        | 3        | Employee | 111111   | haven't |
       # Void
       | Void          | 1        | Admin    | 111111   | have    |
-      | Void          | 22       | Manager  | 111111   | haven't |
-      | Void          | 33       | Employee | 111111   | haven't |
+      | Void          | 2        | Manager  | 111111   | haven't |
+      | Void          | 3        | Employee | 111111   | haven't |

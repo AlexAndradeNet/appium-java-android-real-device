@@ -14,6 +14,7 @@ from Nuvei Inc.
 package net.alexandrade.mobile.screenplay.ui.settings.transactionoptions;
 
 import io.appium.java_client.AppiumBy;
+import net.alexandrade.mobile.screenplay.ui.CommonObjects;
 import net.serenitybdd.screenplay.targets.Target;
 
 public class TransactionFlowScreen {
@@ -21,16 +22,11 @@ public class TransactionFlowScreen {
         throw new IllegalStateException("Utility class - cannot be instantiated");
     }
 
-    private static final String BASE_SELECTOR =
-            "//android.widget.TextView[@text=\"%s\"]/following-sibling::*[1]";
-
     public static final Target TITLE =
             Target.the("Title")
                     .located(
                             AppiumBy.androidUIAutomator(
                                     "new UiSelector().text(\"TRANSACTION FLOW\")"));
 
-    public static final Target TOGGLE_ORDER_NUMBER =
-            Target.the("Order Number")
-                    .located(AppiumBy.xpath(BASE_SELECTOR.formatted("Order Number")));
+    public static final Target TOGGLE_ORDER_NUMBER = CommonObjects.TOGGLE.of("Order Number");
 }

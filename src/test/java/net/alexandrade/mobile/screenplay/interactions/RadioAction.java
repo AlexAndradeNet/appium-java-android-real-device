@@ -36,12 +36,12 @@ public class RadioAction implements Interaction {
     public <T extends Actor> void performAs(T actor) {
         String currentToggleStatus =
                 (element != null)
-                        ? element.getAttribute("checked")
-                        : target.resolveFor(actor).getAttribute("checked");
+                        ? element.getDomProperty("checked")
+                        : target.resolveFor(actor).getDomProperty("checked");
 
         String translatedStatus = checked ? "true" : "false";
 
-        if (!currentToggleStatus.equals(translatedStatus)) {
+        if (!translatedStatus.equals(currentToggleStatus)) {
             actor.attemptsTo(ClickAction.on(element));
         }
     }

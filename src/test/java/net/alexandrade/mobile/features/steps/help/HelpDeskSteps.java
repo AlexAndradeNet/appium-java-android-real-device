@@ -15,6 +15,7 @@ package net.alexandrade.mobile.features.steps.help;
 
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import net.alexandrade.mobile.screenplay.interactions.SwipeAction;
 import net.alexandrade.mobile.screenplay.questions.TextQuestion;
 import net.alexandrade.mobile.screenplay.questions.VisibilityQuestion;
 import net.alexandrade.mobile.screenplay.tasks.MainTileScreenTasks;
@@ -32,12 +33,16 @@ public class HelpDeskSteps {
     @When("he attempts to open the help menu with a calculated super-password,")
     public void heAttemptsToOpenTheHelpMenuWithACalculatedSuperPassword() {
         Actor actor = OnStage.theActorInTheSpotlight();
-        actor.attemptsTo(MainTileScreenTasks.openTIDInfo());
-        String tid = TextQuestion.of(MainTIDScreen.LABEL_TID).answeredBy(actor);
+        actor.attemptsTo(MainTileScreenTasks.openTIDInfo(actor));
+        String tid = actor.asksFor(TextQuestion.of(MainTIDScreen.LABEL_TID));
         actor.attemptsTo(
-                CommonTasks.tapBackArrow(),
-                MainTileScreenTasks.openHelpDeskMenu(),
-                MainHelpTasks.resolveSuperPassword(tid));
+                CommonTasks.tapBackArrow(actor),
+                SwipeAction.toRight(), // For M-Series
+                SwipeAction.toRight() // For M-Series
+                );
+        actor.attemptsTo(
+                MainTileScreenTasks.openHelpDeskMenu(actor, true),
+                MainHelpTasks.resolveSuperPassword(actor, tid));
     }
 
     @Then("he should have access to the help menu.")
@@ -45,7 +50,7 @@ public class HelpDeskSteps {
         OnStage.theActorInTheSpotlight()
                 .attemptsTo(
                         Ensure.that(
-                                        "Should see the options into the Help Menu",
+                                        "Should see the Clear Reversal Option from the Help Menu",
                                         VisibilityQuestion.isPresent(
                                                 MainHelpScreen.OPTION_CLEAR_REVERSAL))
                                 .isTrue());
@@ -53,34 +58,24 @@ public class HelpDeskSteps {
 
     @When("he attempts to open the help menu with password {word},")
     public void heAttemptsToOpenTheHelpMenuWithPassword(String password) {
-        OnStage.theActorInTheSpotlight()
-                .attemptsTo(
-                        MainTileScreenTasks.openHelpDeskMenu(),
-                        Ensure.that(
-                                        "Should see the Help Desk title",
-                                        VisibilityQuestion.isPresent(
-                                                NumericScreen.TITLE.of("HELP")))
-                                .isTrue(),
-                        Ensure.that(
-                                        "Should see the Help Desk subtitle",
-                                        VisibilityQuestion.isPresent(
-                                                NumericScreen.LABEL_REASON.of(
-                                                        "Enter Super Password")))
-                                .isTrue(),
-                        LoginAsTasks.fillPassword(password));
+        Actor actor = OnStage.theActorInTheSpotlight();
+
+        actor.attemptsTo(
+                MainTileScreenTasks.openHelpDeskMenu(actor, true),
+                LoginAsTasks.fillPassword(actor, password));
     }
 
     @Then("he should see the message {string} with description {string}.")
     public void heShouldSeeTheMessage(String alertTitle, String alertDescription) {
-        OnStage.theActorInTheSpotlight()
-                .attemptsTo(
-                        CommonTasks.validateAndDismissPopupAlertWithOkButton(
-                                alertTitle, alertDescription),
-                        Ensure.that(
-                                        "Should see the Help Desk subtitle",
-                                        VisibilityQuestion.isPresent(
-                                                NumericScreen.LABEL_REASON.of(
-                                                        "Enter Super Password")))
-                                .isTrue());
+        Actor actor = OnStage.theActorInTheSpotlight();
+
+        actor.attemptsTo(
+                CommonTasks.validateAndDismissPopupAlertWithOkButton(
+                        actor, alertTitle, alertDescription),
+                Ensure.that(
+                                "Should see the Help Desk subtitle",
+                                VisibilityQuestion.isPresent(
+                                        NumericScreen.LABEL_REASON.of("Enter Super Password")))
+                        .isTrue());
     }
 }
