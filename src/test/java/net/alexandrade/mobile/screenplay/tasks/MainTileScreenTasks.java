@@ -69,13 +69,9 @@ public class MainTileScreenTasks {
     }
 
     private static Performable navigateUntilElementIsVisibleAndTapOnIt(Actor actor, Target target) {
-        final int MAX_SCREENS = 3;
-
-        int currentScreen = 1;
         while (actor.asksFor(VisibilityQuestion.notPresent(target))
-                && currentScreen < MAX_SCREENS) {
+                && actor.asksFor(VisibilityQuestion.isPresent(BUTTON_NEXT))) {
             actor.attemptsTo(SwipeAction.toLeft());
-            currentScreen++;
         }
         actor.attemptsTo(ClickAction.on(target));
 

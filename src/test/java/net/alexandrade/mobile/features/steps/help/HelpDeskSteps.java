@@ -38,9 +38,11 @@ public class HelpDeskSteps {
         actor.attemptsTo(
                 CommonTasks.tapBackArrow(actor),
                 SwipeAction.toRight(), // For M-Series
-                SwipeAction.toRight(), // For M-Series
-                MainTileScreenTasks.openHelpDeskMenu(actor, true));
-        actor.attemptsTo(MainHelpTasks.resolveSuperPassword(actor, tid));
+                SwipeAction.toRight() // For M-Series
+                );
+        actor.attemptsTo(
+                MainTileScreenTasks.openHelpDeskMenu(actor, true),
+                MainHelpTasks.resolveSuperPassword(actor, tid));
     }
 
     @Then("he should have access to the help menu.")

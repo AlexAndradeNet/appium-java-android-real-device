@@ -22,9 +22,6 @@ public class TransactionFlowScreen {
         throw new IllegalStateException("Utility class - cannot be instantiated");
     }
 
-    private static final String BASE_SELECTOR =
-            "//android.widget.TextView[@text=\"%s\"]/following-sibling::*[1]";
-
     public static final Target TITLE =
             Target.the("Title")
                     .located(

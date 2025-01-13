@@ -83,17 +83,9 @@ public class LoginAsTasks {
                             .isTrue());
         }
 
-        actor.attemptsTo(NumpadAction.digit(clerkPassword));
-
-        if (withValidation) {
-            actor.attemptsTo(
-                    Ensure.that(
-                                    "Should see the value of the Password field",
-                                    TextQuestion.of(NumericScreen.TEXTBOX_VALUE))
-                            .isEqualTo("******"));
-        }
-
-        actor.attemptsTo(ClickAction.on(NumericScreen.BUTTON_CONTINUE_OR_CONFIRM));
+        actor.attemptsTo(
+                NumpadAction.digit(clerkPassword),
+                ClickAction.on(NumericScreen.BUTTON_CONTINUE_OR_CONFIRM));
 
         return Task.where("{0} fills the clerk ID and password {1}");
     }

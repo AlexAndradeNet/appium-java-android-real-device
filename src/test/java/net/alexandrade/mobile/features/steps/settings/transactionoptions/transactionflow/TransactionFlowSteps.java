@@ -15,7 +15,6 @@ package net.alexandrade.mobile.features.steps.settings.transactionoptions.transa
 
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import net.alexandrade.mobile.screenplay.interactions.ClickAction;
 import net.alexandrade.mobile.screenplay.interactions.ToggleAction;
 import net.alexandrade.mobile.screenplay.questions.VisibilityQuestion;
 import net.alexandrade.mobile.screenplay.tasks.commons.CommonTasks;
@@ -61,8 +60,9 @@ public class TransactionFlowSteps {
         if (isTippingAvailable) {
             // Tipping could be optional in some cases like when Crypto is enabled
             actor.attemptsTo(
-                    ClickAction.on(MainTransactionOptionsScreen.BUTTON_TIPPING_OPTIONS),
-                    CommonTasks.turnOffAllTogglesOnTheScreen(actor));
+                    TransactionsOptionsTasks.openTipping(actor),
+                    CommonTasks.turnOffAllTogglesOnTheScreen(actor),
+                    CommonTasks.tapBackArrow(actor));
         }
     }
 

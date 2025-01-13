@@ -29,4 +29,10 @@ public class TransactionsOptionsTasks {
 
         return Task.where("{0} opens the Split Payment screen");
     }
+
+    public static Performable openTipping(Actor actor) {
+        actor.attemptsTo(ClickAction.on(MainTransactionOptionsScreen.BUTTON_TIPPING_OPTIONS));
+
+        return Task.where("{0} opens the Tipping Options screen");
+    }
 }

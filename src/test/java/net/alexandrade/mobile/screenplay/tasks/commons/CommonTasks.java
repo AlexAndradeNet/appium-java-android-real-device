@@ -181,14 +181,14 @@ public class CommonTasks {
     }
 
     public static Performable navigateMenuUntilElementIsVisible(Actor actor, WebElement element) {
-        final int MAX_SCREENS = 3;
+        final int MAX_PAGES_OR_SCROLLS = 3;
 
-        int currentScreen = 1;
+        int currentPage = 1;
 
         while (actor.asksFor(VisibilityQuestion.notPresent(element))
-                && currentScreen < MAX_SCREENS) {
+                && currentPage < MAX_PAGES_OR_SCROLLS) {
             actor.attemptsTo(SwipeAction.toUp());
-            currentScreen++;
+            currentPage++;
         }
 
         return Task.where("{0} navigates the menu until the element is visible and taps on it");

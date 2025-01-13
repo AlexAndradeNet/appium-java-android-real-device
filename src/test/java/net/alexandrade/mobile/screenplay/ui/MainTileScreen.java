@@ -65,4 +65,8 @@ public class MainTileScreen {
     public static final Target BUTTON_PREVIOUS =
             Target.the("Button Previous")
                     .located(AppiumBy.androidUIAutomator(BASE_SELECTOR.formatted("Previous")));
+
+    public static final Target BUTTON_NEXT =
+            Target.the("Button Previous")
+                    .located(AppiumBy.androidUIAutomator(BASE_SELECTOR.formatted("Next")));
 }
