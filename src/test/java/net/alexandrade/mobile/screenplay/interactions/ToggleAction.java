@@ -15,20 +15,18 @@ package net.alexandrade.mobile.screenplay.interactions;
 
 import static net.serenitybdd.screenplay.Tasks.instrumented;
 
+import net.alexandrade.mobile.screenplay.questions.TextQuestion;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Interaction;
 import net.serenitybdd.screenplay.targets.Target;
-import org.openqa.selenium.WebElement;
 
 public class ToggleAction implements Interaction {
 
     private final Target target;
-    private final WebElement webElement;
     private final boolean enabled;
 
-    protected ToggleAction(Target target, WebElement webElement, boolean enabled) {
+    protected ToggleAction(Target target, boolean enabled) {
         this.target = target;
-        this.webElement = webElement;
         this.enabled = enabled;
     }
 
@@ -36,31 +34,22 @@ public class ToggleAction implements Interaction {
     public <T extends Actor> void performAs(T actor) {
         String translatedStatus = enabled ? "ON" : "OFF";
 
-        WebElement element = (webElement == null) ? target.resolveFor(actor) : webElement;
-
-        String currentToggleStatus = element.getText();
-
-        currentToggleStatus =
-                currentToggleStatus.replaceAll("\\p{C}", ""); // Removes control characters
-
-        if (!currentToggleStatus.equals(translatedStatus)) {
-            actor.attemptsTo(ClickAction.on(element));
+        while (!translatedStatus.equals(getCurrentToggleStatus(actor))) {
+            actor.attemptsTo(ClickAction.on(this.target), WaitSpecificTime.forSeconds(1));
         }
     }
 
-    public static ToggleAction toOn(Target target) {
-        return instrumented(ToggleAction.class, target, null, true);
+    private String getCurrentToggleStatus(Actor actor) {
+        String currentToggleStatus = actor.asksFor(TextQuestion.of(this.target));
+
+        return currentToggleStatus.replaceAll("\\p{C}", ""); // Removes control characters
     }
 
-    public static ToggleAction toOn(WebElement element) {
-        return instrumented(ToggleAction.class, null, element, true);
+    public static ToggleAction toOn(Target target) {
+        return instrumented(ToggleAction.class, target, true);
     }
 
     public static ToggleAction toOff(Target target) {
-        return instrumented(ToggleAction.class, target, null, false);
-    }
-
-    public static ToggleAction toOff(WebElement element) {
-        return instrumented(ToggleAction.class, null, element, false);
+        return instrumented(ToggleAction.class, target, false);
     }
 }
