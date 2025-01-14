@@ -16,14 +16,11 @@ by [Jacobvu84 on Serenity Screenplay with Appium](https://github.com/Jacobvu84/s
 
 This project is built using the following technologies:
 
-- **Java 17**
-- **Appium 2.x**
-- **Serenity BDD**
-- **Cucumber**
+- **Java 17 (Corretto)**
 - **Gradle**
-- **Android 13**
+- **Appium >= 2.13.1**
+- **Appium Inspector**
 - **Android SDK**
-- **IntelliJ IDEA**
 
 For detailed setup instructions, please refer to
 the [INSTALLATION.md](docs/INSTALLATION.md) file.

@@ -16,6 +16,9 @@ package net.alexandrade.mobile.screenplay.driver;
 import net.serenitybdd.core.Serenity;
 import net.thucydides.core.webdriver.WebDriverFacade;
 
+/*
+ * Don't use singleton pattern for Appium driver
+ */
 public class AppiumDriver {
     private AppiumDriver() {
         throw new IllegalStateException("Utility class - cannot be instantiated");

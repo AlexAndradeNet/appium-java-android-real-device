@@ -19,12 +19,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import net.alexandrade.mobile.screenplay.driver.AppiumDriver;
+import net.alexandrade.mobile.screenplay.questions.EnvironmentQuestion;
 import net.alexandrade.mobile.screenplay.ui.NumericScreen;
-import net.serenitybdd.core.Serenity;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Interaction;
 import net.serenitybdd.screenplay.Performable;
-import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebElement;
 
 public class NumpadAction implements Interaction {
@@ -43,10 +42,8 @@ public class NumpadAction implements Interaction {
     }
 
     private <T extends Actor> void performOnOnScreenNuveiNumpad(T actor) {
-        Dimension windowSize = Serenity.getDriver().manage().window().getSize();
-        boolean isTSeries = windowSize.height > windowSize.width;
 
-        if (isTSeries) {
+        if (EnvironmentQuestion.isTSeries()) {
             List<ClickAction> tapActions =
                     numberSequence
                             .chars()
@@ -62,7 +59,9 @@ public class NumpadAction implements Interaction {
                             .toList();
 
             actor.attemptsTo(tapActions.toArray(new Performable[0]));
-        } else {
+        }
+
+        if (EnvironmentQuestion.isMSeries()) {
             // Use physical keyboard for M-Series
 
             // Prepare the ADB shell command

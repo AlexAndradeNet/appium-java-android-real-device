@@ -53,8 +53,8 @@ public class SwipeAction implements Interaction {
         switch (direction) {
             case DOWN -> {
                 startX = windowSize.width / 2; // Start horizontally in the center
-                startY = (int) (windowSize.height * 0.2); // Start near the top
-                endY = (int) (windowSize.height * 0.8); // End near the bottom
+                startY = (int) (windowSize.height * 0.45); // Start near the top
+                endY = (int) (windowSize.height * 0.65); // End near the bottom
             }
             case UP -> {
                 startX = windowSize.width / 2; // Start horizontally in the center

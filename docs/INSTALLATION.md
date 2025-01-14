@@ -102,6 +102,15 @@ It's possible you need to grant permission to run the app. Run the following:
 xattr -d com.apple.quarantine /Applications/Appium\ Inspector.app
 ```
 
+To connect to a real device you will need to add the following capabilities:
+```json
+{
+  "appium:deviceName": "t650c",
+  "appium:automationName": "UiAutomator2",
+  "appium:platformName": "Android"
+}
+```
+
 ---
 
 ## 📱 Connecting a Real Android Device
