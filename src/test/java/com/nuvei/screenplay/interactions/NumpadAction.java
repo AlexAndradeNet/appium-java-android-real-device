@@ -11,16 +11,16 @@ Dissemination of this information or reproduction of this material
 is strictly forbidden unless prior written permission is obtained
 from Nuvei Inc.
 */
-package net.alexandrade.mobile.screenplay.interactions;
+package com.nuvei.screenplay.interactions;
 
 import static net.serenitybdd.screenplay.Tasks.instrumented;
 
+import com.nuvei.screenplay.driver.AppiumDriver;
+import com.nuvei.screenplay.questions.EnvironmentQuestion;
+import com.nuvei.screenplay.ui.NumericScreen;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import net.alexandrade.mobile.screenplay.driver.AppiumDriver;
-import net.alexandrade.mobile.screenplay.questions.EnvironmentQuestion;
-import net.alexandrade.mobile.screenplay.ui.NumericScreen;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Interaction;
 import net.serenitybdd.screenplay.Performable;

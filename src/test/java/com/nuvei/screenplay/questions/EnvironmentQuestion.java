@@ -11,7 +11,7 @@ Dissemination of this information or reproduction of this material
 is strictly forbidden unless prior written permission is obtained
 from Nuvei Inc.
 */
-package net.alexandrade.mobile.screenplay.questions;
+package com.nuvei.screenplay.questions;
 
 import net.thucydides.model.environment.SystemEnvironmentVariables;
 import net.thucydides.model.util.EnvironmentVariables;
