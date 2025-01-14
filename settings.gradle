@@ -7,6 +7,6 @@ buildCache {
 }
 // Add global settings for all subprojects
 gradle.beforeProject {
-    group = 'net.alexandrade' // Set global group
+    group = 'com.nuvei' // Set global group
     version = '1.0-SNAPSHOT' // Set global version
 }

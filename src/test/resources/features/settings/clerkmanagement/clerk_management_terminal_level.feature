@@ -6,7 +6,7 @@ Feature: clerk and Role management
 
 
   #@ignore
-  Scenario: 1: clerks can only change their own passwords, and there are no options to change Clerk ID or Role.
+  Scenario: 1: Clerks can only change their own passwords, and there are no options to change Clerk ID or Role.
     Given Aureliano, with ID 1 and Password 111111, is managing clerks,
     When he requests his account details, which is 1,
     Then he should only have the option to change his password, and no options for Clerk ID or Role.
@@ -131,37 +131,37 @@ Feature: clerk and Role management
     And he should have no option to add new clerks.
 
   #@ignore
-  Scenario: 19: clerk deletion regret.
+  Scenario: 19: Clerk deletion regret.
     Given Aureliano, with ID 1 and Password 111111, is managing clerks,
     When he attempts to delete Arcadio's account (ID 10) but regrets it,
     Then he should still see Arcadio's account (ID 10) in the clerks list.
 
   #@ignore
-  Scenario: 20: clerk deletion.
+  Scenario: 20: Clerk deletion.
     Given Aureliano, with ID 1 and Password 111111, is managing clerks,
     When he attempts to delete Arcadio's account (ID 10)
     Then he should not see Arcadio's account (ID 10) in the clerks list.
 
   #@ignore
-  Scenario: 21: using un existent clerk ID
+  Scenario: 21: Using un existent clerk ID
     Given Aureliano is using the wrong Clerk ID 0,
     When he tries to manage clerks with a wrong Clerk ID,
     Then he should receive the error message error message "Please verify and try again!" with the title "User does not exist".
 
   #@ignore
-  Scenario: 22: using wrong password
+  Scenario: 22: Using wrong password
     Given Aureliano, with ID 1 and wrong Password 999999,
     When he tries to manage clerks with a wrong password,
     Then he should receive the error message error message "Please verify and try again!" with the title "Invalid password".
 
   #@ignore
-  Scenario: 23: cancel a password-protected function.
+  Scenario: 23: Cancel a password-protected function.
     Given Aureliano, with ID 1 and Password 111111, is managing clerks,
     When he attempts to go to the previous screen
     Then he should see the main function screen instead of the password-protected function screen.
 
   #@ignore
-  Scenario: 24: cancel a password-protected function using physical back key.
+  Scenario: 24: Cancel a password-protected function using physical back key.
     Given Aureliano, with ID 1 and Password 111111, is managing clerks,
     When he attempts to go to the previous screen using the physical back key
     Then he should see the main function screen instead of the password-protected function screen.

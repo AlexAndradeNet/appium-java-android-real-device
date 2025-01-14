@@ -45,6 +45,9 @@ Follow these steps to run the tests on an Android device:
 
 2. **Start the Appium Server**:
 
+Run the following command in the terminal while in the root directory of the
+project:
+
    ```bash
    appium
    ```
@@ -72,7 +75,7 @@ Follow these steps to run the tests on an Android device:
    `net.serenitybdd.cucumber.cli.Main`.
 5. Set the **Glue** field to the root package of your project (or the location
    of
-   your step definitions): `net.alexandrade.mobile.features.steps`.
+   your step definitions): `com.nuvei.features.steps`.
 6. Set the **VM Options** to `-Denvironment=uk`.
 7. Click **Apply**.
 
