@@ -134,7 +134,7 @@ public class CommonTasks {
 
         do {
             uniqueTogglesLabels.addAll(
-                    CommonObjects.TOGGLE_LABEL_LIST.resolveAllFor(actor).texts());
+                    CommonObjects.ALL_TOGGLE_LABEL_LIST.resolveAllFor(actor).texts());
 
             int currentSize = uniqueTogglesLabels.size();
             boolean isQuantityOfElementsGrowing = currentSize > previousSize;

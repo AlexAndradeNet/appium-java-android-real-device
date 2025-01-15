@@ -49,7 +49,7 @@ public class CommonObjects {
     public static final Target POPUP_MESSAGE_SECOND_BUTTON =
             Target.the("Button {0}").located(AppiumBy.xpath(BASE_SELECTOR.formatted(3)));
 
-    public static final Target TOGGLE_LABEL_LIST =
+    public static final Target ALL_TOGGLE_LABEL_LIST =
             Target.the("List of labels for toggle")
                     .located(
                             AppiumBy.xpath(
