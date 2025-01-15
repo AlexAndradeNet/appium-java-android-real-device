@@ -18,6 +18,7 @@ import static net.serenitybdd.screenplay.matchers.WebElementStateMatchers.*;
 
 import com.nuvei.screenplay.interactions.ClickAction;
 import com.nuvei.screenplay.interactions.SwipeAction;
+import com.nuvei.screenplay.interactions.WaitSpecificTime;
 import com.nuvei.screenplay.questions.VisibilityQuestion;
 import com.nuvei.screenplay.ui.NumericScreen;
 import net.serenitybdd.screenplay.Actor;
@@ -129,5 +130,13 @@ public class MainTileScreenTasks {
         }
 
         return Task.where("{0} navigates back to the main screen");
+    }
+
+    public static Performable openSaf(Actor actor) {
+        actor.attemptsTo(
+                navigateUntilElementIsVisibleAndTapOnIt(actor, BUTTON_SAF),
+                WaitSpecificTime.forSeconds(1));
+
+        return Task.where("{0} opens the SAF tile");
     }
 }

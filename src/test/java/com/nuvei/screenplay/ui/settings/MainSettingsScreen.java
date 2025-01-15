@@ -44,4 +44,10 @@ public class MainSettingsScreen {
                     .located(
                             AppiumBy.androidUIAutomator(
                                     BASE_SELECTOR.formatted("Semi Integration")));
+
+    public static final Target BUTTON_SAF =
+            Target.the("Semi Integration Option")
+                    .located(
+                            AppiumBy.androidUIAutomator(
+                                    BASE_SELECTOR.formatted("Store And Forward (SAF)")));
 }

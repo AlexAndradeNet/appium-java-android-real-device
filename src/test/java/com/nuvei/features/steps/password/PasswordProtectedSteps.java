@@ -18,6 +18,7 @@ import com.nuvei.screenplay.tasks.MainTileScreenTasks;
 import com.nuvei.screenplay.tasks.commons.CommonTasks;
 import com.nuvei.screenplay.tasks.commons.LoginAsTasks;
 import com.nuvei.screenplay.ui.NumericScreen;
+import com.nuvei.screenplay.ui.saf.SafMainScreen;
 import com.nuvei.screenplay.ui.settle.MainSettleScreen;
 import com.nuvei.screenplay.ui.voidtile.VoidMainScreen;
 import io.cucumber.java.en.Given;
@@ -38,6 +39,7 @@ public class PasswordProtectedSteps {
             case "Moto" -> actor.attemptsTo(MainTileScreenTasks.openMoto(actor));
             case "Settle" -> actor.attemptsTo(MainTileScreenTasks.openBatchOrSettle(actor));
             case "Void" -> actor.attemptsTo(MainTileScreenTasks.openVoid(actor));
+            case "SAF" -> actor.attemptsTo(MainTileScreenTasks.openSaf(actor));
             default ->
                     throw new IllegalArgumentException("Invalid functionality: " + functionality);
         }
@@ -109,6 +111,15 @@ public class PasswordProtectedSteps {
                                         "Should see the 'Select transaction to void' label",
                                         VisibilityQuestion.isPresent(
                                                 VoidMainScreen.LABEL_SELECT_TRANSACTION_TO_VOID))
+                                .isTrue());
+            }
+
+            if (functionality.equals("SAF")) {
+                actor.attemptsTo(
+                        Ensure.that(
+                                        "Should see the 'Pending Transactions' button",
+                                        VisibilityQuestion.isPresent(
+                                                SafMainScreen.BUTTON_PENDING_TRANSACTIONS))
                                 .isTrue());
             }
         }
