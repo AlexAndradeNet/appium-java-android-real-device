@@ -43,7 +43,7 @@ public class NumpadAction implements Interaction {
 
     private <T extends Actor> void performOnOnScreenNuveiNumpad(T actor) {
 
-        if (EnvironmentQuestion.isTSeries()) {
+        if (actor.asksFor(EnvironmentQuestion.isTSeries())) {
             List<ClickAction> tapActions =
                     numberSequence
                             .chars()
@@ -61,7 +61,7 @@ public class NumpadAction implements Interaction {
             actor.attemptsTo(tapActions.toArray(new Performable[0]));
         }
 
-        if (EnvironmentQuestion.isMSeries()) {
+        if (actor.asksFor(EnvironmentQuestion.isMSeries())) {
             // Use physical keyboard for M-Series
 
             // Prepare the ADB shell command

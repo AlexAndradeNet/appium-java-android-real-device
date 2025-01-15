@@ -13,6 +13,7 @@ from Nuvei Inc.
 */
 package com.nuvei.screenplay.questions;
 
+import net.serenitybdd.screenplay.Question;
 import net.thucydides.model.environment.SystemEnvironmentVariables;
 import net.thucydides.model.util.EnvironmentVariables;
 
@@ -24,12 +25,12 @@ public class EnvironmentQuestion {
     private static final EnvironmentVariables environmentVariables =
             SystemEnvironmentVariables.createEnvironmentVariables();
 
-    public static boolean isTSeries() {
+    public static Question<Boolean> isTSeries() {
         // T series has 2 letters like "us", "de", "fr", etc.
-        return environmentVariables.getProperty("environment").length() == 2;
+        return actor -> environmentVariables.getProperty("environment").length() == 2;
     }
 
-    public static boolean isMSeries() {
-        return !isTSeries();
+    public static Question<Boolean> isMSeries() {
+        return actor -> !actor.asksFor(isTSeries());
     }
 }
