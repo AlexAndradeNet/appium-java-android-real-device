@@ -13,6 +13,7 @@ from Nuvei Inc.
 */
 package com.nuvei.screenplay.ui.settings;
 
+import com.nuvei.screenplay.ui.CommonObjects;
 import io.appium.java_client.AppiumBy;
 import net.serenitybdd.screenplay.targets.Target;
 
@@ -31,12 +32,10 @@ public class SemiIntegrationOptionsScreen {
                                     "new UiSelector().text(\"SEMI INTEGRATION\")"));
 
     public static final Target TOGGLE_ENABLE_SEMI_INTEGRATION =
-            Target.the("Enable Semi Integration Toggle")
-                    .located(AppiumBy.xpath(BASE_SELECTOR.formatted("Enable Semi Integration")));
+            CommonObjects.TOGGLE.of("Enable Semi Integration");
 
     public static final Target TOGGLE_ENABLE_STANDALONE_PASSWORD =
-            Target.the("Enable Standalone Password Toggle")
-                    .located(AppiumBy.xpath(BASE_SELECTOR.formatted("Enable Standalone Password")));
+            CommonObjects.TOGGLE.of("Enable Standalone Password");
 
     public static final Target RADIO_RETAIL =
             Target.the("Retail radio button")

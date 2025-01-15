@@ -13,6 +13,7 @@ from Nuvei Inc.
 */
 package com.nuvei.screenplay.ui.settings.transactionoptions;
 
+import com.nuvei.screenplay.ui.CommonObjects;
 import io.appium.java_client.AppiumBy;
 import net.serenitybdd.screenplay.targets.Target;
 
@@ -20,9 +21,6 @@ public class SplitPaymentOptionsScreen {
     private SplitPaymentOptionsScreen() {
         throw new IllegalStateException("Utility class - cannot be instantiated");
     }
-
-    private static final String TOGGLE_BASE_SELECTOR =
-            "//android.widget.TextView[@text=\"%s\"]/following-sibling::*[1]";
 
     private static final String TEXTBOX_BASE_SELECTOR = "(//android.widget.EditText)[%s]";
 
@@ -33,13 +31,9 @@ public class SplitPaymentOptionsScreen {
                                     "new UiSelector().text(\"SPLIT PAYMENT\")"));
 
     public static final Target TOGGLE_ENABLE_SPLIT_PAYMENT =
-            Target.the("Enable Split Payment Toggle")
-                    .located(
-                            AppiumBy.xpath(TOGGLE_BASE_SELECTOR.formatted("Enable Split Payment")));
+            CommonObjects.TOGGLE.of("Enable Split Payment");
 
-    public static final Target TOGGLE_ACCEPT_CASH =
-            Target.the("Accept Cash Toggle")
-                    .located(AppiumBy.xpath(TOGGLE_BASE_SELECTOR.formatted("Accept Cash")));
+    public static final Target TOGGLE_ACCEPT_CASH = CommonObjects.TOGGLE.of("Accept Cash");
 
     public static final Target TEXTBOX_MINIMUM_SPLIT_PAYMENT_AMOUNT =
             Target.the("Minimum Split Payment Amount Textbox")
