@@ -69,4 +69,12 @@ public class MainTileScreen {
     public static final Target BUTTON_NEXT =
             Target.the("Button Previous")
                     .located(AppiumBy.androidUIAutomator(BASE_SELECTOR.formatted("Next")));
+
+    public static final Target LABEL_SAF =
+            Target.the("Button SAF Enabled")
+                    .located(AppiumBy.androidUIAutomator(BASE_SELECTOR.formatted("SAF Enabled")));
+
+    public static final Target BUTTON_SAF =
+            Target.the("Button SAF")
+                    .located(AppiumBy.androidUIAutomator(BASE_SELECTOR.formatted("SAF")));
 }

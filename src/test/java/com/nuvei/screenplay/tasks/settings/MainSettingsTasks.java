@@ -63,4 +63,12 @@ public class MainSettingsTasks {
 
         return Task.where("{0} opens the Sale main tile");
     }
+
+    public static Performable openSafOptionsScreen(Actor actor) {
+        actor.attemptsTo(
+                CommonTasks.navigateMenuUntilElementIsVisible(actor, MainSettingsScreen.BUTTON_SAF),
+                ClickAction.on(MainSettingsScreen.BUTTON_SAF));
+
+        return Task.where("{0} opens the Sale main tile");
+    }
 }
