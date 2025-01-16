@@ -13,13 +13,12 @@ from Nuvei Inc.
 */
 package com.nuvei.screenplay.interactions;
 
-import static net.serenitybdd.screenplay.Tasks.instrumented;
-
 import com.nuvei.screenplay.driver.AppiumDriver;
 import java.time.Duration;
 import java.util.Collections;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Interaction;
+import net.serenitybdd.screenplay.Tasks;
 import net.serenitybdd.screenplay.targets.Target;
 import net.thucydides.core.webdriver.WebDriverFacade;
 import org.openqa.selenium.WebElement;
@@ -66,18 +65,18 @@ public class ClickAction implements Interaction {
     }
 
     public static ClickAction on(Target target) {
-        return instrumented(ClickAction.class, target, null, 0);
+        return Tasks.instrumented(ClickAction.class, target, null, 0);
     }
 
     public static ClickAction on(WebElement webElement) {
-        return instrumented(ClickAction.class, null, webElement, 0);
+        return Tasks.instrumented(ClickAction.class, null, webElement, 0);
     }
 
     public static ClickAction withLongPressOn(Target target) {
-        return instrumented(ClickAction.class, target, null, 100);
+        return Tasks.instrumented(ClickAction.class, target, null, 100);
     }
 
     public static ClickAction withLongPressOn(WebElement webElement) {
-        return instrumented(ClickAction.class, null, webElement, 100);
+        return Tasks.instrumented(ClickAction.class, null, webElement, 100);
     }
 }

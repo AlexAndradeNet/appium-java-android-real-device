@@ -13,12 +13,12 @@ from Nuvei Inc.
 */
 package com.nuvei.screenplay.interactions;
 
-import static net.serenitybdd.screenplay.Tasks.instrumented;
 import static org.awaitility.Awaitility.await;
 
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Performable;
 import net.serenitybdd.screenplay.Task;
+import net.serenitybdd.screenplay.Tasks;
 
 public class WaitSpecificTime implements Task {
 
@@ -29,7 +29,7 @@ public class WaitSpecificTime implements Task {
     }
 
     public static Performable forSeconds(long seconds) {
-        return instrumented(WaitSpecificTime.class, seconds);
+        return Tasks.instrumented(WaitSpecificTime.class, seconds);
     }
 
     @Override
