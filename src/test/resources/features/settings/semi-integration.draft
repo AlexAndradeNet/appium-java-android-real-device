@@ -1,11 +1,11 @@
 @ignore
-Feature: Semi-Integration
+Feature: Semi-Integration Setup.
   As an Admin,
   I want to control the semi-integration functionalities,
   So that I can manage different configurations.
 
   @ignore
-  Scenario 1: Deactivate semi-integration and verify terminal info
+  Scenario 1: Deactivate semi-integration and verify terminal info.
     Given Aureliano is managing the semi-integration settings,
     When he deactivates the semi-integration feature,
     Then he should see in the terminal’s information that semi-integration is not active.
