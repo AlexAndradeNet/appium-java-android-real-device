@@ -1,5 +1,5 @@
 #@ignore
-Feature: clerk and Role management
+Feature: Clerk and Role management.
   As a user,
   I want to manage clerks in the terminal,
   so that I can control their roles in my business.
@@ -12,33 +12,33 @@ Feature: clerk and Role management
     Then he should only have the option to change his password, and no options for Clerk ID or Role.
 
   #@ignore
-  Scenario: 2: Unsuccessful change of their own password using the current password
+  Scenario: 2: Unsuccessful change of their own password using the current password.
     Given Aureliano, with ID 1 and Password 111111, is managing clerks,
     When he, with ID 1, attempts to change his password to the current password 111111,
     Then he should receive the error message "New password should not be same as old password!".
     And he should still be able to use his ID 1 and old password 111111 to manage clerks.
 
   #@ignore
-  Scenario: 3: Unsuccessful change of their own password due to a mismatch verification
+  Scenario: 3: Unsuccessful change of their own password due to a mismatch verification.
     Given Aureliano, with ID 1 and Password 111111, is managing clerks,
     When he, with ID 1, attempts to change his password to 222222, failing the verification by entering 333333,
     Then he should receive the error message "Confirm password should be same as password.".
     And he should still be able to use his ID 1 and old password 111111 to manage clerks.
 
   #@ignore
-  Scenario: 4: Successful change of their own password
+  Scenario: 4: Successful change of their own password.
     Given Aureliano, with ID 1 and Password 111111, is managing clerks,
     When he, with ID 1, attempts to change his password to 222222,
     Then he, with ID 1, should be able to use his new password 222222 to revert it to 111111.
 
   #@ignore
-  Scenario: 5: Clean the clerks list
+  Scenario: 5: Clean the clerks list.
     Given Aureliano, with ID 1 and Password 111111, is managing clerks,
     When he removes all clerks except himself (ID 1),
     Then he should see only his ID 1 in the list.
 
   #@ignore
-  Scenario: 6: Create new clerks
+  Scenario: 6: Create new clerks.
     Given Aureliano, with ID 1 and Password 111111, is managing clerks,
     When he attempts to add multiple clerks with the following data:
       | Alias       | Clerk ID | Role     | Password |
@@ -51,19 +51,19 @@ Feature: clerk and Role management
     Then he should see the each new clerk was created correctly.
 
   #@ignore
-  Scenario: 7: Verify correct clerks list sorting
+  Scenario: 7: Verify correct clerks list sorting.
     Given Aureliano, with ID 1 and Password 111111, is managing clerks,
     When he lists the clerks,
     Then he should see that the clerks list is sorted numerically ("1, 10, 20, 21, 30, 31, 100") instead of alphabetically.
 
   #@ignore
-  Scenario: 8: Verify correct clerks list roles
+  Scenario: 8: Verify correct clerks list roles.
     Given Aureliano, with ID 1 and Password 111111, is managing clerks,
     When he search for the Clerk ID 20,
     Then he should see that the clerk Melquiades, with ID 20, is listed as a Manager.
 
   #@ignore
-  Scenario: 9: Verify correct clerks list roles
+  Scenario: 9: Verify correct clerks list roles.
     Given Aureliano, with ID 1 and Password 111111, is managing clerks,
     When he search for the Clerk ID 200,
     Then he should that the list is empty.
@@ -75,7 +75,7 @@ Feature: clerk and Role management
     Then he should see the options to change password, Clerk ID, and Role.
 
   #@ignore
-  Scenario: 11: Prevent creating a new clerk with an existing Clerk ID
+  Scenario: 11: Prevent creating a new clerk with an existing Clerk ID.
     Given Aureliano, with ID 1 and Password 111111, is managing clerks,
     When he attempts to create a new clerk with his own Clerk ID 1,
     Then he should receive the error message "Please verify User Id and try again!".
@@ -143,13 +143,13 @@ Feature: clerk and Role management
     Then he should not see Arcadio's account (ID 10) in the clerks list.
 
   #@ignore
-  Scenario: 21: Using un existent clerk ID
+  Scenario: 21: Using un existent clerk ID.
     Given Aureliano is using the wrong Clerk ID 0,
     When he tries to manage clerks with a wrong Clerk ID,
     Then he should receive the error message error message "Please verify and try again!" with the title "User does not exist".
 
   #@ignore
-  Scenario: 22: Using wrong password
+  Scenario: 22: Using wrong password.
     Given Aureliano, with ID 1 and wrong Password 999999,
     When he tries to manage clerks with a wrong password,
     Then he should receive the error message error message "Please verify and try again!" with the title "Invalid password".
