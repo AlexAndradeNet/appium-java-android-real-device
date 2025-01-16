@@ -13,10 +13,9 @@ from Nuvei Inc.
 */
 package com.nuvei.screenplay.interactions;
 
-import static net.serenitybdd.screenplay.Tasks.instrumented;
-
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Interaction;
+import net.serenitybdd.screenplay.Tasks;
 import net.serenitybdd.screenplay.targets.Target;
 import org.openqa.selenium.WebElement;
 
@@ -47,18 +46,18 @@ public class RadioAction implements Interaction {
     }
 
     public static RadioAction toOn(Target target) {
-        return instrumented(RadioAction.class, target, null, true);
+        return Tasks.instrumented(RadioAction.class, target, null, true);
     }
 
     public static RadioAction toOn(WebElement element) {
-        return instrumented(RadioAction.class, null, element, true);
+        return Tasks.instrumented(RadioAction.class, null, element, true);
     }
 
     public static RadioAction toOff(Target target) {
-        return instrumented(RadioAction.class, target, null, false);
+        return Tasks.instrumented(RadioAction.class, target, null, false);
     }
 
     public static RadioAction toOff(WebElement element) {
-        return instrumented(RadioAction.class, null, element, false);
+        return Tasks.instrumented(RadioAction.class, null, element, false);
     }
 }

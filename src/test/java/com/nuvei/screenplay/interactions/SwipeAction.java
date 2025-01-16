@@ -18,6 +18,7 @@ import java.time.Duration;
 import java.util.Collections;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Interaction;
+import net.serenitybdd.screenplay.Tasks;
 import net.thucydides.core.webdriver.WebDriverFacade;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.interactions.PointerInput;
@@ -121,18 +122,18 @@ public class SwipeAction implements Interaction {
     }
 
     public static SwipeAction toDown() {
-        return new SwipeAction(SwipeDirection.DOWN);
+        return Tasks.instrumented(SwipeAction.class, SwipeDirection.DOWN);
     }
 
     public static SwipeAction toUp() {
-        return new SwipeAction(SwipeDirection.UP);
+        return Tasks.instrumented(SwipeAction.class, SwipeDirection.UP);
     }
 
     public static SwipeAction toLeft() {
-        return new SwipeAction(SwipeDirection.LEFT);
+        return Tasks.instrumented(SwipeAction.class, SwipeDirection.LEFT);
     }
 
     public static SwipeAction toRight() {
-        return new SwipeAction(SwipeDirection.RIGHT);
+        return Tasks.instrumented(SwipeAction.class, SwipeDirection.RIGHT);
     }
 }
