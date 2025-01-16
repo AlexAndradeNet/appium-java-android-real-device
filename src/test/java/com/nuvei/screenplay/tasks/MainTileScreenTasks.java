@@ -17,6 +17,7 @@ import static com.nuvei.screenplay.ui.MainTileScreen.*;
 import static net.serenitybdd.screenplay.matchers.WebElementStateMatchers.*;
 
 import com.nuvei.screenplay.interactions.ClickAction;
+import com.nuvei.screenplay.interactions.SkipScenarioAction;
 import com.nuvei.screenplay.interactions.SwipeAction;
 import com.nuvei.screenplay.interactions.WaitSpecificTime;
 import com.nuvei.screenplay.questions.VisibilityQuestion;
@@ -48,12 +49,11 @@ public class MainTileScreenTasks {
 
     public static Performable openRefund(Actor actor) {
         // Refund is not available when Crypto is enabled
-        actor.attemptsTo(
-                Ensure.that(
-                                "Refund is not available when Crypto is enabled",
-                                VisibilityQuestion.notPresent(BUTTON_CRYPTO_TRANSACTION))
-                        .isTrue(),
-                ClickAction.on(BUTTON_REFUND_TRANSACTION));
+        if (actor.asksFor(VisibilityQuestion.notPresent(BUTTON_CRYPTO_TRANSACTION))) {
+            actor.attemptsTo(
+                    SkipScenarioAction.byCause("Refund is not available when Crypto is enabled"));
+        }
+        actor.attemptsTo(ClickAction.on(BUTTON_REFUND_TRANSACTION));
 
         return Task.where("{0} opens the Refund main tile");
     }

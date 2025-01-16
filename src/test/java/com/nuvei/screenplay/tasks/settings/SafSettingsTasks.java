@@ -13,6 +13,7 @@ from Nuvei Inc.
 */
 package com.nuvei.screenplay.tasks.settings;
 
+import com.nuvei.screenplay.interactions.SkipScenarioAction;
 import com.nuvei.screenplay.interactions.ToggleAction;
 import com.nuvei.screenplay.questions.EnvironmentQuestion;
 import com.nuvei.screenplay.questions.VisibilityQuestion;
@@ -24,7 +25,6 @@ import com.nuvei.screenplay.ui.settings.SafSettingsScreen;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Performable;
 import net.serenitybdd.screenplay.Task;
-import net.serenitybdd.screenplay.ensure.Ensure;
 
 public class SafSettingsTasks {
     private SafSettingsTasks() {
@@ -32,9 +32,7 @@ public class SafSettingsTasks {
     }
 
     public static Performable turnOnSaf(Actor actor, String clerkId, String password) {
-        actor.attemptsTo(
-                Ensure.that("SAF is not available in M-Series", EnvironmentQuestion.isTSeries())
-                        .isTrue());
+        actor.attemptsTo(skipIfTheFuntionIsntAvailable(actor));
 
         if (actor.asksFor(VisibilityQuestion.isPresent(MainTileScreen.LABEL_SAF))) {
             return Task.where("{0} SAF is already enabled");
@@ -53,9 +51,7 @@ public class SafSettingsTasks {
 
     public static Performable turnOffSaf(Actor actor, String clerkId, String password) {
 
-        actor.attemptsTo(
-                Ensure.that("SAF is not available in M-Series", EnvironmentQuestion.isTSeries())
-                        .isTrue());
+        actor.attemptsTo(skipIfTheFuntionIsntAvailable(actor));
 
         if (actor.asksFor(VisibilityQuestion.notPresent(MainTileScreen.LABEL_SAF))) {
             return Task.where("{0} SAF is already disabled");
@@ -74,5 +70,12 @@ public class SafSettingsTasks {
     private static Performable goToMainScreen(Actor actor) {
         actor.attemptsTo(CommonTasks.tapBackArrow(actor), CommonTasks.tapBackArrow(actor));
         return Task.where("{0} goes to the main screen");
+    }
+
+    private static Performable skipIfTheFuntionIsntAvailable(Actor actor) {
+        if (actor.asksFor(EnvironmentQuestion.isMSeries())) {
+            actor.attemptsTo(SkipScenarioAction.byCause("SAF is not available in M-Series"));
+        }
+        return Task.where("{0} is in a T-Series device");
     }
 }
