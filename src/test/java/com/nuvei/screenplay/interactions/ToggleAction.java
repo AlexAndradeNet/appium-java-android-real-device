@@ -13,11 +13,10 @@ from Nuvei Inc.
 */
 package com.nuvei.screenplay.interactions;
 
-import static net.serenitybdd.screenplay.Tasks.instrumented;
-
 import com.nuvei.screenplay.questions.TextQuestion;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Interaction;
+import net.serenitybdd.screenplay.Tasks;
 import net.serenitybdd.screenplay.targets.Target;
 
 public class ToggleAction implements Interaction {
@@ -46,10 +45,10 @@ public class ToggleAction implements Interaction {
     }
 
     public static ToggleAction toOn(Target target) {
-        return instrumented(ToggleAction.class, target, true);
+        return Tasks.instrumented(ToggleAction.class, target, true);
     }
 
     public static ToggleAction toOff(Target target) {
-        return instrumented(ToggleAction.class, target, false);
+        return Tasks.instrumented(ToggleAction.class, target, false);
     }
 }

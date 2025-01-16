@@ -13,28 +13,25 @@ from Nuvei Inc.
 */
 package com.nuvei.screenplay.interactions;
 
-import static org.awaitility.Awaitility.await;
-
 import net.serenitybdd.screenplay.Actor;
+import net.serenitybdd.screenplay.Interaction;
 import net.serenitybdd.screenplay.Performable;
-import net.serenitybdd.screenplay.Task;
 import net.serenitybdd.screenplay.Tasks;
+import org.junit.jupiter.api.Assumptions;
 
-public class WaitSpecificTime implements Task {
+public class SkipScenarioAction implements Interaction {
+    private final String cause;
 
-    private final long seconds;
-
-    protected WaitSpecificTime(long milliseconds) {
-        this.seconds = milliseconds;
-    }
-
-    public static Performable forSeconds(long seconds) {
-        return Tasks.instrumented(WaitSpecificTime.class, seconds);
+    protected SkipScenarioAction(String cause) {
+        this.cause = cause;
     }
 
     @Override
     public <T extends Actor> void performAs(T actor) {
-        var duration = java.time.Duration.ofSeconds(seconds);
-        await().atMost(duration).until(() -> true);
+        Assumptions.abort(cause);
+    }
+
+    public static Performable byCause(String cause) {
+        return Tasks.instrumented(SkipScenarioAction.class, cause);
     }
 }

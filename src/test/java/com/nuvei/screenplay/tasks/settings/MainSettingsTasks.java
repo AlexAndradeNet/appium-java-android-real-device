@@ -34,7 +34,7 @@ public class MainSettingsTasks {
                 ClickAction.on(MainSettingsScreen.BUTTON_TRANSACTION_OPTIONS),
                 ClickAction.on(MainTransactionOptionsScreen.BUTTON_TRANSACTION_FLOW));
 
-        return Task.where("{0} opens the Transaction Options > Transaction Flow screen");
+        return Task.where("{0} opens the Settings > Transaction Options > Transaction Flow screen");
     }
 
     public static Performable openTipsOptionsScreen(Actor actor) {
@@ -43,7 +43,7 @@ public class MainSettingsTasks {
                 ClickAction.on(MainSettingsScreen.BUTTON_TRANSACTION_OPTIONS),
                 ClickAction.on(MainTransactionOptionsScreen.BUTTON_TIPPING_OPTIONS));
 
-        return Task.where("{0} opens the Transaction Options > Transaction Flow screen");
+        return Task.where("{0} opens the Settings > Transaction Options > Tipping");
     }
 
     public static Performable openClerkManagementScreen(Actor actor) {
@@ -51,7 +51,7 @@ public class MainSettingsTasks {
                 MainTileScreenTasks.openSettings(actor),
                 ClickAction.on(MainSettingsScreen.BUTTON_CLERK_MANAGEMENT));
 
-        return Task.where("{0} opens the Sale main tile");
+        return Task.where("{0} opens the Settings > Clerk Management");
     }
 
     public static Performable openSemiIntegrationOptionsScreen(Actor actor) {
@@ -61,7 +61,7 @@ public class MainSettingsTasks {
                         actor, MainSettingsScreen.BUTTON_SEMI_INTEGRATION),
                 ClickAction.on(MainSettingsScreen.BUTTON_SEMI_INTEGRATION));
 
-        return Task.where("{0} opens the Sale main tile");
+        return Task.where("{0} opens the Settings > Semi-Integration");
     }
 
     public static Performable openSafOptionsScreen(Actor actor) {
@@ -69,6 +69,6 @@ public class MainSettingsTasks {
                 CommonTasks.navigateMenuUntilElementIsVisible(actor, MainSettingsScreen.BUTTON_SAF),
                 ClickAction.on(MainSettingsScreen.BUTTON_SAF));
 
-        return Task.where("{0} opens the Sale main tile");
+        return Task.where("{0} opens the Settings > SAF");
     }
 }

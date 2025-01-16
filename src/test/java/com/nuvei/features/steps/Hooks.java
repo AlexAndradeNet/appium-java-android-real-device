@@ -34,7 +34,7 @@ public class Hooks {
     }
 
     @Before(order = 1)
-    public void beforeEach() {
+    public void beforeEachScenario() {
         logger.info(
                 "####################### Cucumber Execution Order: "
                         + System.getProperty("cucumber.execution.order"));
