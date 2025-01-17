@@ -66,79 +66,76 @@ public class PasswordProtectedSteps {
         }
     }
 
-    @Then("he should {word} access the {word} option as {word}.")
-    public void heShouldAccessAccessTheRefundOption(
-            String access, String functionality, String role) {
+    @Then("he should be ALLOWED to access the functionality {word} as admin.")
+    public void heShouldAccessAccessTheRefundOption(String functionality) {
 
         Actor actor = OnStage.theActorInTheSpotlight();
 
         String expectedTitle = functionality.toUpperCase();
 
-        if (access.equals("have")) {
+        actor.attemptsTo(
+                Ensure.that(
+                                "Should see the title: '%s' meaning that have access"
+                                        .formatted(expectedTitle),
+                                VisibilityQuestion.isPresent(NumericScreen.TITLE.of(expectedTitle)))
+                        .isTrue());
+
+        if (functionality.equals("Refund") || functionality.equals("Moto")) {
             actor.attemptsTo(
                     Ensure.that(
-                                    "Should see the title: '%s' meaning have access"
-                                            .formatted(expectedTitle),
+                                    "Should see the reason label: '%s'"
+                                            .formatted("Enter %s Amount".formatted(functionality)),
                                     VisibilityQuestion.isPresent(
-                                            NumericScreen.TITLE.of(expectedTitle)))
+                                            NumericScreen.LABEL_REASON.of(
+                                                    "Enter %s Amount".formatted(functionality))))
                             .isTrue());
-
-            if (functionality.equals("Refund") || functionality.equals("Moto")) {
-                actor.attemptsTo(
-                        Ensure.that(
-                                        "Should see the reason label: '%s'"
-                                                .formatted(
-                                                        "Enter %s Amount".formatted(functionality)),
-                                        VisibilityQuestion.isPresent(
-                                                NumericScreen.LABEL_REASON.of(
-                                                        "Enter %s Amount"
-                                                                .formatted(functionality))))
-                                .isTrue());
-            }
-
-            if (functionality.equals("Settle")) {
-                actor.attemptsTo(
-                        Ensure.that(
-                                        "Should see the label Summary",
-                                        VisibilityQuestion.isPresent(
-                                                MainSettleScreen.LABEL_SUMMARY))
-                                .isTrue());
-            }
-
-            if (functionality.equals("Void")) {
-                actor.attemptsTo(
-                        Ensure.that(
-                                        "Should see the 'Select transaction to void' label",
-                                        VisibilityQuestion.isPresent(
-                                                VoidMainScreen.LABEL_SELECT_TRANSACTION_TO_VOID))
-                                .isTrue());
-            }
-
-            if (functionality.equals("SAF")) {
-                actor.attemptsTo(
-                        Ensure.that(
-                                        "Should see the 'Pending Transactions' button",
-                                        VisibilityQuestion.isPresent(
-                                                SafMainScreen.BUTTON_PENDING_TRANSACTIONS))
-                                .isTrue());
-            }
         }
 
-        if (access.equals("haven't")) {
+        if (functionality.equals("Settle")) {
             actor.attemptsTo(
-                    CommonTasks.validateAndDismissPopupAlertWithOkButton(
-                            actor, "Alert Message", "Access Not Granted!"),
                     Ensure.that(
-                                    "Should see the main screen title: '%s'"
-                                            .formatted(expectedTitle),
-                                    VisibilityQuestion.isPresent(
-                                            NumericScreen.TITLE.of(expectedTitle)))
-                            .isTrue(),
-                    Ensure.that(
-                                    "Should see the reason label: 'Enter your Clerk ID'",
-                                    VisibilityQuestion.isPresent(
-                                            NumericScreen.LABEL_REASON.of("Enter your Clerk ID")))
+                                    "Should see the label Summary",
+                                    VisibilityQuestion.isPresent(MainSettleScreen.LABEL_SUMMARY))
                             .isTrue());
         }
+
+        if (functionality.equals("Void")) {
+            actor.attemptsTo(
+                    Ensure.that(
+                                    "Should see the 'Select transaction to void' label",
+                                    VisibilityQuestion.isPresent(
+                                            VoidMainScreen.LABEL_SELECT_TRANSACTION_TO_VOID))
+                            .isTrue());
+        }
+
+        if (functionality.equals("SAF")) {
+            actor.attemptsTo(
+                    Ensure.that(
+                                    "Should see the 'Pending Transactions' button",
+                                    VisibilityQuestion.isPresent(
+                                            SafMainScreen.BUTTON_PENDING_TRANSACTIONS))
+                            .isTrue());
+        }
+    }
+
+    @Then("he should be REJECTED to access the functionality {word} as {word}.")
+    public void heShouldAccessAccessTheRefundOption(String functionality, String role) {
+
+        Actor actor = OnStage.theActorInTheSpotlight();
+
+        String expectedTitle = functionality.toUpperCase();
+
+        actor.attemptsTo(
+                CommonTasks.validateAndDismissPopupAlertWithOkButton(
+                        actor, "Alert Message", "Access Not Granted!"),
+                Ensure.that(
+                                "Should see the main screen title: '%s'".formatted(expectedTitle),
+                                VisibilityQuestion.isPresent(NumericScreen.TITLE.of(expectedTitle)))
+                        .isTrue(),
+                Ensure.that(
+                                "Should see the reason label: 'Enter your Clerk ID'",
+                                VisibilityQuestion.isPresent(
+                                        NumericScreen.LABEL_REASON.of("Enter your Clerk ID")))
+                        .isTrue());
     }
 }

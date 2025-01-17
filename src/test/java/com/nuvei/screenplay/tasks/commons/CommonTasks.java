@@ -55,7 +55,8 @@ public class CommonTasks {
 
         actor.attemptsTo(
                 Ensure.that(
-                                "Should see the alert title '%s'".formatted(title),
+                                "Should see a popup '%s' with description '%s'"
+                                        .formatted(title, message),
                                 VisibilityQuestion.isPresent(CommonObjects.POPUP_MESSAGE_TITLE))
                         .isTrue(),
                 Ensure.that(

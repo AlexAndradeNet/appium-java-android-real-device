@@ -5,22 +5,22 @@ Feature: Password-protected notable transactions.
   So that I can manage who has access.
 
   #@ignore
-  Scenario: 1: Setup - Clean the clerks list.
-    Given Aureliano, with ID 1 and Password 111111, is managing clerks,
-    When he removes all clerks except himself (ID 1),
-    Then he should see only his ID 1 in the list.
-
-  #@ignore
-  Scenario: 2: Setup - Disable all prompts in flow.
+  Scenario: 1: Setup - Disable all prompts in flow.
     Given Aureliano is in the Main Screen,
     When he deactivates all toggles options,
     Then he should see all toggles were deactivated.
 
   #@ignore
-  Scenario: 3: Setup - Enable SAF mode.
+  Scenario: 2: Setup - Enable SAF mode.
     Given Aureliano is in the Main Screen,
     When he enables the SAF mode with ID 1 and Password 111111,
     Then he should see that SAF was enabled.
+
+  #@ignore
+  Scenario: 3: Setup - Clean the clerks list.
+    Given Aureliano, with ID 1 and Password 111111, is managing clerks,
+    When he removes all clerks except himself (ID 1),
+    Then he should see only his ID 1 in the list.
 
   #@ignore
   Scenario: 4: Setup - Create the required clerks.
@@ -33,37 +33,48 @@ Feature: Password-protected notable transactions.
     Then he should see the each new clerk was created correctly.
 
   #@ignore
-  Scenario Outline: 5: Check minimum access level for Admin.
+  Scenario Outline: 5: Check Admins are allowed when minimum access level is Admin.
     Given Aureliano defined the minimum access level as Admin and opened the <functionality> option,
     # TODO: implement VHQ
     When he attempts to login in <functionality> using the <role>, with ID <clerk_id> and Password <password>,
-    Then he should <access> access the <functionality> option as <role>.
+    Then he should be ALLOWED to access the functionality <functionality> as admin.
 
     Examples:
-      | functionality | clerk_id | role     | password | access  |
+      | functionality | clerk_id | role     | password |
       # Refund
-      | Refund        | 1        | Admin    | 111111   | have    |
-      | Refund        | 2        | Manager  | 111111   | haven't |
-      | Refund        | 3        | Employee | 111111   | haven't |
-      # Moto
-      | Moto          | 1        | Admin    | 111111   | have    |
-      | Moto          | 2        | Manager  | 111111   | haven't |
-      | Moto          | 3        | Employee | 111111   | haven't |
-      # Batch
-      | Settle        | 1        | Admin    | 111111   | have    |
-      | Settle        | 2        | Manager  | 111111   | haven't |
-      | Settle        | 3        | Employee | 111111   | haven't |
-      # Void
-      | Void          | 1        | Admin    | 111111   | have    |
-      | Void          | 2        | Manager  | 111111   | haven't |
-      | Void          | 3        | Employee | 111111   | haven't |
-      # Void
-      | SAF          | 1        | Admin    | 111111   | have    |
-      | SAF          | 2        | Manager  | 111111   | haven't |
-      | SAF          | 3        | Employee | 111111   | haven't |
+      | Refund        | 1        | Admin    | 111111   |
+      | Moto          | 1        | Admin    | 111111   |
+      | Settle        | 1        | Admin    | 111111   |
+      | Void          | 1        | Admin    | 111111   |
+      | SAF           | 1        | Admin    | 111111   |
 
   #@ignore
-  Scenario: 6: Post-Setup - Disable SAF mode.
+  Scenario Outline: 6: Check Managers and Employees are rejected when minimum access level is Admin.
+    Given Aureliano defined the minimum access level as Admin and opened the <functionality> option,
+    # TODO: implement VHQ
+    When he attempts to login in <functionality> using the <role>, with ID <clerk_id> and Password <password>,
+    Then he should be REJECTED to access the functionality <functionality> as <role>.
+
+    Examples:
+      | functionality | clerk_id | role     | password |
+      # Refund
+      | Refund        | 2        | Manager  | 111111   |
+      | Refund        | 3        | Employee | 111111   |
+      # Moto
+      | Moto          | 2        | Manager  | 111111   |
+      | Moto          | 3        | Employee | 111111   |
+      # Batch
+      | Settle        | 2        | Manager  | 111111   |
+      | Settle        | 3        | Employee | 111111   |
+      # Void
+      | Void          | 2        | Manager  | 111111   |
+      | Void          | 3        | Employee | 111111   |
+      # Void
+      | SAF           | 2        | Manager  | 111111   |
+      | SAF           | 3        | Employee | 111111   |
+
+  #@ignore
+  Scenario: 7: Post-Setup - Disable SAF mode.
     Given Aureliano is in the Main Screen,
     When he disables the SAF mode with ID 1 and Password 111111,
     Then he should see that SAF was disabled.
