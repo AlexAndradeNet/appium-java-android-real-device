@@ -74,10 +74,37 @@ Follow the branch naming conventions below:
 
 #### Pull Requests
 
-- Ensure all PR titles follow the same imperative, present tense format as
-  commit messages.
-- PRs should be concise, focused, and only include changes related to a single
-  topic or issue.
+- Titles: Use imperative, present tense format for all PR titles (e.g., "Fix
+  login issue," "Implement new feature"). This should align with commit
+  messages.
+- Scope:
+    - Keep PRs focused on a single topic or issue.
+    - Avoid large, sprawling PRs.
+- Reviews:
+    - All PRs require at least one review from another team member.
+    - Address all comments and suggestions before merging.
+- Status:
+    - Mark PRs as "draft" if they are not ready for review.
+    - Assign a reviewer when a PR is ready for review.
+- Merging:
+    - After approval, the reviewer should merge the PR into the dev branch.
+    - Delete the original/base branch after merging (except for dev).
+- Resubmission: If a PR is not approved, make the necessary changes and resubmit
+  for review.
+
+### Code review
+
+- GitHub Configuration: Configure your GitHub settings to hide whitespace
+  changes (refer to [this image for guidance](assets/github-review-setup.png)).
+- Commit Messages:
+  - Include a SonarQube Quality Gate screenshot in the PR
+    description.
+  - Add a screenshot of the test if the pipeline can't run them.
+- Commit Validation: Review each commit individually, rather than focusing
+  solely on file-level changes.
+- Code Clarity:
+    - Pay attention to function and variable names.
+    - Strive for self-explanatory code that minimizes the need for comments.
 
 ---
 
