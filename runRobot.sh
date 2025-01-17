@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/bin/env bash # Environment
+set -euo pipefail # Error handling and Strict mode
 
 # Configuration file to save and read options
 CONFIG_FILE=".runRobot_last_run_options"
@@ -79,6 +80,8 @@ clean_gradle=$(get_input "Rebuild (clean) the entire project (Y/n): " "${clean_g
 
 if [[ "$clean_gradle" != "n" && "$clean_gradle" != "N" ]]; then
   clean_gradle_flag="clean"
+else
+    clean_gradle_flag=""
 fi
 
 # Get fail-fast option
@@ -86,6 +89,8 @@ fail_fast=$(get_input "Stop at first error (fail-fast) (Y/n): " "${fail_fast:-N}
 
 if [[ "$fail_fast" != "n" && "$fail_fast" != "N" ]]; then
   fail_fast_flag="--fail-fast"
+else
+    fail_fast_flag=""
 fi
 
 # Save current options for next execution
@@ -97,8 +102,11 @@ caffeinate -d &
 # Execute Gradle command
 echo "Executing: ./gradlew $clean_gradle_flag test --rerun-tasks $fail_fast_flag -Denvironment=$env_code"
 ./gradlew $clean_gradle_flag test --rerun-tasks $fail_fast_flag -Denvironment=$env_code
+gradlewstatus=$? # Save the exit status of the previous command
 
 # Revert the mac from going to sleep
 killall caffeinate
 
 echo "Test report is available at: build/reports/tests/test/index.html"
+
+exit $gradlewstatus
