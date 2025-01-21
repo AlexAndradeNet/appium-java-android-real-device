@@ -68,16 +68,15 @@ project:
 
 ### Running a Feature from IntelliJ
 
-1. Open the `feature` file you want to run.
-2. Go to the **Run** menu and select **Run...**.
-3. In the contextual menu, select the feature, then choose **Edit...**.
-4. In the 'Edit Configuration Settings' window, set the **main class** to
+1. Go to the **Run** menu and select **Run...**.
+2. In the contextual menu, then choose **Edit...**.
+3. In the 'Edit Configuration Settings' window, set the **main class** to
    `net.serenitybdd.cucumber.cli.Main`.
-5. Set the **Glue** field to the root package of your project (or the location
+4. Set the **Glue** field to the root package of your project (or the location
    of
    your step definitions): `com.nuvei.features.steps`.
-6. Set the **VM Options** to `-Denvironment=uk`.
-7. Click **Apply**.
+5. Set the **VM Options** to `-Denvironment=uk`.
+6. Click **Apply**.
 
 For more details,
 visit [John Ferguson Smart's blog on running Cucumber Serenity feature files in IntelliJ](https://johnfergusonsmart.com/running-cucumber-serenity-feature-files-directly-intellij/).
