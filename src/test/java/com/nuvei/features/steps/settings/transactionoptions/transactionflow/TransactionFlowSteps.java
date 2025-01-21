@@ -15,11 +15,13 @@ package com.nuvei.features.steps.settings.transactionoptions.transactionflow;
 
 import com.nuvei.screenplay.interactions.ToggleAction;
 import com.nuvei.screenplay.questions.VisibilityQuestion;
+import com.nuvei.screenplay.tasks.MainTileScreenTasks;
 import com.nuvei.screenplay.tasks.commons.CommonTasks;
 import com.nuvei.screenplay.tasks.settings.MainSettingsTasks;
 import com.nuvei.screenplay.tasks.settings.TransactionsOptionsTasks;
+import com.nuvei.screenplay.ui.CommonObjects;
+import com.nuvei.screenplay.ui.NumericScreen;
 import com.nuvei.screenplay.ui.settings.transactionoptions.MainTransactionOptionsScreen;
-import com.nuvei.screenplay.ui.settings.transactionoptions.TransactionFlowScreen;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import net.serenitybdd.screenplay.Actor;
@@ -28,17 +30,36 @@ import net.serenitybdd.screenplay.ensure.Ensure;
 
 public class TransactionFlowSteps {
 
-    @When("he enables the Order Number toggle,")
-    public void heEnablesTheOrderNumberPrompt() {
+    @When("he enables the {string} toggle,")
+    public void heEnablesTheOrderNumberPrompt(String toggleName) {
         Actor actor = OnStage.theActorInTheSpotlight();
         actor.attemptsTo(
                 MainSettingsTasks.openTransactionFlowScreen(actor),
-                ToggleAction.toOn(TransactionFlowScreen.TOGGLE_ORDER_NUMBER));
+                ToggleAction.toOn(CommonObjects.TOGGLE.of(toggleName)));
+        actor.remember("toggleName", toggleName);
     }
 
-    @Then("he see the Order Number prompt is prompted in Sales.")
-    public void heSeeTheOrderNumberPromptIsEnabled() {
-        assert true;
+    @Then("he should see the {string} is prompted in Sales.")
+    public void heSeeTheOrderNumberPromptIsEnabled(String toggleLabel) {
+        Actor actor = OnStage.theActorInTheSpotlight();
+        actor.attemptsTo(
+                CommonTasks.returnToMainScreen(actor),
+                MainTileScreenTasks.returnToInitialScreen(actor),
+                MainTileScreenTasks.openSale(actor));
+
+        actor.attemptsTo(
+                Ensure.that(
+                                "Should see the label '%s'".formatted(toggleLabel),
+                                VisibilityQuestion.isPresent(
+                                        NumericScreen.LABEL_REASON.of(toggleLabel)))
+                        .isTrue());
+
+        String toggleName = actor.recall("toggleName");
+
+        actor.attemptsTo(
+                CommonTasks.returnToMainScreen(actor),
+                MainSettingsTasks.openTransactionFlowScreen(actor),
+                ToggleAction.toOff(CommonObjects.TOGGLE.of(toggleName)));
     }
 
     @When("he deactivates all toggles options,")
