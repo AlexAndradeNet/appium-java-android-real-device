@@ -1,4 +1,4 @@
-#!/bin/env bash # Environment
+#!/bin/bash # Environment
 set -euo pipefail # Error handling and Strict mode
 
 function checkIfError() {

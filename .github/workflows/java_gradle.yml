@@ -2,15 +2,14 @@ name: Gradle Build
 
 on:
   push:
-    branches:
-      - main  # Run on push to the main branch
-  pull_request:
-    branches:
-      - main  # Run on pull requests to the main branch
+    branches: [ "dev", "stage", "master", "main" ]
+  pull_request: # Trigger on pull requests to any branch
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read  # Grant read-only access to repository contents
 
     steps:
       # Checkout the repository
@@ -29,15 +28,35 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '18'
-          cache: 'npm'
+
+      - name: Cache npm dependencies
+        # The cache is only refreshed when the lock file changes,
+        # leading to better cache reuse.
+        uses: actions/cache@v4
+        id: cache-primes
+        with:
+          path: |
+            ~/.npm
+            **/node_modules
+            ~/.run
+            ~/.gradle/caches
+          key: dependencies-cache-${{ runner.os }}-${{ hashFiles('package-lock.json', '**/*.gradle*', 'gradle/wrapper/gradle-wrapper.properties') }}
+          restore-keys: |
+              dependencies-cache-${{ runner.os }}-
+          save-always: true
 
       - name: Install Node.js dependencies
+        if: steps.cache-primes.outputs.cache-hit != 'true'
         run: npm ci
+
+      - name: Build with Gradle
+        run: ./gradlew build
+        continue-on-error: false
 
       - name: Run Gherkin lint
         run: npm run lint
         continue-on-error: false
 
-      - name: Build with Gradle
+      - name: Run Spotless Lint
         run: ./gradlew spotlessCheck
         continue-on-error: false

@@ -164,8 +164,11 @@ tasks.register('npmInstall', Exec) {
 tasks.register('installLocalGitHook', Copy) {
     from new File(rootProject.rootDir, 'scripts/pre-commit')
     into { new File(rootProject.rootDir, '.git/hooks') }
-    filePermissions {
-            0775
+    doLast {
+        // Execute chmod command to set permissions after copying
+        getProviders().exec {
+            commandLine 'chmod', '775', "${destinationDir}/pre-commit"
+        }
     }
 }
 
