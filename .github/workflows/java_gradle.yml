@@ -11,6 +11,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read  # Grant read-only access to repository contents
 
     steps:
       # Checkout the repository
