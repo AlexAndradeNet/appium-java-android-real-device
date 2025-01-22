@@ -49,10 +49,14 @@ jobs:
         if: steps.cache-primes.outputs.cache-hit != 'true'
         run: npm ci
 
+      - name: Build with Gradle
+        run: ./gradlew build
+        continue-on-error: false
+
       - name: Run Gherkin lint
         run: npm run lint
         continue-on-error: false
 
-      - name: Build with Gradle
+      - name: Run Spotless Lint
         run: ./gradlew spotlessCheck
         continue-on-error: false
