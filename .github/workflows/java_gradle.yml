@@ -2,11 +2,8 @@ name: Gradle Build
 
 on:
   push:
-    branches:
-      - main  # Run on push to the main branch
-  pull_request:
-    branches:
-      - main  # Run on pull requests to the main branch
+    branches: [ "dev", "stage", "master", "main" ]
+  pull_request: # Trigger on pull requests to any branch
 
 jobs:
   build:
