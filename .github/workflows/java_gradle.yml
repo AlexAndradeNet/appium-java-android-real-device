@@ -31,9 +31,25 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '18'
-          cache: 'npm'
+
+      - name: Cache npm dependencies
+        # The cache is only refreshed when the lock file changes,
+        # leading to better cache reuse.
+        uses: actions/cache@v4
+        id: cache-primes
+        with:
+          path: |
+            ~/.npm
+            **/node_modules
+            ~/.run
+            ~/.gradle/caches
+          key: dependencies-cache-${{ runner.os }}-${{ hashFiles('package-lock.json', '**/*.gradle*', 'gradle/wrapper/gradle-wrapper.properties') }}
+          restore-keys: |
+              dependencies-cache-${{ runner.os }}-
+          save-always: true
 
       - name: Install Node.js dependencies
+        if: steps.cache-primes.outputs.cache-hit != 'true'
         run: npm ci
 
       - name: Run Gherkin lint
