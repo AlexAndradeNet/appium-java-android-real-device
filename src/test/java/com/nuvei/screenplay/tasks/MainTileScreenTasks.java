@@ -14,7 +14,7 @@ from Nuvei Inc.
 package com.nuvei.screenplay.tasks;
 
 import static com.nuvei.screenplay.ui.MainTileScreen.*;
-import static net.serenitybdd.screenplay.matchers.WebElementStateMatchers.*;
+import static net.serenitybdd.screenplay.matchers.WebElementStateMatchers.isNotPresent;
 
 import com.nuvei.screenplay.interactions.ClickAction;
 import com.nuvei.screenplay.interactions.SkipScenarioAction;
@@ -25,6 +25,7 @@ import com.nuvei.screenplay.ui.NumericScreen;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Performable;
 import net.serenitybdd.screenplay.Task;
+import net.serenitybdd.screenplay.conditions.Check;
 import net.serenitybdd.screenplay.ensure.Ensure;
 import net.serenitybdd.screenplay.targets.Target;
 import net.serenitybdd.screenplay.waits.WaitUntil;
@@ -49,11 +50,13 @@ public class MainTileScreenTasks {
 
     public static Performable openRefund(Actor actor) {
         // Refund is not available when Crypto is enabled
-        if (actor.asksFor(VisibilityQuestion.notPresent(BUTTON_CRYPTO_TRANSACTION))) {
-            actor.attemptsTo(
-                    SkipScenarioAction.byCause("Refund is not available when Crypto is enabled"));
-        }
-        actor.attemptsTo(ClickAction.on(BUTTON_REFUND_TRANSACTION));
+
+        actor.attemptsTo(
+                Check.whether(VisibilityQuestion.isPresent(BUTTON_REFUND_TRANSACTION))
+                        .andIfSo(ClickAction.on(BUTTON_REFUND_TRANSACTION))
+                        .otherwise(
+                                SkipScenarioAction.withReason(
+                                        "Refund is not available when Crypto is enabled")));
 
         return Task.where("{0} opens the Refund main tile");
     }

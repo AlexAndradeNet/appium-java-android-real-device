@@ -74,7 +74,7 @@ public class SafSettingsTasks {
 
     private static Performable skipIfTheFuntionIsntAvailable(Actor actor) {
         if (actor.asksFor(EnvironmentQuestion.isMSeries())) {
-            actor.attemptsTo(SkipScenarioAction.byCause("SAF is not available in M-Series"));
+            actor.attemptsTo(SkipScenarioAction.withReason("SAF is not available in M-Series"));
         }
         return Task.where("{0} is in a T-Series device");
     }
