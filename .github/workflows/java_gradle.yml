@@ -42,7 +42,7 @@ jobs:
             ~/.gradle/caches
           key: dependencies-cache-${{ runner.os }}-${{ hashFiles('package-lock.json', '**/*.gradle*', 'gradle/wrapper/gradle-wrapper.properties') }}
           restore-keys: |
-              dependencies-cache-${{ runner.os }}-
+            dependencies-cache-${{ runner.os }}-
           save-always: true
 
       - name: Install Node.js dependencies
