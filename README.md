@@ -16,11 +16,11 @@ by [Jacobvu84 on Serenity Screenplay with Appium](https://github.com/Jacobvu84/s
 
 This project is built using the following technologies:
 
-- **Java 17 (Corretto)**
-- **Gradle**
-- **Appium >= 2.13.1**
-- **Appium Inspector**
-- **Android SDK**
+- **Java 17 (Corretto)**.
+- **Gradle**.
+- **Appium >= 2.13.1**.
+- **Appium Inspector**.
+- **Android SDK**.
 
 For detailed setup instructions, please refer to
 the [INSTALLATION.md](docs/INSTALLATION.md) file.
@@ -43,10 +43,8 @@ Follow these steps to run the tests on an Android device:
    Wi-Fi. Refer to the specific section in
    the [INSTALLATION.md](docs/INSTALLATION.md) file for detailed instructions.
 
-2. **Start the Appium Server**:
-
-Run the following command in the terminal while in the root directory of the
-project:
+2. **Start the Appium Server**: Run the following command in the terminal while
+   in the **root directory of the project**:
 
    ```bash
    appium
@@ -73,28 +71,26 @@ project:
 3. In the 'Edit Configuration Settings' window, set the **main class** to
    `net.serenitybdd.cucumber.cli.Main`.
 4. Set the **Glue** field to the root package of your project (or the location
-   of
-   your step definitions): `com.nuvei.features.steps`.
+   of your step definitions): `com.nuvei.features.steps`.
 5. Set the **VM Options** to `-Denvironment=uk`.
 6. Click **Apply**.
-
-For more details,
-visit [John Ferguson Smart's blog on running Cucumber Serenity feature files in IntelliJ](https://johnfergusonsmart.com/running-cucumber-serenity-feature-files-directly-intellij/).
+7. For more details,
+   visit [John Ferguson Smart's blog on running Cucumber Serenity feature files in IntelliJ](https://johnfergusonsmart.com/running-cucumber-serenity-feature-files-directly-intellij/).
 
 #### Optional: Customize Scenario Execution Template
 
 You can customize the default settings for running Cucumber Java scenarios:
 
-1. Navigate: Go to Run > Edit Configurations > Edit Configuration Templates >
-   Cucumber Java.
+1. Go to the menu **Run > Edit Configurations > Edit Configuration Templates >
+   Cucumber Java**.
+2. Use the information provided in the previous section.
 
 ---
 
 ## 📊 Reporting
 
 Test execution reports are generated in the `build/reports/tests/test`
-directory. To
-open the report in your browser:
+directory. To open the report in your browser:
 
 - **On Mac:**
 
@@ -117,8 +113,7 @@ collaboration.
 
 > "The ratio of time spent reading versus writing is well over 10 to 1. We are
 > constantly reading old code as part of the effort to write new code. …making
-> it
-> easy to read makes it easier to write."
+> it easy to read makes it easier to write."
 >
 > _Robert C. Martin (a.k.a. Uncle Bob)_
 
@@ -148,3 +143,7 @@ Gherkin files:
 ```bash
 sh scripts/gherkin_check.sh
 ```
+
+---
+
+Happy coding! 🚀
