@@ -14,7 +14,9 @@ from Nuvei Inc.
 package com.nuvei.screenplay.questions;
 
 import com.nuvei.screenplay.interactions.SwipeAction;
-import java.util.*;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 import net.serenitybdd.core.pages.ListOfWebElementFacades;
 import net.serenitybdd.screenplay.Question;
 import net.serenitybdd.screenplay.targets.Target;

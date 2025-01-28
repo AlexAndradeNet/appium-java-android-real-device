@@ -40,13 +40,12 @@ Feature: Password-protected notable transactions.
     Then he should be ALLOWED to access the functionality <functionality> as admin.
 
     Examples:
-      | functionality | clerk_id | role     | password |
-      # Refund
-      | Refund        | 1        | Admin    | 111111   |
-      | Moto          | 1        | Admin    | 111111   |
-      | Settle        | 1        | Admin    | 111111   |
-      | Void          | 1        | Admin    | 111111   |
-      | SAF           | 1        | Admin    | 111111   |
+      | functionality | clerk_id | role  | password |
+      | Refund        | 1        | Admin | 111111   |
+      | Moto          | 1        | Admin | 111111   |
+      | Settle        | 1        | Admin | 111111   |
+      | Void          | 1        | Admin | 111111   |
+      | SAF           | 1        | Admin | 111111   |
 
   #@ignore
   Scenario Outline: 6: Check Managers and Employees are rejected when minimum access level is Admin.

@@ -97,9 +97,9 @@ Follow the branch naming conventions below:
 - GitHub Configuration: Configure your GitHub settings to hide whitespace
   changes (refer to [this image for guidance](assets/github-review-setup.png)).
 - Commit Messages:
-  - Include a SonarQube Quality Gate screenshot in the PR
-    description.
-  - Add a screenshot of the test if the pipeline can't run them.
+    - Include a SonarQube Quality Gate screenshot in the PR
+      description.
+    - Add a screenshot of the test if the pipeline can't run them.
 - Commit Validation: Review each commit individually, rather than focusing
   solely on file-level changes.
 - Code Clarity:
@@ -117,8 +117,7 @@ Martin (Uncle Bob):
 
 > "The ratio of time spent reading versus writing is well over 10 to 1. We are
 > constantly reading old code as part of the effort to write new code. …making
-> it
-> easy to read makes it easier to write."
+> it easy to read makes it easier to write."
 
 To run the linter for Java, execute the following command:
 
@@ -131,9 +130,9 @@ To run the linter for Java, execute the following command:
 Running static code analysis helps detect potential bugs or code smells before
 submitting a PR. Use the following commands to run the analysis:
 
-  ```bash
-  ./gradlew sonar
-  ```
+```bash
+./gradlew sonar
+```
 
 The report will be accessible at [http://localhost:9000](http://localhost:9000).
 
@@ -149,5 +148,4 @@ instructions [here](https://blankfactor.atlassian.net/wiki/spaces/Marqueta/pages
 
 ---
 
-This revised guide provides clearer and more structured information, ensuring a
-smooth contribution process while maintaining high-quality code standards.
+Happy coding! 🚀

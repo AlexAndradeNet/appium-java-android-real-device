@@ -97,6 +97,7 @@ fi
 save_options
 
 # Prevent the mac from going to sleep
+killall caffeinate > /dev/null 2>&1
 caffeinate -d &
 
 # Execute Gradle command

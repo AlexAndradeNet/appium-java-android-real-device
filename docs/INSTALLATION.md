@@ -19,8 +19,7 @@ the [official Android Studio installation guide](https://developer.android.com/s
 
 > **Note:** The following steps provide a minimal setup to run tests. For a full
 > Android Studio installation, refer to
->
-the [Android Studio setup guide](https://developer.android.com/studio/install).
+> the [Android Studio setup guide](https://developer.android.com/studio/install)
 
 1. **Install OpenJDK and Android Command Line Tools**
 
@@ -28,8 +27,16 @@ the [Android Studio setup guide](https://developer.android.com/studio/install).
    the necessary dependencies:
 
    ```bash
+   # Silicon Macs
    brew update
    brew install --cask corretto@17
+   brew install android-commandlinetools --cask
+   ```
+   For Intel based Macs ⚠️:
+    ```bash
+   # Intel Macs
+   brew update
+   brew install openjdk@17
    brew install android-commandlinetools --cask
    ```
 
@@ -39,18 +46,35 @@ the [Android Studio setup guide](https://developer.android.com/studio/install).
    line to your `~/.zprofile`:
 
    ```bash
+   # Silicon Macs
    echo "export ANDROID_SDK_ROOT=/opt/homebrew/share/android-commandlinetools/" >> ~/.zprofile
+   echo "export ANDROID_HOME=$ANDROID_SDK_ROOT" >> ~/.zprofile
+   echo "export JAVA_HOME=/usr/local/opt/corretto@17" >> ~/.zprofile
+   source ~/.zprofile
+   ```
+
+   For Intel based Macs ⚠️:
+   ```bash
+   # Intel Macs
+   echo "export ANDROID_SDK_ROOT=/usr/local/share/android-commandlinetools/" >> ~/.zprofile
+   echo "export ANDROID_HOME=$ANDROID_SDK_ROOT" >> ~/.zprofile
+   echo "export JAVA_HOME=/usr/local/opt/openjdk@17" >> ~/.zprofile
    source ~/.zprofile
    ```
 
 3. **Install Android SDK Components**
 
-   Install the essential Android SDK components using `sdkmanager`. If you are
-   using an Intel-based Mac, replace `arm64-v8a` with `x86_64` in the command
-   below:
+   Install the essential Android SDK components using `sdkmanager`.
 
    ```bash
+   # Silicon Macs
    sdkmanager "build-tools;33.0.0" "platform-tools" "emulator" "system-images;android-33;google_apis;arm64-v8a" "platforms;android-33"
+   ```
+
+   For Intel based Macs ⚠️:
+    ```bash
+   # Intel Macs
+   sdkmanager "build-tools;33.0.0" "platform-tools" "emulator" "system-images;android-33;google_apis;x86_64" "platforms;android-33"
    ```
 
 4. **Verify Installation**
@@ -92,24 +116,41 @@ packages.
 
 ### Installing Appium Inspector
 
-Appium Inspector is a GUI tool that helps inspect the elements of your app and
-retrieve their locators. You can download it from
-the [Appium Inspector GitHub releases page](https://github.com/appium/appium-inspector/releases).
+Appium Inspector is a graphical user interface (GUI) tool that simplifies
+inspecting elements within your mobile app and retrieving their locators. Get it
+quickly by following these steps:
 
-It's possible you need to grant permission to run the app. Run the following:
+1. **Download Appium Inspector:** Head over to the
+   official [Appium Inspector GitHub releases page](https://github.com/appium/appium-inspector/releases).
+   Download the latest version compatible with your operating system.
+2. **Install Appium Inspector:** Open the downloaded file and drag the Appium
+   Inspector app to your Applications folder.
+3. **Grant Permissions** (if needed): On macOS, some downloaded applications
+   might require permission to run. If you encounter this issue, open a terminal
+   window and execute the following command:
 
-```bash
-xattr -d com.apple.quarantine /Applications/Appium\ Inspector.app
-```
+    ```bash
+    xattr -d com.apple.quarantine /Applications/Appium\ Inspector.app
+    ```
 
-To connect to a real device you will need to add the following capabilities:
-```json
-{
-  "appium:deviceName": "t650c",
-  "appium:automationName": "UiAutomator2",
-  "appium:platformName": "Android"
-}
-```
+4. **Run Appium server**: Open a terminal, got to the project's root folder and
+   run the following command:
+
+    ```bash
+    appium
+    ```
+
+5. **Connect Your Device:** Launch Appium Inspector. To connect to a real or
+   emulated device, you'll need to add the desired capabilities to the initial
+   screen. Here's an example for an Android device:
+
+    ```json
+    {
+        "appium:deviceName": "t650c",
+        "appium:automationName": "UiAutomator2",
+        "appium:platformName": "Android"
+    }
+    ```
 
 ---
 
