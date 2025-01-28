@@ -107,7 +107,8 @@ test {
         events "PASSED", "FAILED", "SKIPPED"
     }
     systemProperties System.getProperties()
-    systemProperty 'serenity.generateOutcomes', 'false' // Disable reports during tests
+    systemProperty 'serenity.generateOutcomes', 'false'
+    // Disable reports during tests
     retry {
         maxRetries = 0 // Disables test retries
     }

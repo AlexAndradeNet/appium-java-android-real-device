@@ -31,7 +31,7 @@ public class SkipScenarioAction implements Interaction {
         Assumptions.abort(cause);
     }
 
-    public static Performable byCause(String cause) {
-        return Tasks.instrumented(SkipScenarioAction.class, cause);
+    public static Performable withReason(String reason) {
+        return Tasks.instrumented(SkipScenarioAction.class, reason);
     }
 }
