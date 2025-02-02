@@ -13,8 +13,10 @@ from Nuvei Inc.
 */
 package com.nuvei.screenplay.interactions;
 
-import static org.awaitility.Awaitility.await;
-
+import com.nuvei.features.steps.Hooks;
+import com.nuvei.utils.SimpleLogger;
+import java.time.Duration;
+import java.time.Instant;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Performable;
 import net.serenitybdd.screenplay.Task;

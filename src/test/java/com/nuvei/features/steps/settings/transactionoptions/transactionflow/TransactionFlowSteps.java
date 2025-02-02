@@ -30,7 +30,7 @@ import net.serenitybdd.screenplay.ensure.Ensure;
 
 public class TransactionFlowSteps {
 
-    @When("he enables the {string} toggle,")
+    @When("he enables the {string} toggle")
     public void heEnablesTheOrderNumberPrompt(String toggleName) {
         Actor actor = OnStage.theActorInTheSpotlight();
         actor.attemptsTo(
@@ -39,7 +39,7 @@ public class TransactionFlowSteps {
         actor.remember("toggleName", toggleName);
     }
 
-    @Then("he should see the {string} is prompted in Sales.")
+    @Then("he should see the {string} is prompted in Sales")
     public void heSeeTheOrderNumberPromptIsEnabled(String toggleLabel) {
         Actor actor = OnStage.theActorInTheSpotlight();
         actor.attemptsTo(
@@ -62,7 +62,7 @@ public class TransactionFlowSteps {
                 ToggleAction.toOff(CommonObjects.TOGGLE.of(toggleName)));
     }
 
-    @When("he deactivates all toggles options,")
+    @When("he deactivates all toggles options")
     public void heDeactivatesAllTogglesOptions() {
         Actor actor = OnStage.theActorInTheSpotlight();
         actor.attemptsTo(
@@ -87,7 +87,7 @@ public class TransactionFlowSteps {
         }
     }
 
-    @Then("he should see all toggles were deactivated.")
+    @Then("he should see all toggles were deactivated")
     public void heShouldSeeAllTogglesWereDeactivated() {
         OnStage.theActorInTheSpotlight().attemptsTo(Ensure.that(true).isTrue());
     }
