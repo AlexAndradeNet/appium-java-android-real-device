@@ -24,6 +24,8 @@ import net.serenitybdd.screenplay.Tasks;
 
 public class WaitSpecificTime implements Task {
 
+    private static final SimpleLogger logger = new SimpleLogger(Hooks.class);
+
     private final long seconds;
 
     protected WaitSpecificTime(long milliseconds) {
@@ -36,7 +38,21 @@ public class WaitSpecificTime implements Task {
 
     @Override
     public <T extends Actor> void performAs(T actor) {
-        var duration = java.time.Duration.ofSeconds(seconds);
-        await().atMost(duration).until(() -> true);
+        var currentInstant = Instant.now(); // Instant is generally preferred for machine time
+
+        logger.debug("Waiting for " + seconds + " seconds");
+        logger.debug("Starting at: " + currentInstant);
+
+        var duration = Duration.ofSeconds(seconds);
+        long millis = duration.toMillis(); // Convert to milliseconds
+
+        try {
+            Thread.sleep(millis); // Use Thread.sleep() for precise waits
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        currentInstant = Instant.now();
+        logger.debug("Finishing at: " + currentInstant);
     }
 }
