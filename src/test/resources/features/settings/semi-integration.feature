@@ -40,16 +40,19 @@ Feature: Semi-Integration Setup.
     Then he should immediately see the Idle screen after returning to the Main Screen
 
   #@ignore
-  Scenario: 6: Log-In to Standalone Mode
-    Given Aureliano is in the Semi-Integration Idle Screen
+  Scenario: 6: Check Admins are allowed when minimum access level is Admin
+    Given Aureliano defined the minimum access level as Admin and is in the Semi-Integration Idle Screen
+    # TODO: implement VHQ
     When he attempts to log-in to Standalone Mode with ID 1 and password 111111
     Then he should see the Main screen
     And he should see that the Idle screen appears after waiting 60 seconds on the Main Screen
 
   #@ignore
-  Scenario Outline: 7: Verify that non Admins couldn't access Standalone Mode
-    Given Aureliano is in the Semi-Integration Idle Screen
-    When he attempts to log-in to Standalone Mode with ID <clerk_id>
+  # BUG: This is failing because role management isn't implemented yet
+  Scenario Outline: 7: (EXPECTING TO FAIL) Check Managers and Employees are rejected when minimum access level is Admi
+    Given Aureliano defined the minimum access level as Admin and is in the Semi-Integration Idle Screen
+    # TODO: implement VHQ
+    When he attempts to log-in to Standalone Mode as <role> with ID <clerk_id>
     Then he should see be REJECTED to access the Standalone Mode as <role>
 
     Examples:

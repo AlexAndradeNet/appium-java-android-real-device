@@ -155,15 +155,17 @@ public class SemiIntegrationSettingsSteps {
                         .isTrue());
     }
 
-    @Given("{actor} is in the Semi-Integration Idle Screen")
-    public void aurelianoIsInTheSemiIntegrationIdleScreen(Actor actor) {
+    @Given(
+            "{actor} defined the minimum access level as {word} and is in the Semi-Integration Idle"
+                    + " Screen")
+    public void aurelianoIsInTheSemiIntegrationIdleScreen(Actor actor, String role) {
         final int secondsForPasswordScreenToAppear = 0;
         heShouldSeeThatTheIdleScreenAfterWaitingSecondsOnTheMainScreen(
                 secondsForPasswordScreenToAppear);
     }
 
-    @When("he attempts to log-in to Standalone Mode with ID {word}")
-    public void heLogsInToStandaloneMode(String clerkId) {
+    @When("he attempts to log-in to Standalone Mode as {word} with ID {word}")
+    public void heLogsInToStandaloneModeAsRole(String role, String clerkId) {
         Actor actor = OnStage.theActorInTheSpotlight();
 
         actor.attemptsTo(ClickAction.on(CommonObjects.BUTTON_GO_TO_STANDALONE));

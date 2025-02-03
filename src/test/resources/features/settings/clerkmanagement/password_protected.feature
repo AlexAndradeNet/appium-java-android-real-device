@@ -48,7 +48,8 @@ Feature: Password-protected notable transactions.
       | SAF           | 1        | Admin | 111111   |
 
   #@ignore
-  Scenario Outline: 6: Check Managers and Employees are rejected when minimum access level is Admin
+  # This is failing because needs to implement the role management against VHQ
+  Scenario Outline: 6: (EXPECTING TO FAIL) Check Managers and Employees are rejected when minimum access level is Admin
     Given Aureliano defined the minimum access level as Admin and opened the <functionality> option
     # TODO: implement VHQ
     When he attempts to login in <functionality> using the <role>, with ID <clerk_id> and Password <password>
