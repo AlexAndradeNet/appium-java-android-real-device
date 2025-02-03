@@ -40,7 +40,8 @@ for all the necessary information to get started.
 Follow these steps to run the tests on an Android device:
 
 1. **Connect the Android Device**: Connect your Android device either by USB or
-   Wi-Fi. Refer to the specific section in
+   Wi-Fi (recommended). The Wi-Fi connection is a little bit slow, but it's
+   **more stable**. Refer to the specific section in
    the [INSTALLATION.md](docs/INSTALLATION.md) file for detailed instructions.
 
 2. **Start the Appium Server**: Run the following command in the terminal while

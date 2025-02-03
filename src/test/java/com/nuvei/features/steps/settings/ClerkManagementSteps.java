@@ -41,7 +41,7 @@ public class ClerkManagementSteps {
     private static final String CLERK_PASSWORD = "clerkPassword";
     private static final String SCREEN_TITLE = "CLERK MANAGEMENT";
 
-    @Given("{actor}, with ID {word} and Password {word}, is managing clerks,")
+    @Given("{actor}, with ID {word} and Password {word}, is managing clerks")
     public void isManagingClerks(Actor actor, String clerkId, String password) {
         managesClerks(actor, clerkId, password);
     }
@@ -58,7 +58,7 @@ public class ClerkManagementSteps {
                 CLERK_PASSWORD, clerkPassword);
     }
 
-    @When("he/she lists the clerks,")
+    @When("he/she lists the clerks")
     public void listsTheClerks() {
         OnStage.theActorInTheSpotlight()
                 .remember( // Save the list of clerks for later use
@@ -67,7 +67,7 @@ public class ClerkManagementSteps {
                                 MainClerkManagementScreen.LIST_OF_USER_PROFILE_IDS));
     }
 
-    @When("he changes {word}, with ID {word}, role from {word} to {word},")
+    @When("he changes {word}, with ID {word}, role from {word} to {word}")
     public void updatesClerkRoleFromEmployeeToManager(
             String alias, String clerkId, String oldRole, String newRole) {
         Actor actor = OnStage.theActorInTheSpotlight();
@@ -77,24 +77,24 @@ public class ClerkManagementSteps {
                 CommonTasks.returnToMainScreen(actor));
     }
 
-    @When("he search for the Clerk ID {word},")
+    @When("he search for the Clerk ID {word}")
     public void searchForTheClerkID(String clerkId) {
         Actor actor = OnStage.theActorInTheSpotlight();
         actor.attemptsTo(ClerkManagementTasks.searchForClerkId(actor, clerkId));
     }
 
-    @When("he requests his account details, which is {word},")
+    @When("he requests his account details, which is {word}")
     public void requestsAnAccountDetails(String clerkId) {
         Actor actor = OnStage.theActorInTheSpotlight();
         actor.attemptsTo(ClerkManagementTasks.openAccountDetailsForProfile(actor, clerkId));
     }
 
-    @When("he requests another clerk's account details \\(ex: ID {word}),")
+    @When("he requests another clerk's account details \\(ex: ID {word})")
     public void requestsAnotherClerkSAccountDetails(String clerkID) {
         requestsAnAccountDetails(clerkID);
     }
 
-    @When("he, with ID {word}, attempts to change his password to the current password {word},")
+    @When("he, with ID {word}, attempts to change his password to the current password {word}")
     public void attemptsToChangeHisPasswordToTheCurrentPassword(
             String clerkId, String currentPassword) {
         Actor actor = OnStage.theActorInTheSpotlight();
@@ -105,7 +105,7 @@ public class ClerkManagementSteps {
 
     @When(
             "he, with ID {word}, attempts to change his password to {word}, failing the"
-                    + " verification by entering {word},")
+                    + " verification by entering {word}")
     public void attemptsToChangeHisPasswordButFailsTheVerification(
             String clerkId, String newPassword, String wrongConfirmationPassword) {
         Actor actor = OnStage.theActorInTheSpotlight();
@@ -114,7 +114,7 @@ public class ClerkManagementSteps {
                 ClerkManagementTasks.changePassword(actor, newPassword, wrongConfirmationPassword));
     }
 
-    @When("he, with ID {word}, attempts to change his password to {word},")
+    @When("he, with ID {word}, attempts to change his password to {word}")
     public void attemptsToChangeHisPasswordForAValidNewPassword(
             String clerkId, String newPassword) {
         Actor actor = OnStage.theActorInTheSpotlight();
@@ -123,14 +123,14 @@ public class ClerkManagementSteps {
                 ClerkManagementTasks.changePassword(actor, newPassword, newPassword));
     }
 
-    @When("he attempts to create a new clerk with his own Clerk ID {word},")
+    @When("he attempts to create a new clerk with his own Clerk ID {word}")
     public void attemptsToCreateANewClerkWithHisOwnClerkID(String clerkId) {
         Actor actor = OnStage.theActorInTheSpotlight();
         actor.attemptsTo(
                 ClerkManagementTasks.addANewUser(actor, true, clerkId, "Employee", "111111"));
     }
 
-    @When("he attempts to update {word} Clerk ID from {word} to {word},")
+    @When("he attempts to update {word} Clerk ID from {word} to {word}")
     public void attemptsToUpdateClerkIDToAValidValue(
             String alias, String currentClerkId, String newClerkId) {
         Actor actor = OnStage.theActorInTheSpotlight();
@@ -139,7 +139,7 @@ public class ClerkManagementSteps {
                 ClerkManagementTasks.changeClerkId(actor, newClerkId));
     }
 
-    @When("he attempts to update {word} \\(ID {word}) password to {word},")
+    @When("he attempts to update {word} \\(ID {word}) password to {word}")
     public void attemptsToUpdatePasswordToAValidValue(
             String alias, String clerkId, String newPassword) {
         Actor actor = OnStage.theActorInTheSpotlight();
@@ -148,7 +148,7 @@ public class ClerkManagementSteps {
                 ClerkManagementTasks.changePassword(actor, newPassword, newPassword));
     }
 
-    @When("he attempts to delete {word} account \\(ID {word}) but regrets it,")
+    @When("he attempts to delete {word} account \\(ID {word}) but regrets it")
     public void attemptsToDeleteAClerkButRegretsIt(String alias, String clerkId) {
         Actor actor = OnStage.theActorInTheSpotlight();
         actor.attemptsTo(
@@ -159,14 +159,14 @@ public class ClerkManagementSteps {
 
     @Then(
             "he should see that the clerks list is sorted numerically \\({string}) instead of"
-                    + " alphabetically.")
+                    + " alphabetically")
     public void verifyClerkList(String clerksList) {
         Actor actor = OnStage.theActorInTheSpotlight();
 
         actor.attemptsTo(Ensure.that(actor.recall("clerksList").toString()).isEqualTo(clerksList));
     }
 
-    @Then("he should see that the clerk {word}, with ID {word}, is listed as a {word}.")
+    @Then("he should see that the clerk {word}, with ID {word}, is listed as a {word}")
     public void shouldSeeThatTheClerkIsListedAsA(
             String clerkName, String clerkId, String clerkRole) {
         OnStage.theActorInTheSpotlight()
@@ -185,7 +185,7 @@ public class ClerkManagementSteps {
                                 .isEqualToIgnoringCase(clerkRole));
     }
 
-    @Then("he should that the list is empty.")
+    @Then("he should that the list is empty")
     public void shouldThatTheListIsEmpty() {
         OnStage.theActorInTheSpotlight()
                 .attemptsTo(
@@ -196,7 +196,7 @@ public class ClerkManagementSteps {
                                 .isEqualTo(0));
     }
 
-    @Then("he should see the options to change password, Clerk ID, and Role.")
+    @Then("he should see the options to change password, Clerk ID, and Role")
     public void shouldHaveTheOptionsToChangePasswordClerkIDAndRole() {
         OnStage.theActorInTheSpotlight()
                 .attemptsTo(
@@ -219,7 +219,7 @@ public class ClerkManagementSteps {
 
     @Then(
             "he should only have the option to change his password, and no options for Clerk ID or"
-                    + " Role.")
+                    + " Role")
     public void shouldOnlyHaveTheOptionToChangeHisPasswordAndNoOptionsForClerkIDOrRole() {
         Actor actor = OnStage.theActorInTheSpotlight();
         actor.attemptsTo(
@@ -252,7 +252,7 @@ public class ClerkManagementSteps {
                         .isFalse());
     }
 
-    @And("he should still be able to use his ID {word} and old password {word} to manage clerks.")
+    @And("he should still be able to use his ID {word} and old password {word} to manage clerks")
     public void shouldStillBeAbleToUseHisOldPasswordToManageClerks(
             String clerkId, String oldPassword) {
         Actor actor = OnStage.theActorInTheSpotlight();
@@ -263,7 +263,7 @@ public class ClerkManagementSteps {
 
     @Then(
             "he, with ID {word}, should be able to use his new password {word} to revert it to"
-                    + " {word}.")
+                    + " {word}")
     public void shouldBeAbleToUseHisNewPasswordToManageClerks(
             String clerkId, String currentPassword, String newPassword) {
         testNewPasswordAndChangeIt(clerkId, currentPassword, newPassword);
@@ -280,7 +280,7 @@ public class ClerkManagementSteps {
         actor.attemptsTo(ClerkManagementTasks.changePassword(actor, newPassword, newPassword));
     }
 
-    @Then("he should receive the error message {string}.")
+    @Then("he should receive the error message {string}")
     public void shouldReceiveTheErrorMessage(String messageError) {
         Actor actor = OnStage.theActorInTheSpotlight();
 
@@ -289,7 +289,7 @@ public class ClerkManagementSteps {
                         actor, "Alert Message", messageError));
     }
 
-    @Then("he should see {word} new Clerk ID is {word} in the clerks list.")
+    @Then("he should see {word} new Clerk ID is {word} in the clerks list")
     public void shouldSeeNewClerkIDInTheClerksList(String alias, String clerkId) {
         Actor actor = OnStage.theActorInTheSpotlight();
 
@@ -305,7 +305,7 @@ public class ClerkManagementSteps {
                         .isTrue());
     }
 
-    @Then("he should still see {word} account \\(ID {word}) in the clerks list.")
+    @Then("he should still see {word} account \\(ID {word}) in the clerks list")
     public void shouldSeeTheClerkStillInTheClerksList(String alias, String clerkId) {
         Actor actor = OnStage.theActorInTheSpotlight();
 
@@ -336,7 +336,7 @@ public class ClerkManagementSteps {
         actor.remember("clerkListDataTable", dataTable);
     }
 
-    @Then("he should see the each new clerk was created correctly.")
+    @Then("he should see the each new clerk was created correctly")
     public void heShouldSeeTheNewClerkIsListedAsWithTheRole() {
         Actor actor = OnStage.theActorInTheSpotlight();
         DataTable dataTable = actor.recall("clerkListDataTable");
@@ -366,13 +366,13 @@ public class ClerkManagementSteps {
 
     @Then(
             "he/she should see the list as a Manager, meaning he/she can see his/her account and"
-                    + " all the Employees' roles \\({string}),")
+                    + " all the Employees' roles \\({string})")
     public void shouldSeeTheListAsAManagerMeaningHeCanSeeHisAccountAllTheEmployeesRoles(
             String clerkList) {
         verifyClerkList(clerkList);
     }
 
-    @And("he/she should have the option to add new clerks.")
+    @And("he/she should have the option to add new clerks")
     public void hasTheOptionToAddNewClerks() {
         checkAbilityToAddNewClerks(true);
     }
@@ -389,17 +389,17 @@ public class ClerkManagementSteps {
 
     @Then(
             "she/he should see a list as an Employee, meaning she/he can see only her/his account,"
-                    + " which is {word},")
+                    + " which is {word}")
     public void sheShouldSeeAListAsAEmployeeMeaningSheCanSeeOnlyHerAccountWhichIs(String clerkId) {
         verifyClerkList(clerkId);
     }
 
-    @And("she/he should have no option to add new clerks.")
+    @And("she/he should have no option to add new clerks")
     public void sheHasNoOptionToAddNewClerks() {
         checkAbilityToAddNewClerks(false);
     }
 
-    @And("he uses {word} credentials, ID {word} and Password {word}, to list clerks,")
+    @And("he uses {word} credentials, ID {word} and Password {word}, to list clerks")
     public void eusebiaUsesHerIDAndPasswordToListClerks(
             String alias, String clerkId, String password) {
         managesClerks(OnStage.theActorInTheSpotlight(), clerkId, password);
@@ -408,13 +408,13 @@ public class ClerkManagementSteps {
 
     @Then(
             "he should see the list as an Admin, meaning {word} can see all clerks \\(Admin,"
-                    + " Manager, and Employees = {string}),")
+                    + " Manager, and Employees = {string})")
     public void heShouldSeeTheListAsAnAdminMeaningHeCanSeeAllClerksAdminManagerAndEmployees(
             String alias, String clerkList) {
         verifyClerkList(clerkList);
     }
 
-    @Then("he should use the ID {word} with the new password {word} to revert it to {word}.")
+    @Then("he should use the ID {word} with the new password {word} to revert it to {word}")
     public void heShouldUseTheIDWithTheNewPasswordToRevertItTo(
             String clerkId, String currentPassword, String newPassword) {
         testNewPasswordAndChangeIt(clerkId, currentPassword, newPassword);
@@ -422,7 +422,7 @@ public class ClerkManagementSteps {
 
     @Then(
             "he should see the list as a Manager, meaning he can see {word} account and all the"
-                    + " Employees roles \\({string}),")
+                    + " Employees roles \\({string})")
     public void heShouldSeeTheListAsAManagerMeaningHeCanSeeEusebiaSAccountAndAllTheEmployeesRoles(
             String alias, String clerkList) {
         verifyClerkList(clerkList);
@@ -438,7 +438,7 @@ public class ClerkManagementSteps {
                 CommonTasks.returnToMainScreen(actor));
     }
 
-    @Then("he should not see {word} account \\(ID {word}) in the clerks list.")
+    @Then("he should not see {word} account \\(ID {word}) in the clerks list")
     public void heShouldNotSeeArcadioSAccountIDInTheClerksList(String alias, String clerkId) {
         Actor actor = OnStage.theActorInTheSpotlight();
 
@@ -454,7 +454,7 @@ public class ClerkManagementSteps {
                         .isFalse());
     }
 
-    @When("he removes all clerks except himself \\(ID {word}),")
+    @When("he attempts to remove all clerks except himself \\(ID {word})")
     public void heCleansTheClerksList(String clerkId) {
         Actor actor = OnStage.theActorInTheSpotlight();
         actor.attemptsTo(
@@ -462,7 +462,7 @@ public class ClerkManagementSteps {
                 CommonTasks.returnToMainScreen(actor));
     }
 
-    @Then("he should see only his ID {word} in the list.")
+    @Then("he should see only his ID {word} is the only one in the list")
     public void heShouldSeeOnlyHisIDInTheList(String clerkId) {
         Actor actor = OnStage.theActorInTheSpotlight();
         reLogin(actor);
@@ -486,20 +486,20 @@ public class ClerkManagementSteps {
                 actor, actor.recall(CLERK_ID), actor.recall(CLERK_PASSWORD));
     }
 
-    @Given("{actor} is using the wrong Clerk ID {word},")
+    @Given("{actor} is using the wrong Clerk ID {word}")
     public void aurelianoIsUsingTheWrongClerkID(Actor actor, String clerkId) {
         actor.attemptsTo(MainSettingsTasks.openClerkManagementScreen(actor));
         actor.remember( // Save the clerk ID for later use
                 CLERK_ID, clerkId);
     }
 
-    @When("he tries to manage clerks with a wrong Clerk ID,")
+    @When("he tries to manage clerks with a wrong Clerk ID")
     public void heTriesToManageClerks() {
         Actor actor = OnStage.theActorInTheSpotlight();
         actor.attemptsTo(LoginAsTasks.fillClerkID(actor, SCREEN_TITLE, actor.recall(CLERK_ID)));
     }
 
-    @Then("he should receive the error message error message {string} with the title {string}.")
+    @Then("he should receive the error message error message {string} with the title {string}")
     public void heShouldReceiveTheErrorMessageErrorMessageWithTheTitle(
             String alertMessage, String alertTitle) {
         Actor actor = OnStage.theActorInTheSpotlight();
@@ -522,7 +522,7 @@ public class ClerkManagementSteps {
         }
     }
 
-    @Given("{actor}, with ID {word} and wrong Password {word},")
+    @Given("{actor}, with ID {word} and wrong Password {word}")
     public void aurelianoWithIDAndPassword(Actor actor, String clerkId, String clerkPassword) {
         actor.attemptsTo(MainSettingsTasks.openClerkManagementScreen(actor));
         actor.remember( // Save the clerk ID for later use
@@ -531,7 +531,7 @@ public class ClerkManagementSteps {
                 CLERK_PASSWORD, clerkPassword);
     }
 
-    @When("he tries to manage clerks with a wrong password,")
+    @When("he tries to manage clerks with a wrong password")
     public void heTriesToManageClerksWithAWrongPassword() {
         Actor actor = OnStage.theActorInTheSpotlight();
         actor.attemptsTo(
@@ -552,7 +552,7 @@ public class ClerkManagementSteps {
 
     @Then(
             "he should see the main function screen instead of the password-protected function"
-                    + " screen.")
+                    + " screen")
     public void heShouldSeeTheMainFunctionScreenInsteadOfThePasswordProtectedFunctionScreen() {
         OnStage.theActorInTheSpotlight()
                 .attemptsTo(

@@ -13,14 +13,18 @@ from Nuvei Inc.
 */
 package com.nuvei.screenplay.interactions;
 
-import static org.awaitility.Awaitility.await;
-
+import com.nuvei.features.steps.Hooks;
+import com.nuvei.utils.SimpleLogger;
+import java.time.Duration;
+import java.time.Instant;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Performable;
 import net.serenitybdd.screenplay.Task;
 import net.serenitybdd.screenplay.Tasks;
 
 public class WaitSpecificTime implements Task {
+
+    private static final SimpleLogger logger = new SimpleLogger(Hooks.class);
 
     private final long seconds;
 
@@ -34,7 +38,21 @@ public class WaitSpecificTime implements Task {
 
     @Override
     public <T extends Actor> void performAs(T actor) {
-        var duration = java.time.Duration.ofSeconds(seconds);
-        await().atMost(duration).until(() -> true);
+        var currentInstant = Instant.now(); // Instant is generally preferred for machine time
+
+        logger.debug("Waiting for " + seconds + " seconds");
+        logger.debug("Starting at: " + currentInstant);
+
+        var duration = Duration.ofSeconds(seconds);
+        long millis = duration.toMillis(); // Convert to milliseconds
+
+        try {
+            Thread.sleep(millis); // Use Thread.sleep() for precise waits
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        currentInstant = Instant.now();
+        logger.debug("Finishing at: " + currentInstant);
     }
 }

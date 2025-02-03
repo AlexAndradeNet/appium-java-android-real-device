@@ -30,7 +30,7 @@ import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.ensure.Ensure;
 
 public class HelpDeskSteps {
-    @When("he attempts to open the help menu with a calculated super-password,")
+    @When("he attempts to open the help menu with a calculated super-password")
     public void heAttemptsToOpenTheHelpMenuWithACalculatedSuperPassword() {
         Actor actor = OnStage.theActorInTheSpotlight();
         actor.attemptsTo(MainTileScreenTasks.openTIDInfo(actor));
@@ -45,7 +45,7 @@ public class HelpDeskSteps {
                 MainHelpTasks.resolveSuperPassword(actor, tid));
     }
 
-    @Then("he should have access to the help menu.")
+    @Then("he should have access to the help menu")
     public void heShouldHaveAccessToTheHelpMenu() {
         OnStage.theActorInTheSpotlight()
                 .attemptsTo(
@@ -56,7 +56,7 @@ public class HelpDeskSteps {
                                 .isTrue());
     }
 
-    @When("he attempts to open the help menu with password {word},")
+    @When("he attempts to open the help menu with password {word}")
     public void heAttemptsToOpenTheHelpMenuWithPassword(String password) {
         Actor actor = OnStage.theActorInTheSpotlight();
 
@@ -65,7 +65,7 @@ public class HelpDeskSteps {
                 LoginAsTasks.fillPassword(actor, password));
     }
 
-    @Then("he should see the message {string} with description {string}.")
+    @Then("he should see the message {string} with description {string}")
     public void heShouldSeeTheMessage(String alertTitle, String alertDescription) {
         Actor actor = OnStage.theActorInTheSpotlight();
 

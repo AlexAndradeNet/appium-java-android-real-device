@@ -29,7 +29,7 @@ import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.ensure.Ensure;
 
 public class PasswordProtectedSteps {
-    @Given("{actor} defined the minimum access level as {word} and opened the {word} option,")
+    @Given("{actor} defined the minimum access level as {word} and opened the {word} option")
     public void theCompanyDefinedThatTheMinimumAccessLevelForFunctionIsAdmin(
             Actor actor, String role, String functionality) {
         // Pending VHQ implementation
@@ -45,7 +45,7 @@ public class PasswordProtectedSteps {
         }
     }
 
-    @When("he attempts to login in {word} using the {word}, with ID {word} and Password {word},")
+    @When("he attempts to login in {word} using the {word}, with ID {word} and Password {word}")
     public void heAttemptsToDoAFunctionalityUsingTheRoleWithIDClerkIDAndPasswordPassword(
             String functionality, String role, String clerkID, String password) {
 
@@ -66,7 +66,7 @@ public class PasswordProtectedSteps {
         }
     }
 
-    @Then("he should be ALLOWED to access the functionality {word} as admin.")
+    @Then("he should be ALLOWED to access the functionality {word} as admin")
     public void heShouldAccessAccessTheRefundOption(String functionality) {
 
         Actor actor = OnStage.theActorInTheSpotlight();
@@ -118,7 +118,7 @@ public class PasswordProtectedSteps {
         }
     }
 
-    @Then("he should be REJECTED to access the functionality {word} as {word}.")
+    @Then("he should be REJECTED to access the functionality {word} as {word}")
     public void heShouldAccessAccessTheRefundOption(String functionality, String role) {
 
         Actor actor = OnStage.theActorInTheSpotlight();
