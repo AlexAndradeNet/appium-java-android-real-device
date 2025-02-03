@@ -23,13 +23,13 @@ import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.ensure.Ensure;
 
 public class SafSettingsSteps {
-    @When("he enables the SAF mode with ID {word} and Password {word},")
+    @When("he enables the SAF mode with ID {word} and Password {word}")
     public void heEnablesTheSAFMode(String clerkId, String password) {
         Actor actor = OnStage.theActorInTheSpotlight();
         actor.attemptsTo(SafSettingsTasks.turnOnSaf(actor, clerkId, password));
     }
 
-    @Then("he should see that SAF was enabled.")
+    @Then("he should see that SAF was enabled")
     public void heShouldSeeThatSAFWasEnabled() {
         Actor actor = OnStage.theActorInTheSpotlight();
         actor.attemptsTo(
@@ -39,13 +39,13 @@ public class SafSettingsSteps {
                         .isTrue());
     }
 
-    @When("he disables the SAF mode with ID {word} and Password {word},")
+    @When("he disables the SAF mode with ID {word} and Password {word}")
     public void heDisablesTheSAFModeWithIDAndPassword(String clerkId, String password) {
         Actor actor = OnStage.theActorInTheSpotlight();
         actor.attemptsTo(SafSettingsTasks.turnOffSaf(actor, clerkId, password));
     }
 
-    @Then("he should see that SAF was disabled.")
+    @Then("he should see that SAF was disabled")
     public void heShouldSeeThatSAFWasDisabled() {
         Actor actor = OnStage.theActorInTheSpotlight();
         actor.attemptsTo(

@@ -38,6 +38,28 @@ load_options() {
   fi
 }
 
+check_if_appium_is_running() {
+  # Define the Appium process name
+  HTTP_STATUS_OK_CODE="200"
+  HTTP_STATUS_RESOURCE_NOT_FOUND_CODE="404"
+
+  APPIUM_URL="http://127.0.0.1:4723/status"
+
+  CURRENT_HTTP_STATUS_CODE=$(curl -s -o /dev/null -w "%{http_code}" "$APPIUM_URL" 2>&1) || CURRENT_HTTP_STATUS_CODE="$HTTP_STATUS_RESOURCE_NOT_FOUND_CODE"
+
+  # Check if the Appium process is running
+  if  [ "$CURRENT_HTTP_STATUS_CODE" != "$HTTP_STATUS_OK_CODE"  ]; then
+    echo ""
+    echo "Appium is down. Please start Appium before running the tests."
+    echo ""
+    exit 1
+  fi
+
+}
+
+# Main script
+check_if_appium_is_running
+
 # Load previous options if available
 load_options
 
@@ -97,17 +119,22 @@ fi
 save_options
 
 # Prevent the mac from going to sleep
-killall caffeinate > /dev/null 2>&1
+killall -9 caffeinate > /dev/null 2>&1 || true
 caffeinate -d &
 
 # Execute Gradle command
+echo ""
 echo "Executing: ./gradlew $clean_gradle_flag test --rerun-tasks $fail_fast_flag -Denvironment=$env_code"
+echo ""
 ./gradlew $clean_gradle_flag test --rerun-tasks $fail_fast_flag -Denvironment=$env_code
 gradlewstatus=$? # Save the exit status of the previous command
 
 # Revert the mac from going to sleep
-killall caffeinate
+killall -9 caffeinate > /dev/null 2>&1 || true
+sleep 3
+killall -9 caffeinate > /dev/null 2>&1 || true
 
 echo "Test report is available at: build/reports/tests/test/index.html"
+open build/reports/tests/test/index.html
 
 exit $gradlewstatus
