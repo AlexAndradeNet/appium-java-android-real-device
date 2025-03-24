@@ -13,7 +13,7 @@ from Nuvei Inc.
 */
 package com.nuvei.features.steps;
 
-import com.nuvei.screenplay.tasks.MainTileScreenTasks;
+import com.nuvei.screenplay.tasks.DashboardScreenTasks;
 import io.cucumber.java.ParameterType;
 import net.serenitybdd.core.Serenity;
 import net.serenitybdd.screenplay.Actor;
@@ -27,7 +27,7 @@ public class ParameterDefinitions {
     public Actor actor(String actorName) {
         Actor actor = OnStage.theActorCalled(actorName);
         actor.can(BrowseTheWeb.with(Serenity.getDriver()));
-        actor.attemptsTo(MainTileScreenTasks.waitTheAppIsFullyLoaded(actor));
+        actor.attemptsTo(DashboardScreenTasks.waitTheAppIsFullyLoaded(actor));
         return actor;
     }
 }

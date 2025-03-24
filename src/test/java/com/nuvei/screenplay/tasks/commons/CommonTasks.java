@@ -195,7 +195,7 @@ public class CommonTasks {
         return Task.where("{0} navigates the menu until the element is visible and taps on it");
     }
 
-    public static Performable returnToMainScreen(Actor actor) {
+    public static Performable returnToTheDashboardScreen(Actor actor) {
         try {
             while (actor.asksFor(VisibilityQuestion.isPresent(BUTTON_ARROW_BACK))) {
                 actor.attemptsTo(ClickAction.on(BUTTON_ARROW_BACK));

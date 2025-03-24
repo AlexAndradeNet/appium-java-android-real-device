@@ -13,7 +13,7 @@ from Nuvei Inc.
 */
 package com.nuvei.features.steps;
 
-import com.nuvei.screenplay.tasks.MainTileScreenTasks;
+import com.nuvei.screenplay.tasks.DashboardScreenTasks;
 import io.cucumber.java.en.Given;
 import net.serenitybdd.screenplay.Actor;
 
@@ -21,6 +21,6 @@ public class SharedSteps {
 
     @Given("{actor} is in the Main Screen")
     public void theActorIsInTheHomePage(Actor actor) {
-        actor.attemptsTo(MainTileScreenTasks.waitTheAppIsFullyLoaded(actor));
+        actor.attemptsTo(DashboardScreenTasks.waitTheAppIsFullyLoaded(actor));
     }
 }

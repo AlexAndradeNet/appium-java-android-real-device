@@ -45,7 +45,7 @@ public class Hooks {
     @After(order = 1)
     public void afterEachScenario() {
         Actor actor = OnStage.theActorInTheSpotlight();
-        actor.attemptsTo(CommonTasks.returnToMainScreen(actor));
+        actor.attemptsTo(CommonTasks.returnToTheDashboardScreen(actor));
     }
 
     @AfterAll

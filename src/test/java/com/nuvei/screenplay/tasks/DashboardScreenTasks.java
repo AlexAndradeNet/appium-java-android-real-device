@@ -13,7 +13,7 @@ from Nuvei Inc.
 */
 package com.nuvei.screenplay.tasks;
 
-import static com.nuvei.screenplay.ui.MainTileScreen.*;
+import static com.nuvei.screenplay.ui.DashboardScreen.*;
 import static net.serenitybdd.screenplay.matchers.WebElementStateMatchers.isNotPresent;
 
 import com.nuvei.screenplay.interactions.ClickAction;
@@ -31,9 +31,9 @@ import net.serenitybdd.screenplay.targets.Target;
 import net.serenitybdd.screenplay.waits.WaitUntil;
 import org.openqa.selenium.NoSuchElementException;
 
-public class MainTileScreenTasks {
+public class DashboardScreenTasks {
 
-    private MainTileScreenTasks() {
+    private DashboardScreenTasks() {
         throw new IllegalStateException("Utility class - cannot be instantiated");
     }
 
@@ -62,12 +62,13 @@ public class MainTileScreenTasks {
     }
 
     public static Performable openMoto(Actor actor) {
-        actor.attemptsTo(ClickAction.on(BUTTON_MOTO_TRANSACTION));
+        actor.attemptsTo(navigateUntilElementIsVisibleAndTapOnIt(actor, BUTTON_MOTO_TRANSACTION));
+
         return Task.where("{0} opens the Moto main tile");
     }
 
     public static Performable openBatchOrSettle(Actor actor) {
-        actor.attemptsTo(ClickAction.on(BUTTON_BATCH_OR_SETTLE));
+        actor.attemptsTo(navigateUntilElementIsVisibleAndTapOnIt(actor, BUTTON_BATCH_OR_SETTLE));
 
         return Task.where("{0} opens the Batch or Settle main tile");
     }

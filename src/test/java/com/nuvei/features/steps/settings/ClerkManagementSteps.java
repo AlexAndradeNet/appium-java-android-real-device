@@ -74,7 +74,7 @@ public class ClerkManagementSteps {
         actor.attemptsTo(
                 ClerkManagementTasks.openAccountDetailsForProfile(actor, clerkId),
                 ClerkManagementTasks.changeRole(actor, newRole),
-                CommonTasks.returnToMainScreen(actor));
+                CommonTasks.returnToTheDashboardScreen(actor));
     }
 
     @When("he search for the Clerk ID {word}")
@@ -154,7 +154,7 @@ public class ClerkManagementSteps {
         actor.attemptsTo(
                 ClerkManagementTasks.openAccountDetailsForProfile(actor, clerkId),
                 ClerkManagementTasks.deleteClerk(actor, true, false),
-                CommonTasks.returnToMainScreen(actor));
+                CommonTasks.returnToTheDashboardScreen(actor));
     }
 
     @Then(
@@ -256,7 +256,7 @@ public class ClerkManagementSteps {
     public void shouldStillBeAbleToUseHisOldPasswordToManageClerks(
             String clerkId, String oldPassword) {
         Actor actor = OnStage.theActorInTheSpotlight();
-        actor.attemptsTo(CommonTasks.returnToMainScreen(actor));
+        actor.attemptsTo(CommonTasks.returnToTheDashboardScreen(actor));
         managesClerks(actor, clerkId, oldPassword);
         checkAbilityToAddNewClerks(true);
     }
@@ -272,7 +272,7 @@ public class ClerkManagementSteps {
     private void testNewPasswordAndChangeIt(
             String clerkId, String currentPassword, String newPassword) {
         Actor actor = OnStage.theActorInTheSpotlight();
-        actor.attemptsTo(CommonTasks.returnToMainScreen(actor));
+        actor.attemptsTo(CommonTasks.returnToTheDashboardScreen(actor));
         managesClerks(actor, clerkId, currentPassword);
 
         // Reverts previous password
@@ -435,7 +435,7 @@ public class ClerkManagementSteps {
                 ClerkManagementTasks.openAccountDetailsForProfile(actor, clerkId),
                 ClerkManagementTasks.deleteClerk(actor, false, true),
                 ClerkManagementTasks.dismissSuccessConfirmationAfterDeletingClerk(actor, true),
-                CommonTasks.returnToMainScreen(actor));
+                CommonTasks.returnToTheDashboardScreen(actor));
     }
 
     @Then("he should not see {word} account \\(ID {word}) in the clerks list")
@@ -459,7 +459,7 @@ public class ClerkManagementSteps {
         Actor actor = OnStage.theActorInTheSpotlight();
         actor.attemptsTo(
                 ClerkManagementTasks.removeClerksDifferentThan(actor, clerkId),
-                CommonTasks.returnToMainScreen(actor));
+                CommonTasks.returnToTheDashboardScreen(actor));
     }
 
     @Then("he should see only his ID {word} is the only one in the list")

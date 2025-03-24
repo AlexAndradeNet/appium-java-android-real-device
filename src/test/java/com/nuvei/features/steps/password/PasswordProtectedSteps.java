@@ -14,7 +14,7 @@ from Nuvei Inc.
 package com.nuvei.features.steps.password;
 
 import com.nuvei.screenplay.questions.VisibilityQuestion;
-import com.nuvei.screenplay.tasks.MainTileScreenTasks;
+import com.nuvei.screenplay.tasks.DashboardScreenTasks;
 import com.nuvei.screenplay.tasks.commons.CommonTasks;
 import com.nuvei.screenplay.tasks.commons.LoginAsTasks;
 import com.nuvei.screenplay.ui.NumericScreen;
@@ -35,11 +35,11 @@ public class PasswordProtectedSteps {
         // Pending VHQ implementation
 
         switch (functionality) {
-            case "Refund" -> actor.attemptsTo(MainTileScreenTasks.openRefund(actor));
-            case "Moto" -> actor.attemptsTo(MainTileScreenTasks.openMoto(actor));
-            case "Settle" -> actor.attemptsTo(MainTileScreenTasks.openBatchOrSettle(actor));
-            case "Void" -> actor.attemptsTo(MainTileScreenTasks.openVoid(actor));
-            case "SAF" -> actor.attemptsTo(MainTileScreenTasks.openSaf(actor));
+            case "Refund" -> actor.attemptsTo(DashboardScreenTasks.openRefund(actor));
+            case "Moto" -> actor.attemptsTo(DashboardScreenTasks.openMoto(actor));
+            case "Settle" -> actor.attemptsTo(DashboardScreenTasks.openBatchOrSettle(actor));
+            case "Void" -> actor.attemptsTo(DashboardScreenTasks.openVoid(actor));
+            case "SAF" -> actor.attemptsTo(DashboardScreenTasks.openSaf(actor));
             default ->
                     throw new IllegalArgumentException("Invalid functionality: " + functionality);
         }

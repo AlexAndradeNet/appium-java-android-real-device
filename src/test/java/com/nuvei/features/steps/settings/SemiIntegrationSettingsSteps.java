@@ -20,12 +20,12 @@ import com.nuvei.screenplay.interactions.ToggleAction;
 import com.nuvei.screenplay.interactions.WaitSpecificTime;
 import com.nuvei.screenplay.questions.TextQuestion;
 import com.nuvei.screenplay.questions.VisibilityQuestion;
-import com.nuvei.screenplay.tasks.MainTileScreenTasks;
+import com.nuvei.screenplay.tasks.DashboardScreenTasks;
 import com.nuvei.screenplay.tasks.commons.CommonTasks;
 import com.nuvei.screenplay.tasks.commons.LoginAsTasks;
 import com.nuvei.screenplay.tasks.settings.MainSettingsTasks;
 import com.nuvei.screenplay.ui.CommonObjects;
-import com.nuvei.screenplay.ui.MainTileScreen;
+import com.nuvei.screenplay.ui.DashboardScreen;
 import com.nuvei.screenplay.ui.NumericScreen;
 import com.nuvei.screenplay.ui.settings.SemiIntegrationOptionsScreen;
 import com.nuvei.screenplay.ui.tid.MainTIDScreen;
@@ -59,8 +59,8 @@ public class SemiIntegrationSettingsSteps {
         Actor actor = OnStage.theActorInTheSpotlight();
 
         actor.attemptsTo(
-                CommonTasks.returnToMainScreen(actor),
-                MainTileScreenTasks.openTIDInfo(actor),
+                CommonTasks.returnToTheDashboardScreen(actor),
+                DashboardScreenTasks.openTIDInfo(actor),
                 Ensure.that(
                                 "Should not see the Semi-Integration URL",
                                 VisibilityQuestion.isPresent(
@@ -89,8 +89,8 @@ public class SemiIntegrationSettingsSteps {
         Actor actor = OnStage.theActorInTheSpotlight();
 
         actor.attemptsTo(
-                CommonTasks.returnToMainScreen(actor),
-                MainTileScreenTasks.openTIDInfo(actor),
+                CommonTasks.returnToTheDashboardScreen(actor),
+                DashboardScreenTasks.openTIDInfo(actor),
                 Ensure.that(
                                 "Should see the Label for Semi-Integration is present",
                                 VisibilityQuestion.isPresent(
@@ -113,15 +113,15 @@ public class SemiIntegrationSettingsSteps {
         Actor actor = OnStage.theActorInTheSpotlight();
 
         actor.attemptsTo(
-                CommonTasks.returnToMainScreen(actor),
-                MainTileScreenTasks.returnToInitialScreen(actor));
+                CommonTasks.returnToTheDashboardScreen(actor),
+                DashboardScreenTasks.returnToInitialScreen(actor));
 
         actor.attemptsTo(
                 WaitSpecificTime.forSeconds(seconds + 2),
                 Ensure.that(
                                 "Should see the Main Screen is still there",
                                 VisibilityQuestion.isPresent(
-                                        MainTileScreen.BUTTON_SALE_TRANSACTION))
+                                        DashboardScreen.BUTTON_SALE_TRANSACTION))
                         .isTrue());
     }
 
@@ -191,7 +191,7 @@ public class SemiIntegrationSettingsSteps {
                         Ensure.that(
                                         "Should see the Main Screen is there",
                                         VisibilityQuestion.isPresent(
-                                                MainTileScreen.BUTTON_SALE_TRANSACTION))
+                                                DashboardScreen.BUTTON_SALE_TRANSACTION))
                                 .isTrue());
     }
 
@@ -248,7 +248,7 @@ public class SemiIntegrationSettingsSteps {
     @Then("he should immediately see the Idle screen after returning to the Main Screen")
     public void heShouldSeeImmediatelyTheIdleScreenAfterReturningToTheMainScreen() {
         Actor actor = OnStage.theActorInTheSpotlight();
-        actor.attemptsTo(CommonTasks.returnToMainScreen(actor));
+        actor.attemptsTo(CommonTasks.returnToTheDashboardScreen(actor));
         heShouldSeeThatTheIdleScreenAfterWaitingSecondsOnTheMainScreen(0);
     }
 }

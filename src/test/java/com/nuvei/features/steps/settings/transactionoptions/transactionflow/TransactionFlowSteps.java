@@ -15,7 +15,7 @@ package com.nuvei.features.steps.settings.transactionoptions.transactionflow;
 
 import com.nuvei.screenplay.interactions.ToggleAction;
 import com.nuvei.screenplay.questions.VisibilityQuestion;
-import com.nuvei.screenplay.tasks.MainTileScreenTasks;
+import com.nuvei.screenplay.tasks.DashboardScreenTasks;
 import com.nuvei.screenplay.tasks.commons.CommonTasks;
 import com.nuvei.screenplay.tasks.settings.MainSettingsTasks;
 import com.nuvei.screenplay.tasks.settings.TransactionsOptionsTasks;
@@ -43,9 +43,9 @@ public class TransactionFlowSteps {
     public void heSeeTheOrderNumberPromptIsEnabled(String toggleLabel) {
         Actor actor = OnStage.theActorInTheSpotlight();
         actor.attemptsTo(
-                CommonTasks.returnToMainScreen(actor),
-                MainTileScreenTasks.returnToInitialScreen(actor),
-                MainTileScreenTasks.openSale(actor));
+                CommonTasks.returnToTheDashboardScreen(actor),
+                DashboardScreenTasks.returnToInitialScreen(actor),
+                DashboardScreenTasks.openSale(actor));
 
         actor.attemptsTo(
                 Ensure.that(
@@ -57,7 +57,7 @@ public class TransactionFlowSteps {
         String toggleName = actor.recall("toggleName");
 
         actor.attemptsTo(
-                CommonTasks.returnToMainScreen(actor),
+                CommonTasks.returnToTheDashboardScreen(actor),
                 MainSettingsTasks.openTransactionFlowScreen(actor),
                 ToggleAction.toOff(CommonObjects.TOGGLE.of(toggleName)));
     }
