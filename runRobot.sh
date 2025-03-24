@@ -25,6 +25,25 @@ save_options() {
   echo "fail_fast=$fail_fast" >> "$CONFIG_FILE"
 }
 
+# Function to save options to a config file
+save_environment_values_for_intellij() {
+  # Define the file to modify
+  FILE=".idea/workspace.xml"
+
+  # Define regex pattern and replacement
+  PATTERN='<option name=\"VM_PARAMETERS\" value=\"-Denvironment=[[:alpha:]]{2,3}\" \/>'
+  REPLACEMENT='<option name=\"VM_PARAMETERS\" value=\"-Denvironment='$1'\" />'
+  sed -E "s#$PATTERN#$REPLACEMENT#g" "$FILE" > temp.xml && mv temp.xml "$FILE"
+
+  PATTERN='<option name=\"GLUE\" value=\".*\" \/>'
+  REPLACEMENT='<option name=\"GLUE\" value=\"net.serenitybdd.cucumber.actors com.nuvei.features.steps\" />'
+  sed -E "s#$PATTERN#$REPLACEMENT#g" "$FILE" > temp.xml && mv temp.xml "$FILE"
+
+  PATTERN='<option name=\"MAIN_CLASS_NAME\" value=\".*\" \/>'
+  REPLACEMENT='<option name=\"MAIN_CLASS_NAME\" value=\"net.serenitybdd.cucumber.cli.Main\" />'
+  sed -E "s#$PATTERN#$REPLACEMENT#g" "$FILE" > temp.xml && mv temp.xml "$FILE"
+}
+
 # Function to load options from a config file
 load_options() {
   if [[ -f "$CONFIG_FILE" ]]; then
@@ -101,7 +120,7 @@ esac
 clean_gradle=$(get_input "Rebuild (clean) the entire project (Y/n): " "${clean_gradle:-N}")
 
 if [[ "$clean_gradle" != "n" && "$clean_gradle" != "N" ]]; then
-  clean_gradle_flag="clean"
+    clean_gradle_flag="clean"
 else
     clean_gradle_flag=""
 fi
@@ -110,16 +129,17 @@ fi
 fail_fast=$(get_input "Stop at first error (fail-fast) (Y/n): " "${fail_fast:-N}")
 
 if [[ "$fail_fast" != "n" && "$fail_fast" != "N" ]]; then
-  fail_fast_flag="--fail-fast"
+    fail_fast_flag="--fail-fast"
 else
     fail_fast_flag=""
 fi
 
 # Save current options for next execution
 save_options
+save_environment_values_for_intellij $env_code
 
 # Prevent the mac from going to sleep
-killall -9 caffeinate > /dev/null 2>&1 || true
+killall caffeinate > /dev/null 2>&1 || true
 caffeinate -d &
 
 # Execute Gradle command
@@ -130,9 +150,9 @@ echo ""
 gradlewstatus=$? # Save the exit status of the previous command
 
 # Revert the mac from going to sleep
-killall -9 caffeinate > /dev/null 2>&1 || true
-sleep 3
-killall -9 caffeinate > /dev/null 2>&1 || true
+killall caffeinate
+killall caffeinate > /dev/null 2>&1 || true
+killall caffeinate > /dev/null 2>&1 || true
 
 echo "Test report is available at: build/reports/tests/test/index.html"
 open build/reports/tests/test/index.html
