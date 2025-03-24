@@ -1,9 +1,11 @@
+import java.text.SimpleDateFormat
+
 plugins {
     id 'java'
     id 'eclipse'
     id 'idea'
     id 'org.sonarqube' version '6.0.0.5145'
-    id 'net.serenity-bdd.serenity-gradle-plugin' version '4.2.8'
+    id 'net.serenity-bdd.serenity-gradle-plugin' version '4.2.16'
     id 'com.diffplug.spotless' version '6.25.0'
     id 'org.gradle.test-retry' version '1.6.0'
     id 'org.caffinitas.gradle.testsummary' version '0.1.1'
@@ -21,50 +23,54 @@ java {
 
 ext {
     versions = [
-            serenityCore : '4.2.11',
-            cucumber     : '7.20.1',
-            junit        : '5.11.4',
-            junitPlatform: '1.11.4',
+            serenityCore : '4.2.17',
+            cucumber     : '7.21.1',
+            junit        : '5.12.1',
+            junitPlatform: '1.12.1',
             aeonbits     : '1.0.12',
-            gson         : '2.11.0',
-            slf4j        : '2.0.16',
-            appium       : '9.3.0',
-            googleFormat : '1.25.2'
+            gson         : '2.12.1',
+            slf4j        : '2.0.17',
+            appium       : '9.4.0',
+            googleFormat : '1.25.2',
+            lombok       : '1.18.36'
     ]
 }
 
 dependencies {
     implementation "org.aeonbits.owner:owner:${versions.aeonbits}",
             "org.slf4j:slf4j-simple:${versions.slf4j}"
+
     testImplementation "org.slf4j:slf4j-api:${versions.slf4j}",
             "com.google.code.gson:gson:${versions.gson}",
             "net.serenity-bdd:serenity-core:${versions.serenityCore}",
+            "net.serenity-bdd:serenity-junit5:${versions.serenityCore}",
             "net.serenity-bdd:serenity-ensure:${versions.serenityCore}",
             "net.serenity-bdd:serenity-screenplay:${versions.serenityCore}",
             "net.serenity-bdd:serenity-screenplay-webdriver:${versions.serenityCore}",
             "net.serenity-bdd:serenity-cucumber:${versions.serenityCore}",
-            "org.junit.jupiter:junit-jupiter-api:${versions.junit}",
-            "org.junit.platform:junit-platform-suite:${versions.junitPlatform}",
+
             "io.cucumber:cucumber-java:${versions.cucumber}",
             "io.cucumber:cucumber-junit-platform-engine:${versions.cucumber}",
-            "io.appium:java-client:${versions.appium}"
+
+            "junit:junit:4.13.2",
+            "org.junit.platform:junit-platform-suite:${versions.junitPlatform}",
+            "io.appium:java-client:${versions.appium}",
+            "org.junit.jupiter:junit-jupiter:${versions.junit}"
 
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${versions.junit}"
+
+    compileOnly "org.projectlombok:lombok:${versions.lombok}"
+    annotationProcessor "org.projectlombok:lombok:${versions.lombok}"
+    testCompileOnly "org.projectlombok:lombok:${versions.lombok}"
+    testAnnotationProcessor "org.projectlombok:lombok:${versions.lombok}"
 }
 
 spotless {
     encoding 'UTF-8'
-    // Set the encoding, replace 'UTF-8' with `${encoding}` if it's dynamically defined
 
     java {
-
-        // Exclude specific folder
         targetExclude('/target/**/*', 'build/**/*', 'node_modules/**/*')
-
-        // Apply Google Java Format with a specific style and options
         googleJavaFormat("${versions.googleFormat}").aosp().reflowLongStrings(true)
-
-        // License header configuration
         licenseHeaderFile 'LICENSE', 'package '
     }
 
@@ -79,27 +85,21 @@ spotless {
         endWithNewline()
     }
 
-    // Format SQL files
     sql {
-        target '**/*.sql' // Define which files to include
+        target '**/*.sql'
         targetExclude('/target/**/*', 'build/**/*', 'node_modules/**/*')
-        // Exclude specific folder
-        dbeaver()         // Apply DBeaver formatting conventions
+        dbeaver()
     }
 
-    // Format JSON files
     json {
         target '**/*.json'
         targetExclude('/target/**/*', 'build/**/*', 'node_modules/**/*')
-        // Exclude specific folder
-        gson() // Apply Gson-based formatting
+        gson()
     }
 }
 
 test {
-    onlyIf { // Run Only When Explicitly Invoked
-        gradle.startParameter.taskNames.contains('test')
-    }
+    onlyIf { gradle.startParameter.taskNames.contains('test') }
     useJUnitPlatform()
     failFast = false
     testLogging {
@@ -107,20 +107,11 @@ test {
         events "PASSED", "FAILED", "SKIPPED"
     }
     systemProperties System.getProperties()
-    systemProperty 'serenity.generateOutcomes', 'false'
-    // Disable reports during tests
+    systemProperty "cucumber.plugin", "io.cucumber.core.plugin.SerenityReporter"
     retry {
-        maxRetries = 0 // Disables test retries
+        maxRetries = 0
     }
-
-    finalizedBy tasks.register('printAfterAllTests', Exec) {
-        commandLine 'echo', "Test report is available at: file://${project.layout.buildDirectory.asFile.get()}/reports/tests/test/index.html"
-    }
-}
-
-serenity {
-    outputDirectory = file("${project.layout.buildDirectory.asFile.get()}/site/serenity")
-    generateOutcomes = true // Disable automatic report generation globally
+    finalizedBy('aggregate')
 }
 
 tasks.withType(Test).configureEach {
@@ -166,9 +157,20 @@ tasks.register('installLocalGitHook', Copy) {
     from new File(rootProject.rootDir, 'scripts/pre-commit')
     into { new File(rootProject.rootDir, '.git/hooks') }
     doLast {
-        // Execute chmod command to set permissions after copying
         getProviders().exec {
             commandLine 'chmod', '775', "${destinationDir}/pre-commit"
+        }
+    }
+}
+
+tasks.register('archiveSerenityReports') {
+    doLast {
+        def reportsDir = file("target/site/serenity")
+        if (reportsDir.exists()) {
+            def date = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss").format(new Date())
+            def archiveDir = file("target/site/history/serenity-" + date)
+            reportsDir.renameTo(archiveDir)
+            println "Archived previous Serenity report to: " + archiveDir
         }
     }
 }
@@ -181,11 +183,4 @@ tasks.named('sonar') {
     dependsOn spotlessApply, build
 }
 
-tasks.named('aggregate') {
-    onlyIf { // Run Only When Explicitly Invoked
-        gradle.startParameter.taskNames.contains('aggregate')
-    }
-}
-
-// gradle.startParameter.continueOnFailure = true
 gradle.startParameter.continueOnFailure = false
