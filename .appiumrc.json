@@ -11,7 +11,7 @@
         "callback-address": "127.0.0.1",
         "callback-port": 4723,
         "session-override": true,
-        "log-level": "error",
+        "log-level": "info",
         "log-no-colors": true,
         "no-perms-check": true,
         "keep-alive-timeout": 600,

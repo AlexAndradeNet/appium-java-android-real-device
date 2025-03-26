@@ -19,6 +19,7 @@ repositories {
 java {
     sourceCompatibility = JavaVersion.VERSION_21
     targetCompatibility = JavaVersion.VERSION_21
+    toolchain.languageVersion.set(JavaLanguageVersion.of(21))
 }
 
 ext {
@@ -181,6 +182,10 @@ tasks.named('build') {
 
 tasks.named('sonar') {
     dependsOn spotlessApply, build
+}
+
+tasks.named('updateDaemonJvm') {
+    languageVersion = JavaLanguageVersion.of(21)
 }
 
 gradle.startParameter.continueOnFailure = false
