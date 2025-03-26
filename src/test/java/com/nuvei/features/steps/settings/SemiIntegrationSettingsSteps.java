@@ -17,7 +17,7 @@ import static net.serenitybdd.screenplay.matchers.WebElementStateMatchers.isEnab
 
 import com.nuvei.screenplay.interactions.ClickAction;
 import com.nuvei.screenplay.interactions.ToggleAction;
-import com.nuvei.screenplay.interactions.WaitSpecificTime;
+import com.nuvei.screenplay.interactions.WaitAction;
 import com.nuvei.screenplay.questions.TextQuestion;
 import com.nuvei.screenplay.questions.VisibilityQuestion;
 import com.nuvei.screenplay.tasks.DashboardScreenTasks;
@@ -117,7 +117,7 @@ public class SemiIntegrationSettingsSteps {
                 DashboardScreenTasks.returnToInitialScreen(actor));
 
         actor.attemptsTo(
-                WaitSpecificTime.forSeconds(seconds + 2),
+                WaitAction.forSpecificTime(seconds + 2),
                 Ensure.that(
                                 "Should see the Main Screen is still there",
                                 VisibilityQuestion.isPresent(

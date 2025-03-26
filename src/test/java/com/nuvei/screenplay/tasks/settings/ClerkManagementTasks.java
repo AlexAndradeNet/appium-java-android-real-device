@@ -15,11 +15,11 @@ package com.nuvei.screenplay.tasks.settings;
 
 import com.nuvei.screenplay.interactions.ClickAction;
 import com.nuvei.screenplay.interactions.EnterAction;
-import com.nuvei.screenplay.interactions.WaitSpecificTime;
+import com.nuvei.screenplay.interactions.WaitAction;
 import com.nuvei.screenplay.questions.TextQuestion;
 import com.nuvei.screenplay.questions.VisibilityQuestion;
 import com.nuvei.screenplay.tasks.commons.CommonTasks;
-import com.nuvei.screenplay.ui.ConfirmationScreen;
+import com.nuvei.screenplay.ui.common.ConfirmationScreen;
 import com.nuvei.screenplay.ui.settings.clerkmanagement.*;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Performable;
@@ -79,7 +79,7 @@ public class ClerkManagementTasks {
         }
 
         actor.attemptsTo(
-                ClickAction.on(AddUserScreen.BUTTON_CONFIRM), WaitSpecificTime.forSeconds(1));
+                ClickAction.on(AddUserScreen.BUTTON_CONFIRM), WaitAction.forSpecificTime(1));
 
         return Task.where("{0} adds a new user");
     }
@@ -124,7 +124,7 @@ public class ClerkManagementTasks {
     public static Performable changeRole(Actor actor, String newRole) {
         actor.attemptsTo(
                 ClickAction.on(ViewClerkScreen.BUTTON_CHANGE_CLERK_ROLE),
-                WaitSpecificTime.forSeconds(2),
+                WaitAction.forSpecificTime(2),
                 Ensure.that(
                                 "The title should be correct",
                                 VisibilityQuestion.isPresent(ChangeClerkRoleScreen.TITLE))

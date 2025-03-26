@@ -21,6 +21,6 @@ public class SharedSteps {
 
     @Given("{actor} is in the Main Screen")
     public void theActorIsInTheHomePage(Actor actor) {
-        actor.attemptsTo(DashboardScreenTasks.waitTheAppIsFullyLoaded(actor));
+        actor.attemptsTo(DashboardScreenTasks.waitUntilTheSpinnerDisappears(actor));
     }
 }

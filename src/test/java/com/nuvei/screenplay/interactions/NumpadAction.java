@@ -16,7 +16,7 @@ package com.nuvei.screenplay.interactions;
 import com.nuvei.screenplay.driver.AppiumDriver;
 import com.nuvei.screenplay.questions.EnvironmentQuestion;
 import com.nuvei.screenplay.ui.NumericScreen;
-import com.nuvei.utils.Singleton;
+import com.nuvei.utils.VariablesSingleton;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,7 +53,8 @@ public class NumpadAction implements Interaction {
     }
 
     private void performOnOnScreenNuveiNumpad(Actor actor) {
-        boolean isStillNeedingTestTheNumpad = Singleton.getInstance().getNumpadUsageCount() <= 2;
+        boolean isStillNeedingTestTheNumpad =
+                VariablesSingleton.getInstance().getNumpadUsageCount() <= 2;
 
         if (!isStillNeedingTestTheNumpad) {
             EnterAction.theValue(numberSequence).into(NumericScreen.TEXTBOX_VALUE).performAs(actor);
@@ -71,8 +72,8 @@ public class NumpadAction implements Interaction {
                         .toList();
 
         actor.attemptsTo(tapActions.toArray(new Performable[0]));
-        Singleton.getInstance()
-                .setNumpadUsageCount(Singleton.getInstance().getNumpadUsageCount() + 1);
+        VariablesSingleton.getInstance()
+                .setNumpadUsageCount(VariablesSingleton.getInstance().getNumpadUsageCount() + 1);
     }
 
     private void performOnPhysicalNumpad() {

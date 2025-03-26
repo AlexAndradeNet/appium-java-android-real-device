@@ -22,7 +22,7 @@ import com.nuvei.screenplay.interactions.ToggleAction;
 import com.nuvei.screenplay.questions.TextQuestion;
 import com.nuvei.screenplay.questions.VisibilityQuestion;
 import com.nuvei.screenplay.ui.CommonObjects;
-import com.nuvei.screenplay.ui.ConfirmationScreen;
+import com.nuvei.screenplay.ui.common.ConfirmationScreen;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import net.serenitybdd.screenplay.Actor;

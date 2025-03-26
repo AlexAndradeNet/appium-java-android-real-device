@@ -21,19 +21,32 @@ import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Performable;
 import net.serenitybdd.screenplay.Task;
 import net.serenitybdd.screenplay.Tasks;
+import net.serenitybdd.screenplay.targets.Target;
+import net.serenitybdd.screenplay.waits.WaitUntil;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.support.ui.FluentWait;
 
-public class WaitSpecificTime implements Task {
+public class WaitAction implements Task {
 
     private static final SimpleLogger logger = new SimpleLogger(Hooks.class);
-
     private final long seconds;
+    private final Target target;
 
-    protected WaitSpecificTime(long milliseconds) {
-        this.seconds = milliseconds;
+    protected WaitAction(long seconds, Target target) {
+        this.seconds = seconds;
+        this.target = target;
     }
 
-    public static Performable forSeconds(long seconds) {
-        return Tasks.instrumented(WaitSpecificTime.class, seconds);
+    public static Performable forSpecificTime(long seconds) {
+        return Tasks.instrumented(WaitAction.class, seconds, null);
+    }
+
+    public static Performable untilElementIsPresent(Target target) {
+        return Tasks.instrumented(WaitAction.class, 0, target);
+    }
+
+    public static Performable untilElementIsNotPresent(Target target) {
+        return Tasks.instrumented(WaitAction.class, 1, target);
     }
 
     @Override

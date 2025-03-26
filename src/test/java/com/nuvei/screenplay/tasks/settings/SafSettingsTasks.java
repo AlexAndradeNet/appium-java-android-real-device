@@ -32,7 +32,7 @@ public class SafSettingsTasks {
     }
 
     public static Performable turnOnSaf(Actor actor, String clerkId, String password) {
-        actor.attemptsTo(skipIfTheFuntionIsntAvailable(actor));
+        actor.attemptsTo(skipIfTheFunctionIsNotAvailable(actor));
 
         if (actor.asksFor(VisibilityQuestion.isPresent(DashboardScreen.LABEL_SAF))) {
             return Task.where("{0} SAF is already enabled");
@@ -51,7 +51,7 @@ public class SafSettingsTasks {
 
     public static Performable turnOffSaf(Actor actor, String clerkId, String password) {
 
-        actor.attemptsTo(skipIfTheFuntionIsntAvailable(actor));
+        actor.attemptsTo(skipIfTheFunctionIsNotAvailable(actor));
 
         if (actor.asksFor(VisibilityQuestion.notPresent(DashboardScreen.LABEL_SAF))) {
             return Task.where("{0} SAF is already disabled");
@@ -72,9 +72,9 @@ public class SafSettingsTasks {
         return Task.where("{0} goes to the main screen");
     }
 
-    private static Performable skipIfTheFuntionIsntAvailable(Actor actor) {
         if (actor.asksFor(EnvironmentQuestion.isMSeries())) {
             actor.attemptsTo(SkipScenarioAction.withReason("SAF is not available in M-Series"));
+    public static Performable skipIfTheFunctionIsNotAvailable(Actor actor) {
         }
         return Task.where("{0} is in a T-Series device");
     }

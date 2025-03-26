@@ -18,19 +18,19 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class Singleton {
+public class VariablesSingleton {
     private int numpadUsageCount = 0;
 
-    private Singleton() {
+    private VariablesSingleton() {
         // Prevent instantiation
     }
 
     // Static inner class - only loaded when getInstance() is called
     private static class SingletonHelper {
-        private static final Singleton INSTANCE = new Singleton();
+        private static final VariablesSingleton INSTANCE = new VariablesSingleton();
     }
 
-    public static Singleton getInstance() {
+    public static VariablesSingleton getInstance() {
         return SingletonHelper.INSTANCE;
     }
 }

@@ -34,7 +34,7 @@ public class ToggleAction implements Interaction {
         String translatedStatus = enabled ? "ON" : "OFF";
 
         while (!translatedStatus.equals(getCurrentToggleStatus(actor))) {
-            actor.attemptsTo(ClickAction.on(this.target), WaitSpecificTime.forSeconds(1));
+            actor.attemptsTo(ClickAction.on(this.target), WaitAction.forSpecificTime(1));
         }
     }
 

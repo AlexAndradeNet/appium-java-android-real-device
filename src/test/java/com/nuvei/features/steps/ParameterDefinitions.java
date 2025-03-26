@@ -27,7 +27,7 @@ public class ParameterDefinitions {
     public Actor actor(String actorName) {
         Actor actor = OnStage.theActorCalled(actorName);
         actor.can(BrowseTheWeb.with(Serenity.getDriver()));
-        actor.attemptsTo(DashboardScreenTasks.waitTheAppIsFullyLoaded(actor));
+        actor.attemptsTo(DashboardScreenTasks.waitUntilTheSpinnerDisappears(actor));
         return actor;
     }
 }
