@@ -13,12 +13,12 @@ from Nuvei Inc.
 */
 package com.nuvei.screenplay.driver;
 
+import java.util.HashMap;
+import java.util.Map;
 import net.serenitybdd.core.Serenity;
 import net.thucydides.core.webdriver.WebDriverFacade;
 
-/*
- * Don't use singleton pattern for Appium driver
- */
+/** Don't use singleton pattern for Appium driver */
 public class AppiumDriver {
     private AppiumDriver() {
         throw new IllegalStateException("Utility class - cannot be instantiated");
@@ -26,5 +26,16 @@ public class AppiumDriver {
 
     public static WebDriverFacade getDriver() {
         return (WebDriverFacade) Serenity.getDriver();
+    }
+
+    /** During Verifone screens the driver is detached from the app, so we need to re-attach it */
+    public static void reAttachDriver() {
+        var driver = getDriver();
+        String appPackage = driver.getCapabilities().getCapability("appPackage").toString();
+        String appActivity = driver.getCapabilities().getCapability("appActivity").toString();
+
+        Map<String, Object> args = new HashMap<>();
+        args.put("intent", appPackage + "/" + appActivity);
+        driver.executeScript("mobile: startActivity", args);
     }
 }

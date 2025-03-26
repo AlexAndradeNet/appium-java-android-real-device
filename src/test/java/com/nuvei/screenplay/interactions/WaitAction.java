@@ -13,7 +13,11 @@ from Nuvei Inc.
 */
 package com.nuvei.screenplay.interactions;
 
+import static net.serenitybdd.screenplay.matchers.WebElementStateMatchers.isNotPresent;
+
 import com.nuvei.features.steps.Hooks;
+import com.nuvei.screenplay.driver.AppiumDriver;
+import com.nuvei.screenplay.questions.VisibilityQuestion;
 import com.nuvei.utils.SimpleLogger;
 import java.time.Duration;
 import java.time.Instant;
@@ -51,21 +55,47 @@ public class WaitAction implements Task {
 
     @Override
     public <T extends Actor> void performAs(T actor) {
-        var currentInstant = Instant.now(); // Instant is generally preferred for machine time
+        Instant startTime = Instant.now();
 
-        logger.debug("Waiting for " + seconds + " seconds");
-        logger.debug("Starting at: " + currentInstant);
-
-        var duration = Duration.ofSeconds(seconds);
-        long millis = duration.toMillis(); // Convert to milliseconds
-
-        try {
-            Thread.sleep(millis); // Use Thread.sleep() for precise waits
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+        if (target != null) {
+            if (seconds == 0) {
+                logger.debug(
+                        "Waiting for element: %s to be present (Started at: %s)"
+                                .formatted(target.getName(), startTime));
+                waitUntilElementIsPresent(actor);
+            } else {
+                logger.debug(
+                        "Waiting for element: %s to be not present (Started at: %s)"
+                                .formatted(target.getName(), startTime));
+                waitUntilElementIsNotPresent();
+            }
+        } else {
+            logger.debug("Waiting for %s seconds (Started at: %s)".formatted(seconds, startTime));
+            waitForTime();
         }
 
-        currentInstant = Instant.now();
-        logger.debug("Finishing at: " + currentInstant);
+        logger.debug("Wait completed (Ended at: {})" + Instant.now());
+    }
+
+    private void waitForTime() {
+        try {
+            Thread.sleep(Duration.ofSeconds(seconds).toMillis());
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException("Thread was interrupted during sleep", e);
+        }
+    }
+
+    private void waitUntilElementIsPresent(Actor actor) {
+        var driver = AppiumDriver.getDriver();
+        new FluentWait<>(driver)
+                .withTimeout(Duration.ofSeconds(100))
+                .pollingEvery(Duration.ofSeconds(2))
+                .ignoring(NoSuchElementException.class)
+                .until(driverLambda -> actor.asksFor(VisibilityQuestion.isPresent(target)));
+    }
+
+    private void waitUntilElementIsNotPresent() {
+        WaitUntil.the(target, isNotPresent()).forNoMoreThan(100).seconds();
     }
 }
