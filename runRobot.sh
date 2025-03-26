@@ -83,7 +83,7 @@ check_if_appium_is_running
 load_options
 
 # Get environment selection
-environment=$(get_input "Select environment (1: US | 2: MUS | 3: CA | 4: MCA | 5: UK | 6: DE | 7: ES | 8: IT): " "${environment:-1}")
+environment=$(get_input "Select environment (1: US | 2: MUS | 3: CA | 4: MCA | 5: UK | 6: PUK | 7: DE | 8: ES | 9: IT): " "${environment:-1}")
 
 case $environment in
   1)
@@ -102,12 +102,15 @@ case $environment in
     env_code="uk"
     ;;
   6)
-    env_code="de"
+    env_code="puk"
     ;;
   7)
-    env_code="es"
+    env_code="de"
     ;;
   8)
+    env_code="es"
+    ;;
+  9)
     env_code="it"
     ;;
   *)

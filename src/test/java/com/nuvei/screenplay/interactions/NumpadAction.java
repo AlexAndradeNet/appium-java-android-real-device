@@ -35,6 +35,7 @@ public class NumpadAction implements Interaction {
     private final Map<String, WebElementFacade> cachedTargets = new ConcurrentHashMap<>();
 
     protected NumpadAction(String numberSequence) {
+        numberSequence = numberSequence.replaceAll("\"", "");
         this.numberSequence = numberSequence;
     }
 
@@ -47,6 +48,8 @@ public class NumpadAction implements Interaction {
             performOnOnScreenNuveiNumpad(actor);
         } else if (actor.asksFor(EnvironmentQuestion.isMSeries())) {
             performOnPhysicalNumpad();
+        } else if (actor.asksFor(EnvironmentQuestion.isPSeries())) {
+            performEnterIntoTextbox(actor);
         } else {
             throw new UnsupportedOperationException("Unknown environment for numpad interaction.");
         }
@@ -57,7 +60,7 @@ public class NumpadAction implements Interaction {
                 VariablesSingleton.getInstance().getNumpadUsageCount() <= 2;
 
         if (!isStillNeedingTestTheNumpad) {
-            EnterAction.theValue(numberSequence).into(NumericScreen.TEXTBOX_VALUE).performAs(actor);
+            performEnterIntoTextbox(actor);
             return;
         }
         List<ClickAction> tapActions =
@@ -89,6 +92,10 @@ public class NumpadAction implements Interaction {
 
         var driver = AppiumDriver.getDriver();
         driver.executeScript("mobile: shell", adbCommand);
+    }
+
+    private void performEnterIntoTextbox(Actor actor) {
+        EnterAction.theValue(numberSequence).into(NumericScreen.TEXTBOX_VALUE).performAs(actor);
     }
 
     public static NumpadAction digit(String numberSequence) {

@@ -72,9 +72,10 @@ public class SafSettingsTasks {
         return Task.where("{0} goes to the main screen");
     }
 
-        if (actor.asksFor(EnvironmentQuestion.isMSeries())) {
-            actor.attemptsTo(SkipScenarioAction.withReason("SAF is not available in M-Series"));
     public static Performable skipIfTheFunctionIsNotAvailable(Actor actor) {
+        if (!actor.asksFor(EnvironmentQuestion.isTSeries())) {
+            actor.attemptsTo(
+                    SkipScenarioAction.withReason("SAF is not available in P and M-Series"));
         }
         return Task.where("{0} is in a T-Series device");
     }

@@ -31,6 +31,12 @@ public class EnvironmentQuestion {
     }
 
     public static Question<Boolean> isMSeries() {
-        return actor -> !actor.asksFor(isTSeries());
+        String environmentVariable = environmentVariables.getProperty("environment");
+        return actor -> environmentVariable.startsWith("m") && environmentVariable.length() == 3;
+    }
+
+    public static Question<Boolean> isPSeries() {
+        String environmentVariable = environmentVariables.getProperty("environment");
+        return actor -> environmentVariable.startsWith("p") && environmentVariable.length() == 3;
     }
 }
