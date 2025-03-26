@@ -13,11 +13,11 @@ from Nuvei Inc.
 */
 package com.nuvei.screenplay.interactions;
 
+import io.cucumber.java.PendingException;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Interaction;
 import net.serenitybdd.screenplay.Performable;
 import net.serenitybdd.screenplay.Tasks;
-import org.junit.jupiter.api.Assumptions;
 
 public class SkipScenarioAction implements Interaction {
     private final String cause;
@@ -28,7 +28,7 @@ public class SkipScenarioAction implements Interaction {
 
     @Override
     public <T extends Actor> void performAs(T actor) {
-        Assumptions.abort(cause);
+        throw new PendingException(cause);
     }
 
     public static Performable withReason(String reason) {
