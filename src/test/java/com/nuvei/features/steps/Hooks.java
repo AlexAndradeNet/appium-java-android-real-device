@@ -14,18 +14,12 @@ from Nuvei Inc.
 package com.nuvei.features.steps;
 
 import com.nuvei.screenplay.tasks.commons.CommonTasks;
+import com.nuvei.utils.ReportUtility;
 import com.nuvei.utils.SimpleLogger;
 import io.cucumber.java.*;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
-import net.serenitybdd.core.Serenity;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.actors.OnlineCast;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
 
 public class Hooks {
 
@@ -48,50 +42,17 @@ public class Hooks {
 
     @After(order = 1)
     public void afterEachScenario(Scenario scenario) {
+        Actor actor = OnStage.theActorInTheSpotlight();
+
         if (scenario.isFailed()) {
-            takeAndReportScreenshot(scenario);
+            ReportUtility.saveScreenshot(scenario);
         }
 
-        Actor actor = OnStage.theActorInTheSpotlight();
         actor.attemptsTo(CommonTasks.returnToTheDashboardScreen(actor));
     }
 
     @AfterAll
     public static void afterAll() {
         logger.info("####################### AFTER ALL Cucumber");
-    }
-
-    private static void takeAndReportScreenshot(Scenario scenario) {
-        logger.info("####################### Scenario failed: " + scenario.getStatus());
-
-        var webDriver = Serenity.getWebdriverManager().getCurrentDriver();
-        File screenshot = ((TakesScreenshot) webDriver).getScreenshotAs(OutputType.FILE);
-
-        // Define where to save the file
-        File destination = new File("target/screenshots/" + scenario.getName() + ".png");
-
-        try {
-            // Ensure the directory exists
-            Files.createDirectories(destination.getParentFile().toPath());
-
-            // Save the screenshot
-            Files.copy(
-                    screenshot.toPath(), destination.toPath(), StandardCopyOption.REPLACE_EXISTING);
-
-            System.out.println("Screenshot saved: " + destination.getAbsolutePath());
-        } catch (IOException e) {
-            logger.error(e.getMessage());
-        }
-
-        // Save the screenshot in the Serenity report
-        try {
-            Serenity.recordReportData()
-                    .asEvidence()
-                    .withTitle("Screenshot")
-                    .downloadable()
-                    .fromFile(destination.toPath());
-        } catch (IOException e) {
-            logger.error(e.getMessage());
-        }
     }
 }
