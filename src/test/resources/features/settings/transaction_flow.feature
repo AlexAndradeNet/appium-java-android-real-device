@@ -14,10 +14,14 @@ Feature: Control the flow of transactions
   Scenario: 2 - The clerk enables the Order Number prompting
     Given Aureliano is in the Main Screen
     When he enables the "Order Number" toggle
-    Then he should see the "Enter the Order Number" is prompted in Sales
+    Then he should see the "Enter the Order Number" is prompted in a Sale
+    And he fills the prompt with 1
+    And he gets a transaction approved validating its receipt
 
-      #@ignore
+  #@ignore
   Scenario: 3 - The clerk enables the Invoice Number prompting
     Given Aureliano is in the Main Screen
     When he enables the "Invoice Number" toggle
-    Then he should see the "Enter the Invoice Number" is prompted in Sales
+    Then he should see the "Enter the Invoice Number" is prompted in a Sale
+    And he fills the prompt with 1
+    And he gets a transaction approved validating its receipt
