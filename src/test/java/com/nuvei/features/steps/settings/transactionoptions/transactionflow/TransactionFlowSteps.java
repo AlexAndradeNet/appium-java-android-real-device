@@ -15,6 +15,7 @@ package com.nuvei.features.steps.settings.transactionoptions.transactionflow;
 
 import com.nuvei.screenplay.driver.AppiumDriver;
 import com.nuvei.screenplay.interactions.*;
+import com.nuvei.screenplay.questions.TextQuestion;
 import com.nuvei.screenplay.questions.VisibilityQuestion;
 import com.nuvei.screenplay.tasks.DashboardScreenTasks;
 import com.nuvei.screenplay.tasks.commons.CommonTasks;
@@ -34,6 +35,8 @@ import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.ensure.Ensure;
 
 public class TransactionFlowSteps {
+
+    static final String SALE_AMOUNT = "1.00";
 
     @When("he enables the {string} toggle")
     public void heEnablesThePrompt(String toggleName) {
@@ -96,7 +99,12 @@ public class TransactionFlowSteps {
 
         AppiumDriver.reAttachDriver();
 
-        actor.attemptsTo(WaitAction.untilElementIsPresent(PrintingScreen.BUTTON_RECEIPT_OPTIONS));
+        actor.attemptsTo(
+                WaitAction.untilElementIsPresent(PrintingScreen.BUTTON_RECEIPT_OPTIONS),
+                Ensure.that(
+                                "Should get an approval",
+                                TextQuestion.of(PrintingScreen.LABEL_MESSAGE_TITLE))
+                        .isEqualTo("APPROVED"));
 
         LogcatUtility logcatUtility = new LogcatUtility();
         logcatUtility.startLogcat();
@@ -126,8 +134,7 @@ public class TransactionFlowSteps {
         actor.attemptsTo(
                 NumpadAction.digit(promptValue),
                 ClickAction.on(NumericScreen.BUTTON_CONTINUE_OR_CONFIRM),
-                NumpadAction.digit("100"),
-                ClickAction.on(NumericScreen.BUTTON_CONTINUE_OR_CONFIRM),
-                WaitAction.forSpecificTime(10));
+                NumpadAction.digit(SALE_AMOUNT),
+                ClickAction.on(NumericScreen.BUTTON_CONTINUE_OR_CONFIRM));
     }
 }

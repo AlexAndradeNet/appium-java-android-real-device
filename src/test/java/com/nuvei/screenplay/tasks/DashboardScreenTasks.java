@@ -140,8 +140,7 @@ public class DashboardScreenTasks {
     public static Performable openSaf(Actor actor) {
         actor.attemptsTo(
                 SafSettingsTasks.skipIfTheFunctionIsNotAvailable(actor),
-                navigateUntilElementIsVisibleAndTapOnIt(actor, BUTTON_SAF),
-                WaitAction.forSpecificTime(1));
+                navigateUntilElementIsVisibleAndTapOnIt(actor, BUTTON_SAF));
 
         return Task.where("{0} opens the SAF tile");
     }

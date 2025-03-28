@@ -56,13 +56,17 @@ public class NumpadAction implements Interaction {
     }
 
     private void performOnOnScreenNuveiNumpad(Actor actor) {
-        boolean isStillNeedingTestTheNumpad =
-                VariablesSingleton.getInstance().getNumpadUsageCount() <= 2;
+        boolean isNotLongerNeededTestTheNumpad =
+                VariablesSingleton.getInstance().getNumpadUsageCount() > 2;
+        boolean isPlainText = !numberSequence.contains(".");
 
-        if (!isStillNeedingTestTheNumpad) {
+        if (isPlainText && isNotLongerNeededTestTheNumpad) {
             performEnterIntoTextbox(actor);
             return;
         }
+
+        // When numberSequence is an Amount, we need to tap each digit separately
+
         List<ClickAction> tapActions =
                 numberSequence
                         .chars()
