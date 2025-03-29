@@ -29,6 +29,8 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import java.util.Arrays;
+import java.util.List;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.ensure.Ensure;
@@ -160,7 +162,7 @@ public class ClerkManagementSteps {
     @Then(
             "he should see that the clerks list is sorted numerically \\({string}) instead of"
                     + " alphabetically")
-    public void verifyClerkList(String clerksList) {
+    public void verifyClerkListCheckingSorting(String clerksList) {
         Actor actor = OnStage.theActorInTheSpotlight();
 
         actor.attemptsTo(Ensure.that(actor.recall("clerksList").toString()).isEqualTo(clerksList));
@@ -369,7 +371,7 @@ public class ClerkManagementSteps {
                     + " all the Employees' roles \\({string})")
     public void shouldSeeTheListAsAManagerMeaningHeCanSeeHisAccountAllTheEmployeesRoles(
             String clerkList) {
-        verifyClerkList(clerkList);
+        verifyClerkListWithOutCheckingSorting(clerkList);
     }
 
     @And("he/she should have the option to add new clerks")
@@ -390,8 +392,9 @@ public class ClerkManagementSteps {
     @Then(
             "she/he should see a list as an Employee, meaning she/he can see only her/his account,"
                     + " which is {word}")
-    public void sheShouldSeeAListAsAEmployeeMeaningSheCanSeeOnlyHerAccountWhichIs(String clerkId) {
-        verifyClerkList(clerkId);
+    public void sheShouldSeeAListAsAEmployeeMeaningSheCanSeeOnlyHerAccountWhichIs(
+            String clerkList) {
+        verifyClerkListWithOutCheckingSorting(clerkList);
     }
 
     @And("she/he should have no option to add new clerks")
@@ -411,7 +414,7 @@ public class ClerkManagementSteps {
                     + " Manager, and Employees = {string})")
     public void heShouldSeeTheListAsAnAdminMeaningHeCanSeeAllClerksAdminManagerAndEmployees(
             String alias, String clerkList) {
-        verifyClerkList(clerkList);
+        verifyClerkListWithOutCheckingSorting(clerkList);
     }
 
     @Then("he should use the ID {word} with the new password {word} to revert it to {word}")
@@ -425,7 +428,7 @@ public class ClerkManagementSteps {
                     + " Employees roles \\({string})")
     public void heShouldSeeTheListAsAManagerMeaningHeCanSeeEusebiaSAccountAndAllTheEmployeesRoles(
             String alias, String clerkList) {
-        verifyClerkList(clerkList);
+        verifyClerkListWithOutCheckingSorting(clerkList);
     }
 
     @When("he attempts to delete {word} account \\(ID {word})")
@@ -560,5 +563,27 @@ public class ClerkManagementSteps {
                                         "Should be returned to the Settings main screen",
                                         VisibilityQuestion.isPresent(MainSettingsScreen.TITLE))
                                 .isTrue());
+    }
+
+    /**
+     * Not checking the order in other test cases is for backward compatibility with production
+     * versions
+     *
+     * @param expectedClerksList expected list of clerks
+     */
+    private void verifyClerkListWithOutCheckingSorting(String expectedClerksList) {
+        Actor actor = OnStage.theActorInTheSpotlight();
+
+        String actualClerkList = toSortedList(actor.recall("clerksList").toString());
+        expectedClerksList = toSortedList(expectedClerksList);
+
+        actor.attemptsTo(Ensure.that(actualClerkList).isEqualTo(expectedClerksList));
+    }
+
+    private String toSortedList(String csvList) {
+        List<String> unorderedList = Arrays.stream(csvList.split(",")).map(String::trim).toList();
+
+        // order list
+        return unorderedList.stream().sorted().toList().toString();
     }
 }
