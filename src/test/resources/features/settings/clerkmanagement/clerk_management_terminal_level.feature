@@ -51,6 +51,14 @@ Feature: Clerk and Role management
     Then he should see the each new clerk was created correctly
 
   #@ignore
+  @bug:520
+  @v1.00.56-UK
+  @v1.00.43-US
+  @v1.00.46-CA
+  @v1.00.11-DE
+  @v1.00.01-ES
+  @v1.00.36-MUS
+  @v1.00.39-MCA
   Scenario: 7 - Verify correct clerks list sorting
     Given Aureliano, with ID 1 and Password 111111, is managing clerks
     When he lists the clerks
@@ -155,6 +163,15 @@ Feature: Clerk and Role management
     Then he should receive the error message error message "Please verify and try again!" with the title "Invalid password"
 
   #@ignore
+  @bug:648
+  @v1.00.66-UK
+  @v1.00.52-US
+  @v1.00.55-CA
+  @v1.00.21-DE
+  @v1.00.11-ES
+  @v1.00.09-IT
+  @v1.00.44-MUS
+  @v1.00.47-MCA
   Scenario: 23 - Cancel a password-protected function
     Given Aureliano, with ID 1 and Password 111111, is managing clerks
     When he attempts to go to the previous screen

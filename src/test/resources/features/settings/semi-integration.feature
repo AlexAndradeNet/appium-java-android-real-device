@@ -16,8 +16,8 @@ Feature: Semi-Integration Test Setup
     When he attempts to add multiple clerks with the following data:
       | alias      | clerk_id | role     | password |
       #| Aureliano  | 1       | Admin  | 111111   |
-      | Melquiades | 22       | Manager  | 111111   |
-      | Eusebia    | 33       | Employee | 111111   |
+      | Melquiades | 2        | Manager  | 111111   |
+      | Eusebia    | 3        | Employee | 111111   |
     Then he should see the each new clerk was created correctly
 
   #@ignore
@@ -56,10 +56,10 @@ Feature: Semi-Integration Test Setup
     Then he should see be REJECTED to access the Standalone Mode as <role>
 
     Examples:
-      | clerk_id | role    |
+      | clerk_id | role     |
       #| 1       | Admin  |
-      | 22       | Manager |
-      | 33        | Employee |
+      | 2        | Manager  |
+      | 3        | Employee |
 
   #@ignore
   Scenario: 8 - Deactivate Semi-Integration leaving the password prompt active

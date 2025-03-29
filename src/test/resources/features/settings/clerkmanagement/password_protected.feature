@@ -28,8 +28,8 @@ Feature: Password-protected notable transactions
     When he attempts to add multiple clerks with the following data:
       | alias      | clerk_id | role     | password |
       #| Aureliano  | 1       | Admin  | 111111   |
-      | Melquiades | 22       | Manager  | 111111   |
-      | Eusebia    | 33       | Employee | 111111   |
+      | Melquiades | 2       | Manager  | 111111   |
+      | Eusebia    | 3       | Employee | 111111   |
     Then he should see the each new clerk was created correctly
 
   #@ignore
@@ -58,20 +58,20 @@ Feature: Password-protected notable transactions
     Examples:
       | functionality | clerk_id | role     | password |
       # Refund
-      | Refund        | 22       | Manager  | 111111   |
-      | Refund        | 33       | Employee | 111111   |
+      | Refund        | 2       | Manager  | 111111   |
+      | Refund        | 3       | Employee | 111111   |
       # Moto
-      | Moto          | 22       | Manager  | 111111   |
-      | Moto          | 33       | Employee | 111111   |
+      | Moto          | 2       | Manager  | 111111   |
+      | Moto          | 3       | Employee | 111111   |
       # Batch
-      | Settle        | 22       | Manager  | 111111   |
-      | Settle        | 33       | Employee | 111111   |
+      | Settle        | 2       | Manager  | 111111   |
+      | Settle        | 3       | Employee | 111111   |
       # Void
-      | Void          | 22       | Manager  | 111111   |
-      | Void          | 33       | Employee | 111111   |
+      | Void          | 2       | Manager  | 111111   |
+      | Void          | 3       | Employee | 111111   |
       # Void
-      | SAF           | 22       | Manager  | 111111   |
-      | SAF           | 33       | Employee | 111111   |
+      | SAF           | 2       | Manager  | 111111   |
+      | SAF           | 3       | Employee | 111111   |
 
   #@ignore
   Scenario: 7 - Post-Setup - Disable SAF mode
