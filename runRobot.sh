@@ -31,8 +31,8 @@ save_environment_values_for_intellij() {
   FILE=".idea/workspace.xml"
 
   # Define regex pattern and replacement
-  PATTERN='<option name=\"VM_PARAMETERS\" value=\"-Denvironment=[[:alpha:]]{2,3}\" \/>'
-  REPLACEMENT='<option name=\"VM_PARAMETERS\" value=\"-Denvironment='$1'\" />'
+  PATTERN='<option name=\"VM_PARAMETERS\" value=\"-Dcucumber.filter.tags=\~@ignore -Denvironment=[[:alpha:]]{2,3}\" \/>'
+  REPLACEMENT='<option name=\"VM_PARAMETERS\" value=\"-Dcucumber.filter.tags=\~@ignore -Denvironment='$1'\" />'
   sed -E "s#$PATTERN#$REPLACEMENT#g" "$FILE" > temp.xml && mv temp.xml "$FILE"
 
   PATTERN='<option name=\"GLUE\" value=\".*\" \/>'
