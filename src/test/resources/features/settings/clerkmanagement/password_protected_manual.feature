@@ -37,7 +37,7 @@ Feature: Password-protected notable transactions (manual execution)
 
   #@ignore
   Scenario Outline: 5 - Check Admins and Managers are allowed when minimum access level is Manager
-    Given Aureliano defined the minimum access level as Admin and opened the <functionality> option
+    Given Aureliano defined the minimum access level as Manager and opened the <functionality> option
     # TODO: implement VHQ
     When he attempts to login in <functionality> using the <role>, with ID <clerk_id> and Password <password>
     Then he should be ALLOWED to access the functionality <functionality> as admin
@@ -62,7 +62,7 @@ Feature: Password-protected notable transactions (manual execution)
 
   @ignore
   Scenario Outline: 6 - Check only Employees are rejected when minimum access level is Manager
-    Given Aureliano defined the minimum access level as Admin and opened the <functionality> option
+    Given Aureliano defined the minimum access level as Manager and opened the <functionality> option
     When he attempts to login in <functionality> using the <role>, with ID <clerk_id> and Password <password>
     Then he should be REJECTED to access the functionality <functionality> as <role>
 
@@ -76,7 +76,7 @@ Feature: Password-protected notable transactions (manual execution)
 
   @ignore
   Scenario Outline: 7 - Check all clerk roles are allowed when minimum access level is Employee
-    Given Aureliano defined the minimum access level as Admin and opened the <functionality> option
+    Given Aureliano defined the minimum access level as Employee and opened the <functionality> option
     # TODO: implement VHQ
     When he attempts to login in <functionality> using the <role>, with ID <clerk_id> and Password <password>
     Then he should be ALLOWED to access the functionality <functionality> as admin
