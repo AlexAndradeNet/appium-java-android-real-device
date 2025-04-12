@@ -39,7 +39,8 @@ Feature: Semi-Integration Test Setup
     When he attempts to activate the Semi-Integration feature and the password prompt
     Then he should immediately see the Idle screen after returning to the Main Screen
 
-  #@ignore
+  @ignore
+  # BUG: Always pass until GitHub #720 will be implemented
   Scenario: 6 - Check Admins are allowed when minimum access level is Admin
     Given Aureliano defined the minimum access level as Admin and is in the Semi-Integration Idle Screen
     # TODO: implement VHQ
@@ -47,8 +48,8 @@ Feature: Semi-Integration Test Setup
     Then he should see the Main screen
     And he should see that the Idle screen appears after waiting 60 seconds on the Main Screen
 
-  #@ignore
-  # BUG: This is failing because role management isn't implemented yet
+  @ignore
+  # BUG: This is failing because role management isn't implemented yet GitHub #720
   Scenario Outline: 7 - (EXPECTING TO FAIL) Check Managers and Employees are rejected when minimum access level is Admin
     Given Aureliano defined the minimum access level as Admin and is in the Semi-Integration Idle Screen
     # TODO: implement VHQ
