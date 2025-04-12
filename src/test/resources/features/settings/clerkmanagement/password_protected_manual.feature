@@ -67,12 +67,12 @@ Feature: Password-protected notable transactions (manual execution)
     Then he should be REJECTED to access the functionality <functionality> as <role>
 
     Examples:
-      | functionality | clerk_id | role     | password |
-      | Refund        | 3        | Employee | 111111   |
-      | Moto          | 3        | Employee | 111111   |
-      | Settle        | 3        | Employee | 111111   |
-      | Void          | 3        | Employee | 111111   |
-      | SAF           | 3        | Employee | 111111   |
+      | Title                          | functionality | clerk_id | role     | password |
+      | Refund: Employees are rejected | Refund        | 3        | Employee | 111111   |
+      | Moto: Employees are rejected   | Moto          | 3        | Employee | 111111   |
+      | Batch: Employees are rejected  | Settle        | 3        | Employee | 111111   |
+      | Void: Employees are rejected   | Void          | 3        | Employee | 111111   |
+      | SAF: Employees are rejected    | SAF           | 3        | Employee | 111111   |
 
   @ignore
   Scenario Outline: 7 - Check all clerk roles are allowed when minimum access level is Employee
@@ -82,27 +82,27 @@ Feature: Password-protected notable transactions (manual execution)
     Then he should be ALLOWED to access the functionality <functionality> as admin
 
     Examples:
-      | functionality | clerk_id | role     | password |
+      | Title                              | functionality | clerk_id | role     | password |
       # Refund
-      | Refund        | 1        | Admin    | 111111   |
-      | Refund        | 2        | Manager  | 111111   |
-      | Refund        | 3        | Employee | 111111   |
-      # Moto
-      | Moto          | 1        | Admin    | 111111   |
-      | Moto          | 2        | Manager  | 111111   |
-      | Moto          | 3        | Employee | 111111   |
+      | Refund: Admins are allowed    | Refund        | 1        | Admin    | 111111   |
+      | Refund: Managers are allowed  | Refund        | 2        | Manager  | 111111   |
+      | Refund: Employees are allowed | Refund        | 3        | Employee | 111111   |
+       # Moto
+      | Moto: Admins are allowed      | Moto          | 1        | Admin    | 111111   |
+      | Moto: Managers are allowed    | Moto          | 2        | Manager  | 111111   |
+      | Moto: Employees are allowed   | Moto          | 3        | Employee | 111111   |
       # Batch
-      | Settle        | 1        | Admin    | 111111   |
-      | Settle        | 2        | Manager  | 111111   |
-      | Settle        | 3        | Employee | 111111   |
+      | Batch: Admins are allowed     | Settle        | 1        | Admin    | 111111   |
+      | Batch: Managers are allowed   | Settle        | 2        | Manager  | 111111   |
+      | Batch: Employees are allowed  | Settle        | 3        | Employee | 111111   |
       # Void
-      | Void          | 1        | Admin    | 111111   |
-      | Void          | 2        | Manager  | 111111   |
-      | Void          | 3        | Employee | 111111   |
+      | Void: Admins are allowed      | Void          | 1        | Admin    | 111111   |
+      | Void: Managers are allowed    | Void          | 2        | Manager  | 111111   |
+      | Void: Employees are allowed   | Void          | 3        | Employee | 111111   |
       # SAF
-      | SAF           | 1        | Admin    | 111111   |
-      | SAF           | 2        | Manager  | 111111   |
-      | SAF           | 3        | Employee | 111111   |
+      | SAF: Admins are allowed       | SAF           | 1        | Admin    | 111111   |
+      | SAF: Managers are allowed     | SAF           | 2        | Manager  | 111111   |
+      | SAF: Employees are allowed    | SAF           | 3        | Employee | 111111   |
 
   @ignore
   Scenario: 8 - Post-Setup - Disable SAF mode

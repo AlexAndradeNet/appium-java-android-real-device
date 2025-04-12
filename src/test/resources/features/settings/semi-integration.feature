@@ -50,17 +50,16 @@ Feature: Semi-Integration Test Setup
 
   @ignore
   # BUG: This is failing because role management isn't implemented yet GitHub #720
-  Scenario Outline: 7 - (EXPECTING TO FAIL) Check Managers and Employees are rejected when minimum access level is Admin
+  Scenario Outline: 7 - (EXPECTING TO FAIL) Check Managers and Employees are rejected when minimum access level is Admin - <Title>
     Given Aureliano defined the minimum access level as Admin and is in the Semi-Integration Idle Screen
     # TODO: implement VHQ
     When he attempts to log-in to Standalone Mode as <role> with ID <clerk_id>
     Then he should see be REJECTED to access the Standalone Mode as <role>
 
     Examples:
-      | clerk_id | role     |
-      #| 1       | Admin  |
-      | 2        | Manager  |
-      | 3        | Employee |
+      | Title                        | clerk_id | role     |
+      | Managers should be rejected  | 2        | Manager  |
+      | Employees should be rejected | 3        | Employee |
 
   #@ignore
   Scenario: 8 - Deactivate Semi-Integration leaving the password prompt active

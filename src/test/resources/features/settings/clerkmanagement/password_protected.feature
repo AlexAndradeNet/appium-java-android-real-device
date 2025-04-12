@@ -28,8 +28,8 @@ Feature: Password-protected notable transactions
     When he attempts to add multiple clerks with the following data:
       | alias      | clerk_id | role     | password |
       #| Aureliano  | 1       | Admin  | 111111   |
-      | Melquiades | 2       | Manager  | 111111   |
-      | Eusebia    | 3       | Employee | 111111   |
+      | Melquiades | 2        | Manager  | 111111   |
+      | Eusebia    | 3        | Employee | 111111   |
     Then he should see the each new clerk was created correctly
 
   #@ignore
@@ -40,12 +40,12 @@ Feature: Password-protected notable transactions
     Then he should be ALLOWED to access the functionality <functionality> as admin
 
     Examples:
-      | functionality | clerk_id | role  | password |
-      | Refund        | 1        | Admin | 111111   |
-      | Moto          | 1        | Admin | 111111   |
-      | Settle        | 1        | Admin | 111111   |
-      | Void          | 1        | Admin | 111111   |
-      | SAF           | 1        | Admin | 111111   |
+      | Title                      | functionality | clerk_id | role  | password |
+      | Refund: Admins are allowed | Refund        | 1        | Admin | 111111   |
+      | Moto: Admins are allowed   | Moto          | 1        | Admin | 111111   |
+      | Batch: Admins are allowed  | Settle        | 1        | Admin | 111111   |
+      | Void: Admins are allowed   | Void          | 1        | Admin | 111111   |
+      | SAF: Admins are allowed    | SAF           | 1        | Admin | 111111   |
 
   #@ignore
   # This is failing because needs to implement the role management against VHQ
@@ -56,22 +56,22 @@ Feature: Password-protected notable transactions
     Then he should be REJECTED to access the functionality <functionality> as <role>
 
     Examples:
-      | functionality | clerk_id | role     | password |
+      | Title                          | functionality | clerk_id | role     | password |
       # Refund
-      | Refund        | 2       | Manager  | 111111   |
-      | Refund        | 3       | Employee | 111111   |
+      | Refund: Managers are rejected  | Refund        | 2        | Manager  | 111111   |
+      | Refund: Employees are rejected | Refund        | 3        | Employee | 111111   |
       # Moto
-      | Moto          | 2       | Manager  | 111111   |
-      | Moto          | 3       | Employee | 111111   |
+      | Moto: Managers are rejected    | Moto          | 2        | Manager  | 111111   |
+      | Moto: Employees are rejected   | Moto          | 3        | Employee | 111111   |
       # Batch
-      | Settle        | 2       | Manager  | 111111   |
-      | Settle        | 3       | Employee | 111111   |
+      | Batch: Managers are rejected   | Settle        | 2        | Manager  | 111111   |
+      | Batch: Employees are rejected  | Settle        | 3        | Employee | 111111   |
       # Void
-      | Void          | 2       | Manager  | 111111   |
-      | Void          | 3       | Employee | 111111   |
-      # Void
-      | SAF           | 2       | Manager  | 111111   |
-      | SAF           | 3       | Employee | 111111   |
+      | Void: Managers are rejected    | Void          | 2        | Manager  | 111111   |
+      | Void: Employees are rejected   | Void          | 3        | Employee | 111111   |
+      # SAF
+      | SAF: Managers are rejected     | SAF           | 2        | Manager  | 111111   |
+      | SAF: Employees are rejected    | SAF           | 3        | Employee | 111111   |
 
   #@ignore
   Scenario: 7 - Post-Setup - Disable SAF mode
