@@ -26,15 +26,15 @@ and maintainable, please follow these best practices:
    solution or feature. If you need to refactor, submit it as a separate PR.
 
 4. **Unit Tests Are Essential**: As part of the Agile Definition of Done, ensure
-   that unit tests are included. Whether you write them first (TDD) or before
-   the final commit, they are mandatory.
+   that unit tests are included. They are mandatory, whether you write them
+   first (TDD) or before the final commit.
 
 5. **Run Linters**: Ensure your code passes all linting checks.
 
 6. **Static Code Analysis with SonarQube**: Run a SonarQube analysis and address
    its recommendations before submitting a PR.
 
-7. **TDD for Bugs**: When fixing a bug, use Test-Driven Development (TDD). Write
+7. **TDD for Bugs**: Use Test-Driven Development (TDD) to fix a bug. Write
    a unit test that reproduces the issue (red), modify the test to reflect the
    expected behavior (green), and then refactor the code to solve the bug and
    meet the test criteria (blue).
@@ -45,14 +45,13 @@ and maintainable, please follow these best practices:
 
 ### Branches
 
-⚠️ Direct pushes to the `main` and `develop` branches are not allowed. Always
+⚠️ Direct pushes to the `main` and `develop` branches are prohibited. Always
 create a new branch and submit a PR for review.
 
 Follow the branch naming conventions below:
 
 - `main`: The main branch containing the latest stable release.
-- `develop`: The development branch containing the most recent development
-  version.
+- `develop`: This branch contains the most recent version of the development.
 - `feature/xxx`: For new features.
 - `bugfix/xxx`: For bug fixes.
 - `hotfix/xxx`: For hotfixes.
@@ -63,8 +62,8 @@ Follow the branch naming conventions below:
 
 #### Commit Messages
 
-- Use [GitMoji](https://gitmoji.dev/) to add emojis that describe the purpose of
-  your commits.
+- Use [GitMoji](https://gitmoji.dev/) to add emojis describing your commits'
+  purpose.
 - Use imperative, present tense for commit messages, e.g., "add" instead of "
   added" or "adds."
     - Examples:
@@ -75,7 +74,7 @@ Follow the branch naming conventions below:
 #### Pull Requests
 
 - Titles: Use imperative, present tense format for all PR titles (e.g., "Fix
-  login issue," "Implement new feature"). This should align with commit
+  login issue", "Implement new feature"). This should align with commit
   messages.
 - Scope:
     - Keep PRs focused on a single topic or issue.
@@ -99,7 +98,7 @@ Follow the branch naming conventions below:
 - Commit Messages:
     - Include a SonarQube Quality Gate screenshot in the PR
       description.
-    - Add a screenshot of the test if the pipeline can't run them.
+    - Add a screenshot of the tests if the pipeline can't run them.
 - Commit Validation: Review each commit individually, rather than focusing
   solely on file-level changes.
 - Code Clarity:
@@ -115,7 +114,7 @@ Follow the branch naming conventions below:
 Keeping the code clean and readable is crucial. Follow the quote from Robert C.
 Martin (Uncle Bob):
 
-> "The ratio of time spent reading versus writing is well over 10 to 1. We are
+> "The ratio of time spent reading versus writing is over 10 to 1. We are
 > constantly reading old code as part of the effort to write new code. …making
 > it easy to read makes it easier to write."
 

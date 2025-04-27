@@ -4,7 +4,7 @@ set -euo pipefail # Error handling and Strict mode
 # Configuration file to save and read options
 CONFIG_FILE=".runRobot_last_run_options"
 
-# Function to get user input with default value
+# Function to get user input with the default value
 get_input() {
   local prompt="$1"
   local default_value="$2"
@@ -30,7 +30,7 @@ save_environment_values_for_intellij() {
   # Define the file to modify
   FILE=".idea/workspace.xml"
 
-  # Define regex pattern and replacement
+  # Define a regex pattern and replacement
   PATTERN='<option name=\"VM_PARAMETERS\" value=\"-Dcucumber.filter.tags=\~@ignore -Denvironment=[[:alpha:]]{2,3}\" \/>'
   REPLACEMENT='<option name=\"VM_PARAMETERS\" value=\"-Dcucumber.filter.tags=\~@ignore -Denvironment='$1'\" />'
   sed -E "s#$PATTERN#$REPLACEMENT#g" "$FILE" > temp.xml && mv temp.xml "$FILE"
@@ -120,7 +120,7 @@ case $environment in
 esac
 
 # Get clean option
-clean_gradle=$(get_input "Rebuild (clean) the entire project (Y/n): " "${clean_gradle:-N}")
+clean_gradle=$(get_input "Rebuild (clean) the entire project (Y/n): " "${clean_gradle:-Y}")
 
 if [[ "$clean_gradle" != "n" && "$clean_gradle" != "N" ]]; then
     clean_gradle_flag="clean"
@@ -141,7 +141,7 @@ fi
 save_options
 save_environment_values_for_intellij $env_code
 
-# Prevent the mac from going to sleep
+# Prevent the Mac from going to sleep
 killall caffeinate > /dev/null 2>&1 || true
 caffeinate -d &
 
