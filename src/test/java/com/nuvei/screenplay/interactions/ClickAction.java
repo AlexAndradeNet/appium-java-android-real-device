@@ -13,7 +13,7 @@ from Nuvei Inc.
 */
 package com.nuvei.screenplay.interactions;
 
-import com.nuvei.screenplay.driver.AppiumDriver;
+import com.nuvei.screenplay.ability.BrowseTheApp;
 import java.time.Duration;
 import java.util.Collections;
 import net.serenitybdd.screenplay.Actor;
@@ -60,8 +60,8 @@ public class ClickAction implements Interaction {
                         .addAction(new Pause(finger, Duration.ofMillis(duration)))
                         .addAction(finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
 
-        WebDriverFacade appiumDriver = AppiumDriver.getDriver();
-        appiumDriver.perform(Collections.singletonList(tapSequence));
+        WebDriverFacade driver = BrowseTheApp.driverFor(actor);
+        driver.perform(Collections.singletonList(tapSequence));
     }
 
     public static ClickAction on(Target target) {

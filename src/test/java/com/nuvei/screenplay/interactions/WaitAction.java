@@ -16,7 +16,7 @@ package com.nuvei.screenplay.interactions;
 import static net.serenitybdd.screenplay.matchers.WebElementStateMatchers.isNotPresent;
 
 import com.nuvei.features.steps.Hooks;
-import com.nuvei.screenplay.driver.AppiumDriver;
+import com.nuvei.screenplay.ability.BrowseTheApp;
 import com.nuvei.screenplay.questions.VisibilityQuestion;
 import com.nuvei.utils.SimpleLogger;
 import java.time.Duration;
@@ -87,7 +87,7 @@ public class WaitAction implements Task {
     }
 
     private void waitUntilElementIsPresent(Actor actor) {
-        var driver = AppiumDriver.getDriver();
+        var driver = BrowseTheApp.driverFor(actor);
         new FluentWait<>(driver)
                 .withTimeout(Duration.ofSeconds(100))
                 .pollingEvery(Duration.ofSeconds(2))

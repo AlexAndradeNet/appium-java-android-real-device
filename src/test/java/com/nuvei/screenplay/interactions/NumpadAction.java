@@ -13,7 +13,7 @@ from Nuvei Inc.
 */
 package com.nuvei.screenplay.interactions;
 
-import com.nuvei.screenplay.driver.AppiumDriver;
+import com.nuvei.screenplay.ability.BrowseTheApp;
 import com.nuvei.screenplay.questions.EnvironmentQuestion;
 import com.nuvei.screenplay.ui.NumericScreen;
 import com.nuvei.utils.VariablesSingleton;
@@ -47,7 +47,7 @@ public class NumpadAction implements Interaction {
         if (actor.asksFor(EnvironmentQuestion.isTSeries())) {
             performOnOnScreenNuveiNumpad(actor);
         } else if (actor.asksFor(EnvironmentQuestion.isMSeries())) {
-            performOnPhysicalNumpad();
+            performOnPhysicalNumpad(actor);
         } else if (actor.asksFor(EnvironmentQuestion.isPSeries())) {
             performEnterIntoTextbox(actor);
         } else {
@@ -83,7 +83,7 @@ public class NumpadAction implements Interaction {
                 .setNumpadUsageCount(VariablesSingleton.getInstance().getNumpadUsageCount() + 1);
     }
 
-    private void performOnPhysicalNumpad() {
+    private void performOnPhysicalNumpad(Actor actor) {
         // Use physical keyboard for M-Series
 
         // Prepare the ADB shell command
@@ -94,7 +94,7 @@ public class NumpadAction implements Interaction {
                 "keyboard text \"%s\""
                         .formatted(numberSequence)); // Command arguments (e.g., "/sdcard")
 
-        var driver = AppiumDriver.getDriver();
+        var driver = BrowseTheApp.driverFor(actor);
         driver.executeScript("mobile: shell", adbCommand);
     }
 

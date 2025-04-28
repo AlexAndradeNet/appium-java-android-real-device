@@ -13,7 +13,7 @@ from Nuvei Inc.
 */
 package com.nuvei.utils;
 
-import com.nuvei.screenplay.driver.AppiumDriver;
+import com.nuvei.screenplay.ability.BrowseTheApp;
 import com.nuvei.screenplay.interactions.WaitAction;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
+import net.serenitybdd.screenplay.Actor;
 import org.junit.platform.commons.util.StringUtils;
 import org.openqa.selenium.logging.LogEntry;
 
@@ -31,8 +32,8 @@ public class LogcatUtility {
     private final AtomicBoolean running = new AtomicBoolean(false);
     private final ConcurrentLinkedQueue<String> logData = new ConcurrentLinkedQueue<>();
 
-    public synchronized void startLogcat() {
-        var driver = AppiumDriver.getDriver();
+    public synchronized void startLogcat(Actor actor) {
+        var driver = BrowseTheApp.driverFor(actor);
 
         if (!running.get() && (logThread == null || !logThread.isAlive())) {
             running.set(true);

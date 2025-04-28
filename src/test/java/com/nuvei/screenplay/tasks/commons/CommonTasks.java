@@ -15,7 +15,7 @@ package com.nuvei.screenplay.tasks.commons;
 
 import static com.nuvei.screenplay.ui.CommonObjects.BUTTON_ARROW_BACK;
 
-import com.nuvei.screenplay.driver.AppiumDriver;
+import com.nuvei.screenplay.ability.BrowseTheApp;
 import com.nuvei.screenplay.interactions.ClickAction;
 import com.nuvei.screenplay.interactions.SwipeAction;
 import com.nuvei.screenplay.interactions.ToggleAction;
@@ -42,7 +42,7 @@ public class CommonTasks {
     public static Performable pressPhysicalBackKey() {
         return Task.where(
                 "{0} press the physical back key",
-                actor -> AppiumDriver.getDriver().navigate().back());
+                actor -> BrowseTheApp.driverFor(actor).navigate().back());
     }
 
     public static Performable tapBackArrow(Actor actor) {

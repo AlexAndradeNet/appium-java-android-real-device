@@ -13,7 +13,7 @@ from Nuvei Inc.
 */
 package com.nuvei.features.steps.settings.transactionoptions.transactionflow;
 
-import com.nuvei.screenplay.driver.AppiumDriver;
+import com.nuvei.screenplay.ability.BrowseTheApp;
 import com.nuvei.screenplay.interactions.*;
 import com.nuvei.screenplay.questions.TextQuestion;
 import com.nuvei.screenplay.questions.VisibilityQuestion;
@@ -97,7 +97,7 @@ public class TransactionFlowSteps {
     public void heShouldGetAnApprovalWithTheInvoiceNumber() {
         Actor actor = OnStage.theActorInTheSpotlight();
 
-        AppiumDriver.reAttachDriver();
+        BrowseTheApp.reAttachDriver(actor);
 
         actor.attemptsTo(
                 WaitAction.untilElementIsPresent(PrintingScreen.BUTTON_RECEIPT_OPTIONS),
@@ -107,7 +107,7 @@ public class TransactionFlowSteps {
                         .isEqualTo("APPROVED"));
 
         LogcatUtility logcatUtility = new LogcatUtility();
-        logcatUtility.startLogcat();
+        logcatUtility.startLogcat(actor);
 
         actor.attemptsTo(
                 ClickAction.on(PrintingScreen.BUTTON_RECEIPT_OPTIONS),
