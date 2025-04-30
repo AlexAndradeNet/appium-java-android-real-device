@@ -13,7 +13,7 @@ from Nuvei Inc.
 */
 package com.nuvei.screenplay.interactions;
 
-import com.nuvei.screenplay.driver.AppiumDriver;
+import com.nuvei.screenplay.ability.BrowseTheApp;
 import java.time.Duration;
 import java.util.Collections;
 import net.serenitybdd.screenplay.Actor;
@@ -42,7 +42,7 @@ public class SwipeAction implements Interaction {
 
     @Override
     public <T extends Actor> void performAs(T actor) {
-        WebDriverFacade appiumDriver = AppiumDriver.getDriver();
+        WebDriverFacade appiumDriver = BrowseTheApp.driverFor(actor);
 
         Dimension windowSize = appiumDriver.manage().window().getSize();
 

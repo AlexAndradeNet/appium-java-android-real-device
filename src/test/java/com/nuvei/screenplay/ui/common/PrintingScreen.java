@@ -11,13 +11,13 @@ Dissemination of this information or reproduction of this material
 is strictly forbidden unless prior written permission is obtained
 from Nuvei Inc.
 */
-package com.nuvei.screenplay.ui;
+package com.nuvei.screenplay.ui.common;
 
 import io.appium.java_client.AppiumBy;
 import net.serenitybdd.screenplay.targets.Target;
 
-public class ConfirmationScreen {
-    private ConfirmationScreen() {
+public class PrintingScreen {
+    private PrintingScreen() {
         throw new IllegalStateException("Utility class - cannot be instantiated");
     }
 
@@ -34,15 +34,17 @@ public class ConfirmationScreen {
 
     private static final String BASE_SELECTOR = "new UiSelector().text(\"%s\")";
 
-    public static final Target BUTTON_DONE =
+    public static final Target BUTTON_RECEIPT_OPTIONS =
+            Target.the("Button Receipt Options")
+                    .located(
+                            AppiumBy.androidUIAutomator(
+                                    BASE_SELECTOR.formatted("RECEIPT OPTIONS")));
+
+    public static final Target BUTTON_PAPER_RECEIPT =
+            Target.the("Button Paper Receipt")
+                    .located(AppiumBy.androidUIAutomator(BASE_SELECTOR.formatted("PAPER RECEIPT")));
+
+    public static final Target DONE =
             Target.the("Button Done")
                     .located(AppiumBy.androidUIAutomator(BASE_SELECTOR.formatted("DONE")));
-
-    public static final Target BUTTON_CANCEL =
-            Target.the("Button Cancel")
-                    .located(AppiumBy.androidUIAutomator(BASE_SELECTOR.formatted("CANCEL")));
-
-    public static final Target BUTTON_YES =
-            Target.the("Button Yes")
-                    .located(AppiumBy.androidUIAutomator(BASE_SELECTOR.formatted("YES")));
 }

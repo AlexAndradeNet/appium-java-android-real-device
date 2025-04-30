@@ -14,7 +14,7 @@ from Nuvei Inc.
 package com.nuvei.screenplay.tasks.settings;
 
 import com.nuvei.screenplay.interactions.ClickAction;
-import com.nuvei.screenplay.tasks.MainTileScreenTasks;
+import com.nuvei.screenplay.tasks.DashboardScreenTasks;
 import com.nuvei.screenplay.tasks.commons.CommonTasks;
 import com.nuvei.screenplay.ui.settings.MainSettingsScreen;
 import com.nuvei.screenplay.ui.settings.transactionoptions.MainTransactionOptionsScreen;
@@ -30,7 +30,7 @@ public class MainSettingsTasks {
 
     public static Performable openTransactionFlowScreen(Actor actor) {
         actor.attemptsTo(
-                MainTileScreenTasks.openSettings(actor),
+                DashboardScreenTasks.openSettings(actor),
                 ClickAction.on(MainSettingsScreen.BUTTON_TRANSACTION_OPTIONS),
                 ClickAction.on(MainTransactionOptionsScreen.BUTTON_TRANSACTION_FLOW));
 
@@ -39,7 +39,7 @@ public class MainSettingsTasks {
 
     public static Performable openTipsOptionsScreen(Actor actor) {
         actor.attemptsTo(
-                MainTileScreenTasks.openSettings(actor),
+                DashboardScreenTasks.openSettings(actor),
                 ClickAction.on(MainSettingsScreen.BUTTON_TRANSACTION_OPTIONS),
                 ClickAction.on(MainTransactionOptionsScreen.BUTTON_TIPPING_OPTIONS));
 
@@ -48,7 +48,7 @@ public class MainSettingsTasks {
 
     public static Performable openClerkManagementScreen(Actor actor) {
         actor.attemptsTo(
-                MainTileScreenTasks.openSettings(actor),
+                DashboardScreenTasks.openSettings(actor),
                 ClickAction.on(MainSettingsScreen.BUTTON_CLERK_MANAGEMENT));
 
         return Task.where("{0} opens the Settings > Clerk Management");
@@ -56,7 +56,7 @@ public class MainSettingsTasks {
 
     public static Performable openSemiIntegrationOptionsScreen(Actor actor) {
         actor.attemptsTo(
-                MainTileScreenTasks.openSettings(actor),
+                DashboardScreenTasks.openSettings(actor),
                 CommonTasks.navigateMenuUntilElementIsVisible(
                         actor, MainSettingsScreen.BUTTON_SEMI_INTEGRATION),
                 ClickAction.on(MainSettingsScreen.BUTTON_SEMI_INTEGRATION));

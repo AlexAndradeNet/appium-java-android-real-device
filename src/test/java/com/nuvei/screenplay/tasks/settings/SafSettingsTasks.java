@@ -17,10 +17,10 @@ import com.nuvei.screenplay.interactions.SkipScenarioAction;
 import com.nuvei.screenplay.interactions.ToggleAction;
 import com.nuvei.screenplay.questions.EnvironmentQuestion;
 import com.nuvei.screenplay.questions.VisibilityQuestion;
-import com.nuvei.screenplay.tasks.MainTileScreenTasks;
+import com.nuvei.screenplay.tasks.DashboardScreenTasks;
 import com.nuvei.screenplay.tasks.commons.CommonTasks;
 import com.nuvei.screenplay.tasks.commons.LoginAsTasks;
-import com.nuvei.screenplay.ui.MainTileScreen;
+import com.nuvei.screenplay.ui.DashboardScreen;
 import com.nuvei.screenplay.ui.settings.SafSettingsScreen;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Performable;
@@ -32,9 +32,9 @@ public class SafSettingsTasks {
     }
 
     public static Performable turnOnSaf(Actor actor, String clerkId, String password) {
-        actor.attemptsTo(skipIfTheFuntionIsntAvailable(actor));
+        actor.attemptsTo(skipIfTheFunctionIsNotAvailable(actor));
 
-        if (actor.asksFor(VisibilityQuestion.isPresent(MainTileScreen.LABEL_SAF))) {
+        if (actor.asksFor(VisibilityQuestion.isPresent(DashboardScreen.LABEL_SAF))) {
             return Task.where("{0} SAF is already enabled");
         }
 
@@ -51,14 +51,14 @@ public class SafSettingsTasks {
 
     public static Performable turnOffSaf(Actor actor, String clerkId, String password) {
 
-        actor.attemptsTo(skipIfTheFuntionIsntAvailable(actor));
+        actor.attemptsTo(skipIfTheFunctionIsNotAvailable(actor));
 
-        if (actor.asksFor(VisibilityQuestion.notPresent(MainTileScreen.LABEL_SAF))) {
+        if (actor.asksFor(VisibilityQuestion.notPresent(DashboardScreen.LABEL_SAF))) {
             return Task.where("{0} SAF is already disabled");
         }
 
         actor.attemptsTo(
-                MainTileScreenTasks.openSettings(actor),
+                DashboardScreenTasks.openSettings(actor),
                 MainSettingsTasks.openSafOptionsScreen(actor),
                 LoginAsTasks.as(actor, clerkId, password));
         actor.attemptsTo(ToggleAction.toOff(SafSettingsScreen.TOGGLE_ENABLE_SAF));
@@ -72,9 +72,10 @@ public class SafSettingsTasks {
         return Task.where("{0} goes to the main screen");
     }
 
-    private static Performable skipIfTheFuntionIsntAvailable(Actor actor) {
-        if (actor.asksFor(EnvironmentQuestion.isMSeries())) {
-            actor.attemptsTo(SkipScenarioAction.withReason("SAF is not available in M-Series"));
+    public static Performable skipIfTheFunctionIsNotAvailable(Actor actor) {
+        if (!actor.asksFor(EnvironmentQuestion.isTSeries())) {
+            actor.attemptsTo(
+                    SkipScenarioAction.withReason("SAF is not available in P and M-Series"));
         }
         return Task.where("{0} is in a T-Series device");
     }

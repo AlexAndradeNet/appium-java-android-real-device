@@ -27,10 +27,25 @@ public class EnvironmentQuestion {
 
     public static Question<Boolean> isTSeries() {
         // T series has 2 letters like "us", "de", "fr", etc.
-        return actor -> environmentVariables.getProperty("environment").length() == 2;
+        return actor -> actor.asksFor(getVariable("environment")).length() == 2;
     }
 
     public static Question<Boolean> isMSeries() {
-        return actor -> !actor.asksFor(isTSeries());
+        return actor -> {
+            String environmentVariable = actor.asksFor(getVariable("environment"));
+            return environmentVariable.startsWith("m") && environmentVariable.length() == 3;
+        };
+    }
+
+    public static Question<Boolean> isPSeries() {
+        return actor -> {
+            String environmentVariable = actor.asksFor(getVariable("environment"));
+            return environmentVariable.startsWith("p") && environmentVariable.length() == 3;
+        };
+    }
+
+    public static Question<String> getVariable(String variableName) {
+        String environmentVariable = environmentVariables.getProperty(variableName);
+        return actor -> environmentVariable;
     }
 }

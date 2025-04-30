@@ -1,0 +1,39 @@
+Nuvei
+5TH FLOOR
+ONE SMART'S PLACE
+TERM \#
+    \d{8}
+RECORD \#
+    \d{7}
+HOST INVOICE \#
+    \d{6}
+HOST SEQ \#
+    \d{10}
+MERCH INVOICE
+    1
+CARD
+    \*{12}\d{4}
+(VISA|MASTERCARD)
+    Contactless
+(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[012])\/\d{4}
+    ([01]\d|2[0-3]):([0-5]\d):([0-5]\d)
+SALE
+TOTAL
+    (USD|EUR|GBP|CAD) (&pound;|\$|&euro;)\d+.\d{2}
+AUTH\#:
+\d{6}
+B:
+811
+APPROVED 00
+THANK YOU
+NO CARDHOLDER VERIFICATION
+(VISA|MASTERCARD) (DEBIT|CREDIT)
+AID:
+    .{14}
+TC:
+    .{16}
+TVR:
+    .{10}
+TSI:
+    .{4}
+MERCHANT COPY

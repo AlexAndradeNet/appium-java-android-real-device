@@ -13,15 +13,17 @@ from Nuvei Inc.
 */
 package com.nuvei.features.steps.settings.transactionoptions.transactionflow;
 
-import com.nuvei.screenplay.interactions.ToggleAction;
+import com.nuvei.screenplay.ability.BrowseTheApp;
+import com.nuvei.screenplay.interactions.*;
 import com.nuvei.screenplay.questions.VisibilityQuestion;
-import com.nuvei.screenplay.tasks.MainTileScreenTasks;
+import com.nuvei.screenplay.tasks.DashboardScreenTasks;
 import com.nuvei.screenplay.tasks.commons.CommonTasks;
+import com.nuvei.screenplay.tasks.commons.PrintAndCaptureReceiptTasks;
+import com.nuvei.screenplay.tasks.commons.TogglesTasks;
 import com.nuvei.screenplay.tasks.settings.MainSettingsTasks;
-import com.nuvei.screenplay.tasks.settings.TransactionsOptionsTasks;
 import com.nuvei.screenplay.ui.CommonObjects;
 import com.nuvei.screenplay.ui.NumericScreen;
-import com.nuvei.screenplay.ui.settings.transactionoptions.MainTransactionOptionsScreen;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import net.serenitybdd.screenplay.Actor;
@@ -30,8 +32,10 @@ import net.serenitybdd.screenplay.ensure.Ensure;
 
 public class TransactionFlowSteps {
 
+    static final String SALE_AMOUNT = "1.00";
+
     @When("he enables the {string} toggle")
-    public void heEnablesTheOrderNumberPrompt(String toggleName) {
+    public void heEnablesThePrompt(String toggleName) {
         Actor actor = OnStage.theActorInTheSpotlight();
         actor.attemptsTo(
                 MainSettingsTasks.openTransactionFlowScreen(actor),
@@ -39,13 +43,13 @@ public class TransactionFlowSteps {
         actor.remember("toggleName", toggleName);
     }
 
-    @Then("he should see the {string} is prompted in Sales")
-    public void heSeeTheOrderNumberPromptIsEnabled(String toggleLabel) {
+    @Then("he should see the {string} is prompted in a Sale")
+    public void heSeeThePromptIsEnabled(String toggleLabel) {
         Actor actor = OnStage.theActorInTheSpotlight();
         actor.attemptsTo(
-                CommonTasks.returnToMainScreen(actor),
-                MainTileScreenTasks.returnToInitialScreen(actor),
-                MainTileScreenTasks.openSale(actor));
+                CommonTasks.returnToTheDashboardScreen(actor),
+                DashboardScreenTasks.returnToInitialScreen(actor),
+                DashboardScreenTasks.openSale(actor));
 
         actor.attemptsTo(
                 Ensure.that(
@@ -53,42 +57,36 @@ public class TransactionFlowSteps {
                                 VisibilityQuestion.isPresent(
                                         NumericScreen.LABEL_REASON.of(toggleLabel)))
                         .isTrue());
-
-        String toggleName = actor.recall("toggleName");
-
-        actor.attemptsTo(
-                CommonTasks.returnToMainScreen(actor),
-                MainSettingsTasks.openTransactionFlowScreen(actor),
-                ToggleAction.toOff(CommonObjects.TOGGLE.of(toggleName)));
     }
 
     @When("he deactivates all toggles options")
     public void heDeactivatesAllTogglesOptions() {
         Actor actor = OnStage.theActorInTheSpotlight();
-        actor.attemptsTo(
-                MainSettingsTasks.openTransactionFlowScreen(actor),
-                CommonTasks.turnOffAllTogglesOnTheScreen(actor),
-                CommonTasks.tapBackArrow(actor),
-                TransactionsOptionsTasks.openSplitPayment(actor),
-                CommonTasks.turnOffAllTogglesOnTheScreen(actor),
-                CommonTasks.tapBackArrow(actor));
-
-        boolean isTippingAvailable =
-                actor.asksFor(
-                        VisibilityQuestion.isPresent(
-                                MainTransactionOptionsScreen.BUTTON_TIPPING_OPTIONS));
-
-        if (isTippingAvailable) {
-            // Tipping could be optional in some cases like when Crypto is enabled
-            actor.attemptsTo(
-                    TransactionsOptionsTasks.openTipping(actor),
-                    CommonTasks.turnOffAllTogglesOnTheScreen(actor),
-                    CommonTasks.tapBackArrow(actor));
-        }
+        actor.attemptsTo(TogglesTasks.deactivateAllToggles(actor));
     }
 
     @Then("he should see all toggles were deactivated")
     public void heShouldSeeAllTogglesWereDeactivated() {
         OnStage.theActorInTheSpotlight().attemptsTo(Ensure.that(true).isTrue());
+    }
+
+    @And("he gets a transaction approved validating its receipt")
+    public void heShouldGetAnApprovalWithTheInvoiceNumber() {
+        Actor actor = OnStage.theActorInTheSpotlight();
+
+        BrowseTheApp.reAttachDriver(actor);
+
+        actor.attemptsTo(PrintAndCaptureReceiptTasks.approved(actor));
+    }
+
+    @And("he fills the prompt with {word}")
+    public void heFillsThePromptWith(String promptValue) {
+        Actor actor = OnStage.theActorInTheSpotlight();
+
+        actor.attemptsTo(
+                NumpadAction.digit(promptValue),
+                ClickAction.on(NumericScreen.BUTTON_CONTINUE_OR_CONFIRM),
+                NumpadAction.digit(SALE_AMOUNT),
+                ClickAction.on(NumericScreen.BUTTON_CONTINUE_OR_CONFIRM));
     }
 }

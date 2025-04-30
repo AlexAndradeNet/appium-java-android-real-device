@@ -14,11 +14,9 @@ from Nuvei Inc.
 package com.nuvei.features.steps;
 
 import com.nuvei.screenplay.tasks.commons.CommonTasks;
+import com.nuvei.utils.ReportUtility;
 import com.nuvei.utils.SimpleLogger;
-import io.cucumber.java.After;
-import io.cucumber.java.AfterAll;
-import io.cucumber.java.Before;
-import io.cucumber.java.BeforeAll;
+import io.cucumber.java.*;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.actors.OnlineCast;
@@ -43,9 +41,14 @@ public class Hooks {
     }
 
     @After(order = 1)
-    public void afterEachScenario() {
+    public void afterEachScenario(Scenario scenario) {
         Actor actor = OnStage.theActorInTheSpotlight();
-        actor.attemptsTo(CommonTasks.returnToMainScreen(actor));
+
+        if (scenario.isFailed()) {
+            ReportUtility.saveScreenshot(scenario);
+        }
+
+        actor.attemptsTo(CommonTasks.returnToTheDashboardScreen(actor));
     }
 
     @AfterAll

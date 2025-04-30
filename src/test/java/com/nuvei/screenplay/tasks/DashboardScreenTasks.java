@@ -13,14 +13,14 @@ from Nuvei Inc.
 */
 package com.nuvei.screenplay.tasks;
 
-import static com.nuvei.screenplay.ui.MainTileScreen.*;
-import static net.serenitybdd.screenplay.matchers.WebElementStateMatchers.isNotPresent;
+import static com.nuvei.screenplay.ui.DashboardScreen.*;
 
 import com.nuvei.screenplay.interactions.ClickAction;
 import com.nuvei.screenplay.interactions.SkipScenarioAction;
 import com.nuvei.screenplay.interactions.SwipeAction;
-import com.nuvei.screenplay.interactions.WaitSpecificTime;
+import com.nuvei.screenplay.interactions.WaitAction;
 import com.nuvei.screenplay.questions.VisibilityQuestion;
+import com.nuvei.screenplay.tasks.settings.SafSettingsTasks;
 import com.nuvei.screenplay.ui.NumericScreen;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Performable;
@@ -28,17 +28,18 @@ import net.serenitybdd.screenplay.Task;
 import net.serenitybdd.screenplay.conditions.Check;
 import net.serenitybdd.screenplay.ensure.Ensure;
 import net.serenitybdd.screenplay.targets.Target;
-import net.serenitybdd.screenplay.waits.WaitUntil;
 import org.openqa.selenium.NoSuchElementException;
 
-public class MainTileScreenTasks {
+public class DashboardScreenTasks {
 
-    private MainTileScreenTasks() {
+    private DashboardScreenTasks() {
         throw new IllegalStateException("Utility class - cannot be instantiated");
     }
 
-    public static Performable waitTheAppIsFullyLoaded(Actor actor) {
-        actor.attemptsTo(WaitUntil.the(SPINNER, isNotPresent()).forNoMoreThan(100).seconds());
+    public static Performable waitUntilTheSpinnerDisappears(Actor actor) {
+        actor.attemptsTo(
+                WaitAction.untilElementIsNotPresent(SPINNER),
+                WaitAction.untilElementIsPresent(BUTTON_SALE_TRANSACTION));
 
         return Task.where("{0} waits the app is fully loaded");
     }
@@ -62,12 +63,13 @@ public class MainTileScreenTasks {
     }
 
     public static Performable openMoto(Actor actor) {
-        actor.attemptsTo(ClickAction.on(BUTTON_MOTO_TRANSACTION));
+        actor.attemptsTo(navigateUntilElementIsVisibleAndTapOnIt(actor, BUTTON_MOTO_TRANSACTION));
+
         return Task.where("{0} opens the Moto main tile");
     }
 
     public static Performable openBatchOrSettle(Actor actor) {
-        actor.attemptsTo(ClickAction.on(BUTTON_BATCH_OR_SETTLE));
+        actor.attemptsTo(navigateUntilElementIsVisibleAndTapOnIt(actor, BUTTON_BATCH_OR_SETTLE));
 
         return Task.where("{0} opens the Batch or Settle main tile");
     }
@@ -137,8 +139,8 @@ public class MainTileScreenTasks {
 
     public static Performable openSaf(Actor actor) {
         actor.attemptsTo(
-                navigateUntilElementIsVisibleAndTapOnIt(actor, BUTTON_SAF),
-                WaitSpecificTime.forSeconds(1));
+                SafSettingsTasks.skipIfTheFunctionIsNotAvailable(actor),
+                navigateUntilElementIsVisibleAndTapOnIt(actor, BUTTON_SAF));
 
         return Task.where("{0} opens the SAF tile");
     }

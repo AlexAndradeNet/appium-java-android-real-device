@@ -16,8 +16,8 @@ package com.nuvei.screenplay.ui;
 import io.appium.java_client.AppiumBy;
 import net.serenitybdd.screenplay.targets.Target;
 
-public class MainTileScreen {
-    private MainTileScreen() {
+public class DashboardScreen {
+    private DashboardScreen() {
         throw new IllegalStateException("Utility class - cannot be instantiated");
     }
 

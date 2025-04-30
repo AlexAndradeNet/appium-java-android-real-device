@@ -13,21 +13,35 @@ from Nuvei Inc.
 */
 package com.nuvei.features.steps;
 
-import com.nuvei.screenplay.tasks.MainTileScreenTasks;
+import com.nuvei.screenplay.ability.BrowseTheApp;
 import io.cucumber.java.ParameterType;
 import net.serenitybdd.core.Serenity;
 import net.serenitybdd.screenplay.Actor;
-import net.serenitybdd.screenplay.abilities.BrowseTheWeb;
 import net.serenitybdd.screenplay.actors.OnStage;
+import net.thucydides.core.webdriver.WebDriverFacade;
 
-// Do not delete this file
+/**
+ * DO NOT DELETE THIS CLASS.
+ *
+ * <p>Converts the Cucumber placeholder <actor> into a Screenplay Actor and equips it with the
+ * BrowseTheApp ability.
+ *
+ * <p>Example in a feature file: Given Aureliano is in the Main Screen
+ */
 public class ParameterDefinitions {
 
+    /** Accept any of the “known” actor names written in feature files. */
     @ParameterType("Aureliano|Arcadio|Melquiades|Eusebia|Sebastian")
     public Actor actor(String actorName) {
+
+        // 1. Obtain or create the Actor instance.
         Actor actor = OnStage.theActorCalled(actorName);
-        actor.can(BrowseTheWeb.with(Serenity.getDriver()));
-        actor.attemptsTo(MainTileScreenTasks.waitTheAppIsFullyLoaded(actor));
+
+        // 2. Give the actor the ability to control the mobile app.
+        WebDriverFacade driver = (WebDriverFacade) Serenity.getDriver();
+        actor.can(BrowseTheApp.with(driver));
+
+        // 3. Return the fully configured actor to Cucumber.
         return actor;
     }
 }

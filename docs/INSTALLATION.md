@@ -1,6 +1,6 @@
 # ANDROID INSTALLATION
 
-Before running Android tests with Appium, some dependencies need to be
+Before running Android tests with Appium, some dependencies must be
 pre-installed on your development machine. This guide will walk you through each
 step.
 
@@ -21,70 +21,79 @@ the [official Android Studio installation guide](https://developer.android.com/s
 > Android Studio installation, refer to
 > the [Android Studio setup guide](https://developer.android.com/studio/install)
 
-1. **Install OpenJDK and Android Command Line Tools**
-
+1. **Install Basic Development Tools**
    Open a terminal and run the following commands to update Homebrew and install
    the necessary dependencies:
 
    ```bash
    # Silicon Macs
    brew update
-   brew install --cask corretto@17
-   brew install android-commandlinetools --cask
-   ```
-   For Intel based Macs ⚠️:
-    ```bash
-   # Intel Macs
-   brew update
-   brew install openjdk@17
-   brew install android-commandlinetools --cask
+   brew install gradle
+   brew install node
    ```
 
-2. **Set Up Environment Variables**
+2. **Install OpenJDK and Android Command Line Tools**
+
+   Open a terminal and run the following commands to update Homebrew and install
+   the necessary dependencies:
+
+   ```bash
+   # Silicon Macs
+   brew install --cask temurin@21
+   echo "export JAVA_HOME=/Library/Java/JavaVirtualMachines/temurin-21.jdk/Contents/Home" >> ~/.zprofile
+   source ~/.zprofile
+   ```
+   For Intel-Based Macs ⚠️:
+    ```bash
+   # Intel Macs
+   brew install openjdk@21
+   echo "export JAVA_HOME=/usr/local/opt/openjdk@17" >> ~/.zprofile
+   source ~/.zprofile
+   ```
+
+3. **Set Up Environment Variables**
 
    Define the `ANDROID_SDK_ROOT` environment variable by adding the following
    line to your `~/.zprofile`:
 
    ```bash
-   # Silicon Macs
    echo "export ANDROID_SDK_ROOT=/opt/homebrew/share/android-commandlinetools/" >> ~/.zprofile
-   echo "export ANDROID_HOME=$ANDROID_SDK_ROOT" >> ~/.zprofile
-   echo "export JAVA_HOME=/usr/local/opt/corretto@17" >> ~/.zprofile
+   echo "export ANDROID_HOME=\$ANDROID_SDK_ROOT" >> ~/.zprofile
    source ~/.zprofile
    ```
 
-   For Intel based Macs ⚠️:
-   ```bash
-   # Intel Macs
-   echo "export ANDROID_SDK_ROOT=/usr/local/share/android-commandlinetools/" >> ~/.zprofile
-   echo "export ANDROID_HOME=$ANDROID_SDK_ROOT" >> ~/.zprofile
-   echo "export JAVA_HOME=/usr/local/opt/openjdk@17" >> ~/.zprofile
-   source ~/.zprofile
-   ```
-
-3. **Install Android SDK Components**
+4. **Install Android SDK Components**
 
    Install the essential Android SDK components using `sdkmanager`.
 
    ```bash
    # Silicon Macs
-   sdkmanager "build-tools;33.0.0" "platform-tools" "emulator" "system-images;android-33;google_apis;arm64-v8a" "platforms;android-33"
+   sdkmanager "build-tools;34.0.0" "platform-tools" "emulator" "system-images;android-34;google_apis;arm64-v8a" "platforms;android-34"
    ```
 
-   For Intel based Macs ⚠️:
+   For Intel-Based Macs ⚠️:
     ```bash
    # Intel Macs
-   sdkmanager "build-tools;33.0.0" "platform-tools" "emulator" "system-images;android-33;google_apis;x86_64" "platforms;android-33"
+   sdkmanager "build-tools;34.0.0" "platform-tools" "emulator" "system-images;android-34;google_apis;x86_64" "platforms;android-34"
    ```
 
-4. **Verify Installation**
+5. **Verify Installation**
 
    Run the following commands to verify your installation:
 
    ```bash
    # Verify installed components
+   brew install android-platform-tools
    sdkmanager --list_installed
     ```
+
+### Installing project dependencies
+
+1. Execute the following command to install the project dependencies:
+
+   ```bash
+   ./gradlew build
+   ```
 
 ### Installing Appium 2.x
 
@@ -122,27 +131,28 @@ quickly by following these steps:
 
 1. **Download Appium Inspector:** Head over to the
    official [Appium Inspector GitHub releases page](https://github.com/appium/appium-inspector/releases).
-   Download the latest version compatible with your operating system.
+   Download the latest version that is compatible with your operating system.
 2. **Install Appium Inspector:** Open the downloaded file and drag the Appium
    Inspector app to your Applications folder.
-3. **Grant Permissions** (if needed): On macOS, some downloaded applications
-   might require permission to run. If you encounter this issue, open a terminal
+3. **Grant Permissions** (if needed): Some downloaded applications
+   might require permission to run on macOS. If you encounter this issue, open a
+   terminal
    window and execute the following command:
 
     ```bash
     xattr -d com.apple.quarantine /Applications/Appium\ Inspector.app
     ```
 
-4. **Run Appium server**: Open a terminal, got to the project's root folder and
+4. **Run Appium server**: Open a terminal, go to the project's root folder, and
    run the following command:
 
     ```bash
     appium
     ```
 
-5. **Connect Your Device:** Launch Appium Inspector. To connect to a real or
-   emulated device, you'll need to add the desired capabilities to the initial
-   screen. Here's an example for an Android device:
+5. **Connect Your Device:** Launch Appium Inspector. You'll need to add the
+   desired capabilities to the initial screen to connect to a real or emulated
+   device. Here's an example of an Android device:
 
     ```json
     {
@@ -201,8 +211,9 @@ quickly by following these steps:
 
 ### Error: Appium Cannot Locate the Device
 
-If Appium cannot locate your device, it may have a different name than specified
-in your code. To find the correct device name, run the following command:
+If Appium cannot locate your device, it may have a name different from the one
+specified in your code. To find the correct device name, run the following
+command:
 
 ```bash
 adb devices

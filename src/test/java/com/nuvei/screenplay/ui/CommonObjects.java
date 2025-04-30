@@ -42,12 +42,20 @@ public class CommonObjects {
             Target.the("Button {0}")
                     .located(AppiumBy.xpath(BASE_SELECTOR.formatted("btnPossitive")));
 
+    public static final Target POPUP_MESSAGE_BUTTON_CANCEL =
+            Target.the("Button {0}")
+                    .located(AppiumBy.xpath(BASE_SELECTOR.formatted("btnNegative")));
+
+    public static final Target POPUP_MESSAGE_BUTTON_PRINT_MERCHANT = POPUP_MESSAGE_BUTTON_CANCEL;
+
     public static final Target BUTTON_GO_TO_STANDALONE =
             Target.the("Button Go To Stand Alone")
                     .located(AppiumBy.xpath("//android.widget.Button[@text='GO TO STAND ALONE']"));
 
     public static final Target POPUP_MESSAGE_SECOND_BUTTON =
             Target.the("Button {0}").located(AppiumBy.xpath(BASE_SELECTOR.formatted(3)));
+
+    public static final Target POPUP_MESSAGE_BUTTON_PRINT_CUSTOMER = POPUP_MESSAGE_BUTTON_OK;
 
     public static final Target ALL_TOGGLE_LABEL_LIST =
             Target.the("List of labels for toggle")

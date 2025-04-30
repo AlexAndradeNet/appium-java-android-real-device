@@ -15,7 +15,7 @@ package com.nuvei.features.steps.settings;
 
 import com.nuvei.screenplay.questions.VisibilityQuestion;
 import com.nuvei.screenplay.tasks.settings.SafSettingsTasks;
-import com.nuvei.screenplay.ui.MainTileScreen;
+import com.nuvei.screenplay.ui.DashboardScreen;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import net.serenitybdd.screenplay.Actor;
@@ -35,7 +35,7 @@ public class SafSettingsSteps {
         actor.attemptsTo(
                 Ensure.that(
                                 "SAF is enabled",
-                                VisibilityQuestion.isPresent(MainTileScreen.LABEL_SAF))
+                                VisibilityQuestion.isPresent(DashboardScreen.LABEL_SAF))
                         .isTrue());
     }
 
@@ -51,7 +51,7 @@ public class SafSettingsSteps {
         actor.attemptsTo(
                 Ensure.that(
                                 "SAF is disabled",
-                                VisibilityQuestion.isPresent(MainTileScreen.LABEL_SAF))
+                                VisibilityQuestion.isPresent(DashboardScreen.LABEL_SAF))
                         .isFalse());
     }
 }

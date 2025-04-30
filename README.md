@@ -41,8 +41,8 @@ Follow these steps to run the tests on an Android device:
 
 1. **Connect the Android Device**: Connect your Android device either by USB or
    Wi-Fi (recommended). The Wi-Fi connection is a little bit slow, but it's
-   **more stable**. Refer to the specific section in
-   the [INSTALLATION.md](docs/INSTALLATION.md) file for detailed instructions.
+   **more stable**. For detailed instructions, refer to the specific section in
+   the [INSTALLATION.md](docs/INSTALLATION.md) file.
 
 2. **Start the Appium Server**: Run the following command in the terminal while
    in the **root directory of the project**:
@@ -51,15 +51,15 @@ Follow these steps to run the tests on an Android device:
    appium
    ```
 
-3. **Run the Tests**: There are two ways to run the tests. You can choose to run
-   them from the terminal using Gradle or directly from IntelliJ. Detailed
-   instructions are provided below.
+3. **Run the Tests**: There are two ways to run the tests. You can run them from
+   the terminal using Gradle or directly from IntelliJ. Detailed instructions
+   are provided below.
 
 ### Running from Gradle / Terminal
 
 1. Open a terminal.
 2. Navigate to the root directory of the project.
-3. Execute the following command to clean, run the tests:
+3. Execute the following command to clean and run the tests:
 
    ```bash
    sh runRobot.sh
@@ -67,24 +67,24 @@ Follow these steps to run the tests on an Android device:
 
 ### Running a Feature from IntelliJ
 
-1. Go to the **Run** menu and select **Run...**.
-2. In the contextual menu, then choose **Edit...**.
-3. In the 'Edit Configuration Settings' window, set the **main class** to
-   `net.serenitybdd.cucumber.cli.Main`.
-4. Set the **Glue** field to the root package of your project (or the location
-   of your step definitions): `com.nuvei.features.steps`.
-5. Set the **VM Options** to `-Denvironment=uk`.
-6. Click **Apply**.
-7. For more details,
-   visit [John Ferguson Smart's blog on running Cucumber Serenity feature files in IntelliJ](https://johnfergusonsmart.com/running-cucumber-serenity-feature-files-directly-intellij/).
-
-#### Optional: Customize Scenario Execution Template
-
-You can customize the default settings for running Cucumber Java scenarios:
+#### Customize Scenario Execution Template
 
 1. Go to the menu **Run > Edit Configurations > Edit Configuration Templates >
    Cucumber Java**.
-2. Use the information provided in the previous section.
+2. In the 'Edit Configuration Settings' window, set the **main class** to
+   `net.serenitybdd.cucumber.cli.Main`.
+3. Set the **Glue** field to the root package of your project (or the location
+   of your step definitions): `com.nuvei.features.steps`.
+4. Set the **VM Options** to
+   `-Dcucumber.filter.tags=\~@ignore -Denvironment=uk`.
+5. Click **Apply**.
+6. For more details,
+   visit [John Ferguson Smart's blog on running Cucumber Serenity feature files in IntelliJ](https://johnfergusonsmart.com/running-cucumber-serenity-feature-files-directly-intellij/).
+
+#### Executing a Feature or Scenario
+
+1. Open the feature file you want to run and click on the **Run** icon
+   (green "Play" triangle) next to the feature or scenario you want to execute.
 
 ---
 
@@ -112,7 +112,7 @@ directory. To open the report in your browser:
 Maintaining a consistent coding style is crucial for readability and
 collaboration.
 
-> "The ratio of time spent reading versus writing is well over 10 to 1. We are
+> "The ratio of time spent reading versus writing is over 10 to 1. We are
 > constantly reading old code as part of the effort to write new code. …making
 > it easy to read makes it easier to write."
 >

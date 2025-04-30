@@ -16,6 +16,7 @@ package com.nuvei.screenplay.questions;
 import net.serenitybdd.screenplay.Question;
 import net.serenitybdd.screenplay.targets.Target;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.UnsupportedCommandException;
 import org.openqa.selenium.WebElement;
 
 /*
@@ -28,7 +29,14 @@ public class VisibilityQuestion {
     }
 
     public static Question<Boolean> isPresent(Target target) {
-        return actor -> safelyCheck(() -> target.resolveFor(actor).isEnabled());
+        return actor -> {
+            WebElement element = target.resolveFor(actor);
+            if (element == null) {
+                return false;
+            }
+
+            return safelyCheck(element::isEnabled);
+        };
     }
 
     public static Question<Boolean> isPresent(WebElement element) {
@@ -52,7 +60,7 @@ public class VisibilityQuestion {
     private static boolean safelyCheck(CheckCondition condition) {
         try {
             return condition.evaluate();
-        } catch (NoSuchElementException e) {
+        } catch (NoSuchElementException | UnsupportedCommandException e) {
             return false; // Element is not present
         }
     }

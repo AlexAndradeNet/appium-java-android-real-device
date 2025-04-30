@@ -12,6 +12,9 @@
         "callback-port": 4723,
         "session-override": true,
         "log-level": "info",
-        "log-no-colors": true
+        "log-no-colors": true,
+        "no-perms-check": true,
+        "keep-alive-timeout": 600,
+        "local-timezone": true
     }
 }

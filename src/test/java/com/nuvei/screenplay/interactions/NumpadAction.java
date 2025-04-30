@@ -13,9 +13,10 @@ from Nuvei Inc.
 */
 package com.nuvei.screenplay.interactions;
 
-import com.nuvei.screenplay.driver.AppiumDriver;
+import com.nuvei.screenplay.ability.BrowseTheApp;
 import com.nuvei.screenplay.questions.EnvironmentQuestion;
 import com.nuvei.screenplay.ui.NumericScreen;
+import com.nuvei.utils.VariablesSingleton;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,21 +35,38 @@ public class NumpadAction implements Interaction {
     private final Map<String, WebElementFacade> cachedTargets = new ConcurrentHashMap<>();
 
     protected NumpadAction(String numberSequence) {
+        numberSequence = numberSequence.replaceAll("\"", "");
         this.numberSequence = numberSequence;
     }
 
     @Override
     public <T extends Actor> void performAs(T actor) {
+        if (numberSequence.isEmpty()) {
+            return;
+        }
         if (actor.asksFor(EnvironmentQuestion.isTSeries())) {
             performOnOnScreenNuveiNumpad(actor);
         } else if (actor.asksFor(EnvironmentQuestion.isMSeries())) {
-            performOnPhysicalNumpad();
+            performOnPhysicalNumpad(actor);
+        } else if (actor.asksFor(EnvironmentQuestion.isPSeries())) {
+            performEnterIntoTextbox(actor);
         } else {
             throw new UnsupportedOperationException("Unknown environment for numpad interaction.");
         }
     }
 
     private void performOnOnScreenNuveiNumpad(Actor actor) {
+        boolean isNotLongerNeededTestTheNumpad =
+                VariablesSingleton.getInstance().getNumpadUsageCount() > 2;
+        boolean isPlainText = !numberSequence.contains(".");
+
+        if (isPlainText && isNotLongerNeededTestTheNumpad) {
+            performEnterIntoTextbox(actor);
+            return;
+        }
+
+        // When numberSequence is an Amount, we need to tap each digit separately
+
         List<ClickAction> tapActions =
                 numberSequence
                         .chars()
@@ -61,9 +79,11 @@ public class NumpadAction implements Interaction {
                         .toList();
 
         actor.attemptsTo(tapActions.toArray(new Performable[0]));
+        VariablesSingleton.getInstance()
+                .setNumpadUsageCount(VariablesSingleton.getInstance().getNumpadUsageCount() + 1);
     }
 
-    private void performOnPhysicalNumpad() {
+    private void performOnPhysicalNumpad(Actor actor) {
         // Use physical keyboard for M-Series
 
         // Prepare the ADB shell command
@@ -74,8 +94,12 @@ public class NumpadAction implements Interaction {
                 "keyboard text \"%s\""
                         .formatted(numberSequence)); // Command arguments (e.g., "/sdcard")
 
-        var driver = AppiumDriver.getDriver();
+        var driver = BrowseTheApp.driverFor(actor);
         driver.executeScript("mobile: shell", adbCommand);
+    }
+
+    private void performEnterIntoTextbox(Actor actor) {
+        EnterAction.theValue(numberSequence).into(NumericScreen.TEXTBOX_VALUE).performAs(actor);
     }
 
     public static NumpadAction digit(String numberSequence) {

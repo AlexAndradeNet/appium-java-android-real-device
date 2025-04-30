@@ -15,14 +15,14 @@ package com.nuvei.screenplay.tasks.commons;
 
 import static com.nuvei.screenplay.ui.CommonObjects.BUTTON_ARROW_BACK;
 
-import com.nuvei.screenplay.driver.AppiumDriver;
+import com.nuvei.screenplay.ability.BrowseTheApp;
 import com.nuvei.screenplay.interactions.ClickAction;
 import com.nuvei.screenplay.interactions.SwipeAction;
 import com.nuvei.screenplay.interactions.ToggleAction;
 import com.nuvei.screenplay.questions.TextQuestion;
 import com.nuvei.screenplay.questions.VisibilityQuestion;
 import com.nuvei.screenplay.ui.CommonObjects;
-import com.nuvei.screenplay.ui.ConfirmationScreen;
+import com.nuvei.screenplay.ui.common.ConfirmationScreen;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import net.serenitybdd.screenplay.Actor;
@@ -42,7 +42,7 @@ public class CommonTasks {
     public static Performable pressPhysicalBackKey() {
         return Task.where(
                 "{0} press the physical back key",
-                actor -> AppiumDriver.getDriver().navigate().back());
+                actor -> BrowseTheApp.driverFor(actor).navigate().back());
     }
 
     public static Performable tapBackArrow(Actor actor) {
@@ -195,7 +195,7 @@ public class CommonTasks {
         return Task.where("{0} navigates the menu until the element is visible and taps on it");
     }
 
-    public static Performable returnToMainScreen(Actor actor) {
+    public static Performable returnToTheDashboardScreen(Actor actor) {
         try {
             while (actor.asksFor(VisibilityQuestion.isPresent(BUTTON_ARROW_BACK))) {
                 actor.attemptsTo(ClickAction.on(BUTTON_ARROW_BACK));
