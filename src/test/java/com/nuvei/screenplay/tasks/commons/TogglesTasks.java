@@ -48,6 +48,6 @@ public class TogglesTasks {
                     CommonTasks.turnOffAllTogglesOnTheScreen(actor),
                     CommonTasks.tapBackArrow(actor));
         }
-        return Task.where("{0} fills the clerk ID and password");
+        return Task.where("{0} deactivates all toggles");
     }
 }
