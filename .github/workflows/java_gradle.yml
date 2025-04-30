@@ -60,3 +60,9 @@ jobs:
       - name: Run Spotless Lint
         run: ./gradlew spotlessCheck
         continue-on-error: false
+
+      - name: Run Snyk
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        run: sh scripts/pre-push
+        continue-on-error: false

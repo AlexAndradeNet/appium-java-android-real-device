@@ -13,7 +13,7 @@ from Nuvei Inc.
 */
 package com.nuvei.screenplay.interactions;
 
-import static net.serenitybdd.screenplay.matchers.WebElementStateMatchers.isNotPresent;
+import static net.serenitybdd.screenplay.matchers.WebElementStateMatchers.*;
 
 import com.nuvei.features.steps.Hooks;
 import com.nuvei.screenplay.ability.BrowseTheApp;
@@ -21,18 +21,16 @@ import com.nuvei.screenplay.questions.VisibilityQuestion;
 import com.nuvei.utils.SimpleLogger;
 import java.time.Duration;
 import java.time.Instant;
-import net.serenitybdd.screenplay.Actor;
-import net.serenitybdd.screenplay.Performable;
-import net.serenitybdd.screenplay.Task;
-import net.serenitybdd.screenplay.Tasks;
+import net.serenitybdd.screenplay.*;
 import net.serenitybdd.screenplay.targets.Target;
 import net.serenitybdd.screenplay.waits.WaitUntil;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.support.ui.FluentWait;
 
-public class WaitAction implements Task {
+public class WaitAction implements Interaction {
 
     private static final SimpleLogger logger = new SimpleLogger(Hooks.class);
+    public static final int MAX_SECONDS = 100;
     private final long seconds;
     private final Target target;
 
@@ -86,16 +84,24 @@ public class WaitAction implements Task {
         }
     }
 
+    /**
+     * Waits until the element is present on the screen.
+     *
+     * <p>This method uses a FluentWait instead of Serenity's WaitUntil because the elements in the
+     * app don't answer to the isVisible and isEnabled doesn't work.
+     *
+     * @param actor The actor performing the action.
+     */
     private void waitUntilElementIsPresent(Actor actor) {
         var driver = BrowseTheApp.driverFor(actor);
         new FluentWait<>(driver)
-                .withTimeout(Duration.ofSeconds(100))
+                .withTimeout(Duration.ofSeconds(MAX_SECONDS))
                 .pollingEvery(Duration.ofSeconds(2))
                 .ignoring(NoSuchElementException.class)
                 .until(driverLambda -> actor.asksFor(VisibilityQuestion.isPresent(target)));
     }
 
     private void waitUntilElementIsNotPresent() {
-        WaitUntil.the(target, isNotPresent()).forNoMoreThan(100).seconds();
+        WaitUntil.the(target, isNotPresent()).forNoMoreThan(MAX_SECONDS).seconds();
     }
 }
