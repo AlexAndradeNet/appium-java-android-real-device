@@ -145,6 +145,21 @@ docker compose -f scripts/docker-compose-sonar.yml up -d
 For the initial setup of SonarQube, follow the
 instructions [here](https://blankfactor.atlassian.net/wiki/spaces/Marqueta/pages/614793231/Developer+s+best+practices#%F0%9F%91%A8%E2%80%8D%F0%9F%92%BB-STATIC-CODE-ANALYSIS-WITH-SONARQUBE).
 
+### Run depenecies scanner
+
+The dependencies scanner is a tool that helps identify outdated or vulnerable
+dependencies.
+The tool selected is Snyk, which is a popular choice for this purpose.
+To run the dependencies scanner, first time you need to create the file
+`snyk.env` in the root of the project with the following content:
+`SNYK_TOKEN=your_token_here`
+
+After that, you can run the scanner with the following command:
+
+```bash
+sh scripts/pre-push.sh
+```
+
 ---
 
 Happy coding! 🚀

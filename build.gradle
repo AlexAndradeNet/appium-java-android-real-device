@@ -162,6 +162,14 @@ tasks.register('installLocalGitHook', Copy) {
             commandLine 'chmod', '775', "${destinationDir}/pre-commit"
         }
     }
+
+    from new File(rootProject.rootDir, 'scripts/pre-push')
+    into { new File(rootProject.rootDir, '.git/hooks') }
+    doLast {
+        getProviders().exec {
+            commandLine 'chmod', '775', "${destinationDir}/pre-push"
+        }
+    }
 }
 
 tasks.register('archiveSerenityReports') {
