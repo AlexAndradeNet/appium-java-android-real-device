@@ -40,12 +40,12 @@ public class PrintAndCaptureReceiptTasks {
 
     public static Performable approved(Actor actor) {
         printAndCaptureReceipt(actor, responseType.APPROVED);
-        return Task.where("{0} fills the clerk ID and password");
+        return Task.where("{0} prints and captures an approved receipt");
     }
 
     public static Performable declined(Actor actor) {
         printAndCaptureReceipt(actor, responseType.DECLINED);
-        return Task.where("{0} fills the clerk ID and password");
+        return Task.where("{0} prints and captures a declined receipt");
     }
 
     private static void printAndCaptureReceipt(Actor actor, responseType responseType) {
