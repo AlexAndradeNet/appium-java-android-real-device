@@ -15,7 +15,6 @@ package com.nuvei.screenplay.interactions;
 
 import com.nuvei.screenplay.ability.BrowseTheApp;
 import com.nuvei.screenplay.questions.EnvironmentQuestion;
-import com.nuvei.utils.VariablesSingleton;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +25,7 @@ import net.serenitybdd.screenplay.Interaction;
 import net.serenitybdd.screenplay.Performable;
 import net.serenitybdd.screenplay.Tasks;
 import net.serenitybdd.screenplay.targets.Target;
+import org.junit.platform.commons.util.StringUtils;
 import org.openqa.selenium.WebElement;
 
 public class NumpadAction implements Interaction {
@@ -60,8 +60,11 @@ public class NumpadAction implements Interaction {
     }
 
     private void performOnOnScreenNuveiNumpad(Actor actor) {
-        boolean isNotLongerNeededTestTheNumpad =
-                VariablesSingleton.getInstance().getNumpadUsageCount() > 2;
+        String recalledValue = actor.recall("numpadUsageCount");
+        int numpadUsageCount =
+                (StringUtils.isNotBlank(recalledValue)) ? Integer.parseInt(recalledValue) : 0;
+
+        boolean isNotLongerNeededTestTheNumpad = numpadUsageCount > 2;
         boolean isPlainText = !numberSequence.contains(".");
 
         if (isPlainText && isNotLongerNeededTestTheNumpad) {
@@ -83,8 +86,7 @@ public class NumpadAction implements Interaction {
                         .toList();
 
         actor.attemptsTo(tapActions.toArray(new Performable[0]));
-        VariablesSingleton.getInstance()
-                .setNumpadUsageCount(VariablesSingleton.getInstance().getNumpadUsageCount() + 1);
+        actor.remember("numpadUsageCount", numpadUsageCount + 1);
     }
 
     private void performOnPhysicalNumpad(Actor actor) {
