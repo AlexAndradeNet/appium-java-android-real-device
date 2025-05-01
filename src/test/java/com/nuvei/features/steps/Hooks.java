@@ -13,13 +13,17 @@ from Nuvei Inc.
 */
 package com.nuvei.features.steps;
 
+import com.nuvei.screenplay.interactions.ToggleAction;
 import com.nuvei.screenplay.tasks.commons.CommonTasks;
+import com.nuvei.screenplay.tasks.settings.MainSettingsTasks;
+import com.nuvei.screenplay.ui.CommonObjects;
 import com.nuvei.utils.ReportUtility;
 import com.nuvei.utils.SimpleLogger;
 import io.cucumber.java.*;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.actors.OnlineCast;
+import org.junit.platform.commons.util.StringUtils;
 
 public class Hooks {
 
@@ -46,6 +50,13 @@ public class Hooks {
 
         if (scenario.isFailed()) {
             ReportUtility.saveScreenshot(scenario);
+
+            String toggleName = actor.recall("toggleName");
+            if (StringUtils.isNotBlank(toggleName)) {
+                actor.attemptsTo(
+                        MainSettingsTasks.openTransactionFlowScreen(actor),
+                        ToggleAction.toOff(CommonObjects.TOGGLE.of(toggleName)));
+            }
         }
 
         actor.attemptsTo(CommonTasks.returnToTheDashboardScreen(actor));

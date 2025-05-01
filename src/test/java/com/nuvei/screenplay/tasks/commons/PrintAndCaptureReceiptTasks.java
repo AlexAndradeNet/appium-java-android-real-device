@@ -14,10 +14,8 @@ from Nuvei Inc.
 package com.nuvei.screenplay.tasks.commons;
 
 import com.nuvei.screenplay.interactions.ClickAction;
-import com.nuvei.screenplay.interactions.ToggleAction;
 import com.nuvei.screenplay.interactions.WaitAction;
 import com.nuvei.screenplay.questions.TextQuestion;
-import com.nuvei.screenplay.tasks.settings.MainSettingsTasks;
 import com.nuvei.screenplay.ui.CommonObjects;
 import com.nuvei.screenplay.ui.common.PrintingScreen;
 import com.nuvei.utils.LogcatUtility;
@@ -50,12 +48,10 @@ public class PrintAndCaptureReceiptTasks {
     }
 
     private static void printAndCaptureReceipt(Actor actor, responseType responseType) {
-        actor.attemptsTo(
-                WaitAction.untilElementIsPresent(PrintingScreen.BUTTON_RECEIPT_OPTIONS),
-                Ensure.that(
-                                "Should get an approval",
-                                TextQuestion.of(PrintingScreen.LABEL_MESSAGE_TITLE))
-                        .isEqualTo(responseType.name()));
+        actor.attemptsTo(WaitAction.untilElementIsPresent(PrintingScreen.BUTTON_RECEIPT_OPTIONS));
+
+        String saveLabelResponseForSoftAssertion =
+                actor.asksFor(TextQuestion.of(PrintingScreen.LABEL_MESSAGE_TITLE));
 
         LogcatUtility logcatUtility = new LogcatUtility();
         logcatUtility.startLogcat(actor);
@@ -71,11 +67,9 @@ public class PrintAndCaptureReceiptTasks {
         String receipt = ReceiptUtility.getMerchantReceipt(logcat);
         ReportUtility.saveReceipt(receipt);
 
-        String toggleName = actor.recall("toggleName");
-
+        String description = "The transaction result: '%s'";
         actor.attemptsTo(
-                CommonTasks.returnToTheDashboardScreen(actor),
-                MainSettingsTasks.openTransactionFlowScreen(actor),
-                ToggleAction.toOff(CommonObjects.TOGGLE.of(toggleName)));
+                Ensure.that(description.formatted(saveLabelResponseForSoftAssertion))
+                        .isEqualTo(description.formatted(responseType.name())));
     }
 }

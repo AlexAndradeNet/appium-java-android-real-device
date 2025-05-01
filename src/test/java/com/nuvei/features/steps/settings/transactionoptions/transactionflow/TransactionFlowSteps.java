@@ -40,6 +40,7 @@ public class TransactionFlowSteps {
         actor.attemptsTo(
                 MainSettingsTasks.openTransactionFlowScreen(actor),
                 ToggleAction.toOn(CommonObjects.TOGGLE.of(toggleName)));
+
         actor.remember("toggleName", toggleName);
     }
 
@@ -73,10 +74,17 @@ public class TransactionFlowSteps {
     @And("he gets a transaction approved validating its receipt")
     public void heShouldGetAnApprovalWithTheInvoiceNumber() {
         Actor actor = OnStage.theActorInTheSpotlight();
+        String toggleName = actor.recall("toggleName");
 
         BrowseTheApp.reAttachDriver(actor);
 
-        actor.attemptsTo(PrintAndCaptureReceiptTasks.approved(actor));
+        actor.attemptsTo(
+                PrintAndCaptureReceiptTasks.approved(actor),
+                CommonTasks.returnToTheDashboardScreen(actor),
+                MainSettingsTasks.openTransactionFlowScreen(actor),
+                ToggleAction.toOff(CommonObjects.TOGGLE.of(toggleName)));
+
+        actor.remember("toggleName", "");
     }
 
     @And("he fills the prompt with {word}")
