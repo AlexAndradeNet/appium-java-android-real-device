@@ -14,10 +14,9 @@ from Nuvei Inc.
 package com.nuvei.screenplay.tasks.commons;
 
 import com.nuvei.screenplay.interactions.ClickAction;
-import com.nuvei.screenplay.interactions.NumpadAction;
 import com.nuvei.screenplay.questions.TextQuestion;
 import com.nuvei.screenplay.questions.VisibilityQuestion;
-import com.nuvei.screenplay.ui.NumericScreen;
+import com.nuvei.screenplay.ui.common.NumericScreen;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Performable;
 import net.serenitybdd.screenplay.Task;
@@ -46,7 +45,7 @@ public class LoginAsTasks {
                                             NumericScreen.LABEL_REASON.of("Enter your Clerk ID")))
                             .isTrue());
         }
-        actor.attemptsTo(NumpadAction.digit(clerkId));
+        actor.attemptsTo(CommonTasks.digitAndConfirmValueOrPrompt(actor, clerkId));
 
         if (withValidation) {
             actor.attemptsTo(
@@ -83,9 +82,7 @@ public class LoginAsTasks {
                             .isTrue());
         }
 
-        actor.attemptsTo(
-                NumpadAction.digit(clerkPassword),
-                ClickAction.on(NumericScreen.BUTTON_CONTINUE_OR_CONFIRM));
+        actor.attemptsTo(CommonTasks.digitAndConfirmValueOrPrompt(actor, clerkPassword));
 
         return Task.where("{0} fills the clerk ID and password {1}");
     }

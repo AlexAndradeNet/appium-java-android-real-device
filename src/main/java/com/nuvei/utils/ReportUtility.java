@@ -34,10 +34,9 @@ public class ReportUtility {
     /**
      * Saves the merchant receipt from the logcat and adds it to the Serenity report.
      *
-     * @param logcat The logcat output.
+     * @param receipt the receipt.
      */
-    public static void saveReceipt(String logcat) {
-        String receipt = LogcatUtility.getMerchantReceipt(logcat);
+    public static void saveReceipt(String receipt) {
         logger.info("Receipt: \n" + receipt);
 
         Serenity.recordReportData().withTitle("Merchant Receipt").andContents(receipt);

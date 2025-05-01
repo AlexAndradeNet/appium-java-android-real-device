@@ -20,7 +20,7 @@ import com.nuvei.screenplay.tasks.DashboardScreenTasks;
 import com.nuvei.screenplay.tasks.commons.CommonTasks;
 import com.nuvei.screenplay.tasks.commons.LoginAsTasks;
 import com.nuvei.screenplay.tasks.help.MainHelpTasks;
-import com.nuvei.screenplay.ui.NumericScreen;
+import com.nuvei.screenplay.ui.common.NumericScreen;
 import com.nuvei.screenplay.ui.help.MainHelpScreen;
 import com.nuvei.screenplay.ui.tid.MainTIDScreen;
 import io.cucumber.java.en.Then;

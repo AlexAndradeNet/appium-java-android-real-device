@@ -39,9 +39,8 @@ ext {
 
 dependencies {
     implementation "org.aeonbits.owner:owner:${versions.aeonbits}",
-            "org.slf4j:slf4j-simple:${versions.slf4j}"
-
-    testImplementation "org.slf4j:slf4j-api:${versions.slf4j}",
+            "org.slf4j:slf4j-simple:${versions.slf4j}",
+            "org.slf4j:slf4j-api:${versions.slf4j}",
             "com.google.code.gson:gson:${versions.gson}",
             "net.serenity-bdd:serenity-core:${versions.serenityCore}",
             "net.serenity-bdd:serenity-junit5:${versions.serenityCore}",
@@ -49,13 +48,12 @@ dependencies {
             "net.serenity-bdd:serenity-screenplay:${versions.serenityCore}",
             "net.serenity-bdd:serenity-screenplay-webdriver:${versions.serenityCore}",
             "net.serenity-bdd:serenity-cucumber:${versions.serenityCore}",
+            "io.appium:java-client:${versions.appium}"
 
-            "io.cucumber:cucumber-java:${versions.cucumber}",
+    testImplementation "io.cucumber:cucumber-java:${versions.cucumber}",
             "io.cucumber:cucumber-junit-platform-engine:${versions.cucumber}",
-
             "junit:junit:4.13.2",
             "org.junit.platform:junit-platform-suite:${versions.junitPlatform}",
-            "io.appium:java-client:${versions.appium}",
             "org.junit.jupiter:junit-jupiter:${versions.junit}"
 
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${versions.junit}"

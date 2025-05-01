@@ -17,7 +17,7 @@ import com.nuvei.screenplay.questions.VisibilityQuestion;
 import com.nuvei.screenplay.tasks.DashboardScreenTasks;
 import com.nuvei.screenplay.tasks.commons.CommonTasks;
 import com.nuvei.screenplay.tasks.commons.LoginAsTasks;
-import com.nuvei.screenplay.ui.NumericScreen;
+import com.nuvei.screenplay.ui.common.NumericScreen;
 import com.nuvei.screenplay.ui.saf.SafMainScreen;
 import com.nuvei.screenplay.ui.settle.MainSettleScreen;
 import com.nuvei.screenplay.ui.voidtile.VoidMainScreen;

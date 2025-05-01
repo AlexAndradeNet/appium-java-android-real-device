@@ -14,7 +14,7 @@ from Nuvei Inc.
 package com.nuvei.features.steps.settings.transactionoptions.transactionflow;
 
 import com.nuvei.screenplay.ability.BrowseTheApp;
-import com.nuvei.screenplay.interactions.*;
+import com.nuvei.screenplay.interactions.ToggleAction;
 import com.nuvei.screenplay.questions.VisibilityQuestion;
 import com.nuvei.screenplay.tasks.DashboardScreenTasks;
 import com.nuvei.screenplay.tasks.commons.CommonTasks;
@@ -22,7 +22,7 @@ import com.nuvei.screenplay.tasks.commons.PrintAndCaptureReceiptTasks;
 import com.nuvei.screenplay.tasks.commons.TogglesTasks;
 import com.nuvei.screenplay.tasks.settings.MainSettingsTasks;
 import com.nuvei.screenplay.ui.CommonObjects;
-import com.nuvei.screenplay.ui.NumericScreen;
+import com.nuvei.screenplay.ui.common.NumericScreen;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -84,9 +84,7 @@ public class TransactionFlowSteps {
         Actor actor = OnStage.theActorInTheSpotlight();
 
         actor.attemptsTo(
-                NumpadAction.digit(promptValue),
-                ClickAction.on(NumericScreen.BUTTON_CONTINUE_OR_CONFIRM),
-                NumpadAction.digit(SALE_AMOUNT),
-                ClickAction.on(NumericScreen.BUTTON_CONTINUE_OR_CONFIRM));
+                CommonTasks.digitAndConfirmValueOrPrompt(actor, promptValue),
+                CommonTasks.digitAndConfirmValueOrPrompt(actor, SALE_AMOUNT));
     }
 }

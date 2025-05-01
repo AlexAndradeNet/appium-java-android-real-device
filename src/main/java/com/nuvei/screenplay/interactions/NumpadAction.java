@@ -15,7 +15,6 @@ package com.nuvei.screenplay.interactions;
 
 import com.nuvei.screenplay.ability.BrowseTheApp;
 import com.nuvei.screenplay.questions.EnvironmentQuestion;
-import com.nuvei.screenplay.ui.NumericScreen;
 import com.nuvei.utils.VariablesSingleton;
 import java.util.HashMap;
 import java.util.List;
@@ -26,16 +25,21 @@ import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Interaction;
 import net.serenitybdd.screenplay.Performable;
 import net.serenitybdd.screenplay.Tasks;
+import net.serenitybdd.screenplay.targets.Target;
 import org.openqa.selenium.WebElement;
 
 public class NumpadAction implements Interaction {
     private final String numberSequence;
+    private final Target valueTextBox;
+    private final Target numpadNumberButton;
 
     // Thread-safe cache for numeric button Targets. Don't change it to static.
     private final Map<String, WebElementFacade> cachedTargets = new ConcurrentHashMap<>();
 
-    protected NumpadAction(String numberSequence) {
-        numberSequence = numberSequence.replaceAll("\"", "");
+    protected NumpadAction(Target valueTextBox, Target numpadNumberButton, String numberSequence) {
+        this.valueTextBox = valueTextBox;
+        this.numpadNumberButton = numpadNumberButton;
+        numberSequence = numberSequence.replace("\"", "");
         this.numberSequence = numberSequence;
     }
 
@@ -99,16 +103,18 @@ public class NumpadAction implements Interaction {
     }
 
     private void performEnterIntoTextbox(Actor actor) {
-        EnterAction.theValue(numberSequence).into(NumericScreen.TEXTBOX_VALUE).performAs(actor);
-    }
-
-    public static NumpadAction digit(String numberSequence) {
-        return Tasks.instrumented(NumpadAction.class, numberSequence);
+        EnterAction.into(valueTextBox, numberSequence).performAs(actor);
     }
 
     private WebElement getOrCreateButtonForDigit(Actor actor, String digit) {
         // Cache the Target only if it doesn't exist
         return cachedTargets.computeIfAbsent(
-                digit, d -> NumericScreen.BUTTON_NUMPAD_NUMBER.of(digit).resolveFor(actor));
+                digit, d -> numpadNumberButton.of(digit).resolveFor(actor));
+    }
+
+    public static NumpadAction digit(
+            Target valueTextBox, Target numpadNumberButton, String numberSequence) {
+        return Tasks.instrumented(
+                NumpadAction.class, valueTextBox, numpadNumberButton, numberSequence);
     }
 }

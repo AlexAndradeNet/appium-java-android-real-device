@@ -26,7 +26,7 @@ import com.nuvei.screenplay.tasks.commons.LoginAsTasks;
 import com.nuvei.screenplay.tasks.settings.MainSettingsTasks;
 import com.nuvei.screenplay.ui.CommonObjects;
 import com.nuvei.screenplay.ui.DashboardScreen;
-import com.nuvei.screenplay.ui.NumericScreen;
+import com.nuvei.screenplay.ui.common.NumericScreen;
 import com.nuvei.screenplay.ui.settings.SemiIntegrationOptionsScreen;
 import com.nuvei.screenplay.ui.tid.MainTIDScreen;
 import io.cucumber.java.en.And;

@@ -11,7 +11,7 @@ Dissemination of this information or reproduction of this material
 is strictly forbidden unless prior written permission is obtained
 from Nuvei Inc.
 */
-package com.nuvei.screenplay.ui;
+package com.nuvei.screenplay.ui.common;
 
 import io.appium.java_client.AppiumBy;
 import net.serenitybdd.screenplay.targets.Target;

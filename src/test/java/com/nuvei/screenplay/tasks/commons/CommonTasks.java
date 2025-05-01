@@ -17,12 +17,14 @@ import static com.nuvei.screenplay.ui.CommonObjects.BUTTON_ARROW_BACK;
 
 import com.nuvei.screenplay.ability.BrowseTheApp;
 import com.nuvei.screenplay.interactions.ClickAction;
+import com.nuvei.screenplay.interactions.NumpadAction;
 import com.nuvei.screenplay.interactions.SwipeAction;
 import com.nuvei.screenplay.interactions.ToggleAction;
 import com.nuvei.screenplay.questions.TextQuestion;
 import com.nuvei.screenplay.questions.VisibilityQuestion;
 import com.nuvei.screenplay.ui.CommonObjects;
 import com.nuvei.screenplay.ui.common.ConfirmationScreen;
+import com.nuvei.screenplay.ui.common.NumericScreen;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import net.serenitybdd.screenplay.Actor;
@@ -205,5 +207,13 @@ public class CommonTasks {
         }
 
         return Task.where("{0} navigates back to the main screen");
+    }
+
+    public static Performable digitAndConfirmValueOrPrompt(Actor actor, String value) {
+        actor.attemptsTo(
+                NumpadAction.digit(
+                        NumericScreen.TEXTBOX_VALUE, NumericScreen.BUTTON_NUMPAD_NUMBER, value),
+                ClickAction.on(NumericScreen.BUTTON_CONTINUE_OR_CONFIRM));
+        return Task.where("{0} fills the prompt with the value: " + value);
     }
 }

@@ -21,7 +21,7 @@ import com.nuvei.screenplay.interactions.SwipeAction;
 import com.nuvei.screenplay.interactions.WaitAction;
 import com.nuvei.screenplay.questions.VisibilityQuestion;
 import com.nuvei.screenplay.tasks.settings.SafSettingsTasks;
-import com.nuvei.screenplay.ui.NumericScreen;
+import com.nuvei.screenplay.ui.common.NumericScreen;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Performable;
 import net.serenitybdd.screenplay.Task;

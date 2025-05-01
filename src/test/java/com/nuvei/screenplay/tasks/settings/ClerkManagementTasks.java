@@ -46,9 +46,8 @@ public class ClerkManagementTasks {
             Actor actor, String password, String confirmationPassword) {
         actor.attemptsTo(
                 ClickAction.on(ViewClerkScreen.BUTTON_CHANGE_PASSWORD),
-                EnterAction.theValue(password).into(ChangePasswordScreen.TEXTBOX_PASSWORD),
-                EnterAction.theValue(confirmationPassword)
-                        .into(ChangePasswordScreen.TEXTBOX_CONFIRM),
+                EnterAction.into(ChangePasswordScreen.TEXTBOX_PASSWORD, password),
+                EnterAction.into(ChangePasswordScreen.TEXTBOX_CONFIRM, confirmationPassword),
                 ClickAction.on(ChangePasswordScreen.BUTTON_CONFIRM));
 
         return Task.where("{0} changes the current user password");
@@ -66,9 +65,9 @@ public class ClerkManagementTasks {
 
         actor.attemptsTo(
                 ClickAction.on(getTargetForRole(role)),
-                EnterAction.theValue(clerkId).into(AddUserScreen.TEXTBOX_USER_ID),
-                EnterAction.theValue(password).into(AddUserScreen.TEXTBOX_PASSWORD),
-                EnterAction.theValue(password).into(AddUserScreen.TEXTBOX_CONFIRM));
+                EnterAction.into(AddUserScreen.TEXTBOX_USER_ID, clerkId),
+                EnterAction.into(AddUserScreen.TEXTBOX_PASSWORD, password),
+                EnterAction.into(AddUserScreen.TEXTBOX_CONFIRM, password));
 
         if (withTextValidation) {
             actor.attemptsTo(
@@ -102,8 +101,7 @@ public class ClerkManagementTasks {
     }
 
     public static Performable searchForClerkId(Actor actor, String clerkId) {
-        actor.attemptsTo(
-                EnterAction.theValue(clerkId).into(MainClerkManagementScreen.TEXTBOX_SEARCH));
+        actor.attemptsTo(EnterAction.into(MainClerkManagementScreen.TEXTBOX_SEARCH, clerkId));
 
         return Task.where("{0} searches for the clerk ID");
     }
@@ -111,7 +109,7 @@ public class ClerkManagementTasks {
     public static Performable changeClerkId(Actor actor, String newClerkId) {
         actor.attemptsTo(
                 ClickAction.on(ViewClerkScreen.BUTTON_CHANGE_CLERK_ID),
-                EnterAction.theValue(newClerkId).into(ChangeClerkIDScreen.TEXTBOX_NEW_CLERK_ID),
+                EnterAction.into(ChangeClerkIDScreen.TEXTBOX_NEW_CLERK_ID, newClerkId),
                 Ensure.that(
                                 "The title should be correct",
                                 VisibilityQuestion.isPresent(ChangeClerkIDScreen.TITLE))

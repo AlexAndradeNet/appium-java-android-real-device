@@ -20,7 +20,7 @@ import com.nuvei.screenplay.tasks.commons.CommonTasks;
 import com.nuvei.screenplay.tasks.commons.LoginAsTasks;
 import com.nuvei.screenplay.tasks.settings.ClerkManagementTasks;
 import com.nuvei.screenplay.tasks.settings.MainSettingsTasks;
-import com.nuvei.screenplay.ui.NumericScreen;
+import com.nuvei.screenplay.ui.common.NumericScreen;
 import com.nuvei.screenplay.ui.settings.MainSettingsScreen;
 import com.nuvei.screenplay.ui.settings.clerkmanagement.MainClerkManagementScreen;
 import com.nuvei.screenplay.ui.settings.clerkmanagement.ViewClerkScreen;
