@@ -1,4 +1,5 @@
 #!/bin/bash # Environment
+set -euo pipefail # Error handling and Strict mode
 
 echo "Running pre-commit checks..."
 
