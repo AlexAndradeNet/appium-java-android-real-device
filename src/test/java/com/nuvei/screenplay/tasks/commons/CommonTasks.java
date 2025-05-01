@@ -216,4 +216,11 @@ public class CommonTasks {
                 ClickAction.on(NumericScreen.BUTTON_CONTINUE_OR_CONFIRM));
         return Task.where("{0} fills the prompt with the value: " + value);
     }
+
+    public static Performable digit(Actor actor, String value) {
+        actor.attemptsTo(
+                NumpadAction.digit(
+                        NumericScreen.TEXTBOX_VALUE, NumericScreen.BUTTON_NUMPAD_NUMBER, value));
+        return Task.where("{0} fills the prompt with the value: " + value);
+    }
 }

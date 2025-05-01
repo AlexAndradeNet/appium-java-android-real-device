@@ -151,7 +151,7 @@ Feature: Clerk and Role management
     Then he should not see Arcadio's account (ID 10) in the clerks list
 
   #@ignore
-  Scenario: 21 - Using un existent clerk ID
+  Scenario: 21 - Using unexistent clerk ID
     Given Aureliano is using the wrong Clerk ID 0
     When he tries to manage clerks with a wrong Clerk ID
     Then he should receive the error message error message "Please verify and try again!" with the title "User does not exist"

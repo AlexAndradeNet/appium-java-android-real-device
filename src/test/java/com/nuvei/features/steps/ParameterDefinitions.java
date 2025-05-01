@@ -14,6 +14,7 @@ from Nuvei Inc.
 package com.nuvei.features.steps;
 
 import com.nuvei.screenplay.ability.BrowseTheApp;
+import com.nuvei.screenplay.tasks.DashboardScreenTasks;
 import io.cucumber.java.ParameterType;
 import net.serenitybdd.core.Serenity;
 import net.serenitybdd.screenplay.Actor;
@@ -41,7 +42,10 @@ public class ParameterDefinitions {
         WebDriverFacade driver = (WebDriverFacade) Serenity.getDriver();
         actor.can(BrowseTheApp.with(driver));
 
-        // 3. Return the fully configured actor to Cucumber.
+        // 3. Set the actor's name in the context for later use.
+        actor.attemptsTo(DashboardScreenTasks.waitUntilTheSpinnerDisappears(actor));
+
+        // 4. Return the fully configured actor to Cucumber.
         return actor;
     }
 }
