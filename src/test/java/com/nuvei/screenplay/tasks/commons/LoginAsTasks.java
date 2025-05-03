@@ -45,7 +45,7 @@ public class LoginAsTasks {
                                             NumericScreen.LABEL_REASON.of("Enter your Clerk ID")))
                             .isTrue());
         }
-        actor.attemptsTo(CommonTasks.digit(actor, clerkId));
+        actor.attemptsTo(NumpadTasks.digit(actor, clerkId));
 
         if (withValidation) {
             actor.attemptsTo(
@@ -82,7 +82,7 @@ public class LoginAsTasks {
                             .isTrue());
         }
 
-        actor.attemptsTo(CommonTasks.digitAndConfirmValueOrPrompt(actor, clerkPassword));
+        actor.attemptsTo(NumpadTasks.digitAndConfirmValueOrPrompt(actor, clerkPassword));
 
         return Task.where("{0} fills the clerk ID and password {1}");
     }

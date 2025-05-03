@@ -14,7 +14,6 @@ from Nuvei Inc.
 package com.nuvei.screenplay.interactions;
 
 import com.nuvei.screenplay.ability.BrowseTheApp;
-import com.nuvei.screenplay.questions.EnvironmentQuestion;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,55 +24,32 @@ import net.serenitybdd.screenplay.Interaction;
 import net.serenitybdd.screenplay.Performable;
 import net.serenitybdd.screenplay.Tasks;
 import net.serenitybdd.screenplay.targets.Target;
-import org.junit.platform.commons.util.StringUtils;
 import org.openqa.selenium.WebElement;
 
 public class NumpadAction implements Interaction {
+
     private final String numberSequence;
-    private final Target valueTextBox;
-    private final Target numpadNumberButton;
+    private final Target onScreenNumpadNumberButton;
 
     // Thread-safe cache for numeric button Targets. Don't change it to static.
     private final Map<String, WebElementFacade> cachedTargets = new ConcurrentHashMap<>();
 
-    protected NumpadAction(Target valueTextBox, Target numpadNumberButton, String numberSequence) {
-        this.valueTextBox = valueTextBox;
-        this.numpadNumberButton = numpadNumberButton;
+    protected NumpadAction(Target onScreenNumpadNumberButton, String numberSequence) {
+        this.onScreenNumpadNumberButton = onScreenNumpadNumberButton;
         numberSequence = numberSequence.replace("\"", "");
         this.numberSequence = numberSequence;
     }
 
     @Override
     public <T extends Actor> void performAs(T actor) {
-        if (numberSequence.isEmpty()) {
-            return;
-        }
-        if (actor.asksFor(EnvironmentQuestion.isTSeries())) {
-            performOnOnScreenNuveiNumpad(actor);
-        } else if (actor.asksFor(EnvironmentQuestion.isMSeries())) {
+        if (onScreenNumpadNumberButton == null) {
             performOnPhysicalNumpad(actor);
-        } else if (actor.asksFor(EnvironmentQuestion.isPSeries())) {
-            performEnterIntoTextbox(actor);
         } else {
-            throw new UnsupportedOperationException("Unknown environment for numpad interaction.");
+            performOnOnScreenNumpad(actor);
         }
     }
 
-    private void performOnOnScreenNuveiNumpad(Actor actor) {
-        String recalledValue = actor.recall("numpadUsageCount");
-        int numpadUsageCount =
-                (StringUtils.isNotBlank(recalledValue)) ? Integer.parseInt(recalledValue) : 0;
-
-        boolean isNotLongerNeededTestTheNumpad = numpadUsageCount > 2;
-        boolean isPlainText = !numberSequence.contains(".");
-
-        if (isPlainText && isNotLongerNeededTestTheNumpad) {
-            performEnterIntoTextbox(actor);
-            return;
-        }
-
-        // When numberSequence is an Amount, we need to tap each digit separately
-
+    private void performOnOnScreenNumpad(Actor actor) {
         List<ClickAction> tapActions =
                 numberSequence
                         .chars()
@@ -86,7 +62,6 @@ public class NumpadAction implements Interaction {
                         .toList();
 
         actor.attemptsTo(tapActions.toArray(new Performable[0]));
-        actor.remember("numpadUsageCount", numpadUsageCount + 1);
     }
 
     private void performOnPhysicalNumpad(Actor actor) {
@@ -104,19 +79,13 @@ public class NumpadAction implements Interaction {
         driver.executeScript("mobile: shell", adbCommand);
     }
 
-    private void performEnterIntoTextbox(Actor actor) {
-        EnterAction.into(valueTextBox, numberSequence).performAs(actor);
-    }
-
     private WebElement getOrCreateButtonForDigit(Actor actor, String digit) {
         // Cache the Target only if it doesn't exist
         return cachedTargets.computeIfAbsent(
-                digit, d -> numpadNumberButton.of(digit).resolveFor(actor));
+                digit, d -> onScreenNumpadNumberButton.of(digit).resolveFor(actor));
     }
 
-    public static NumpadAction digit(
-            Target valueTextBox, Target numpadNumberButton, String numberSequence) {
-        return Tasks.instrumented(
-                NumpadAction.class, valueTextBox, numpadNumberButton, numberSequence);
+    public static NumpadAction digit(Target onScreenNumpadNumberButton, String numberSequence) {
+        return Tasks.instrumented(NumpadAction.class, onScreenNumpadNumberButton, numberSequence);
     }
 }
