@@ -13,17 +13,27 @@ from Nuvei Inc.
 */
 package com.nuvei.screenplay.interactions;
 
-import net.serenitybdd.screenplay.Performable;
+import net.serenitybdd.screenplay.Actor;
+import net.serenitybdd.screenplay.Interaction;
 import net.serenitybdd.screenplay.actions.Enter;
 import net.serenitybdd.screenplay.targets.Target;
 
-public class EnterAction {
+public class EnterAction implements Interaction {
 
-    private EnterAction() {
-        throw new IllegalStateException("Utility class - cannot be instantiated");
+    private final Target target;
+    private final String value;
+
+    private EnterAction(Target target, String value) {
+        this.target = target;
+        this.value = value;
     }
 
-    public static Performable into(Target target, String value) {
-        return Enter.theValue(value).into(target);
+    public static EnterAction into(Target target, String value) {
+        return new EnterAction(target, value);
+    }
+
+    @Override
+    public <T extends Actor> void performAs(T actor) {
+        actor.attemptsTo(Enter.theValue(value).into(target));
     }
 }

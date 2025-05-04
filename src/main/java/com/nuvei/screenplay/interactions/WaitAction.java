@@ -33,21 +33,21 @@ public class WaitAction implements Interaction {
     private final long seconds;
     private final Target target;
 
-    protected WaitAction(long seconds, Target target) {
+    private WaitAction(long seconds, Target target) {
         this.seconds = seconds;
         this.target = target;
     }
 
     public static Performable forSpecificTime(long seconds) {
-        return Tasks.instrumented(WaitAction.class, seconds, null);
+        return new WaitAction(seconds, null);
     }
 
     public static Performable untilElementIsPresent(Target target) {
-        return Tasks.instrumented(WaitAction.class, 0, target);
+        return new WaitAction(0, target);
     }
 
     public static Performable untilElementIsNotPresent(Target target) {
-        return Tasks.instrumented(WaitAction.class, 1, target);
+        return new WaitAction(1, target);
     }
 
     @Override

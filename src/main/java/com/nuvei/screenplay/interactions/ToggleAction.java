@@ -16,7 +16,6 @@ package com.nuvei.screenplay.interactions;
 import com.nuvei.screenplay.questions.TextQuestion;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Interaction;
-import net.serenitybdd.screenplay.Tasks;
 import net.serenitybdd.screenplay.targets.Target;
 
 public class ToggleAction implements Interaction {
@@ -24,7 +23,7 @@ public class ToggleAction implements Interaction {
     private final Target target;
     private final boolean enabled;
 
-    protected ToggleAction(Target target, boolean enabled) {
+    private ToggleAction(Target target, boolean enabled) {
         this.target = target;
         this.enabled = enabled;
     }
@@ -45,10 +44,10 @@ public class ToggleAction implements Interaction {
     }
 
     public static ToggleAction toOn(Target target) {
-        return Tasks.instrumented(ToggleAction.class, target, true);
+        return new ToggleAction(target, true);
     }
 
     public static ToggleAction toOff(Target target) {
-        return Tasks.instrumented(ToggleAction.class, target, false);
+        return new ToggleAction(target, false);
     }
 }

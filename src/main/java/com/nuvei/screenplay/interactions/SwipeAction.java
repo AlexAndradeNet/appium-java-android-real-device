@@ -18,7 +18,6 @@ import java.time.Duration;
 import java.util.Collections;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Interaction;
-import net.serenitybdd.screenplay.Tasks;
 import net.thucydides.core.webdriver.WebDriverFacade;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.interactions.PointerInput;
@@ -26,7 +25,7 @@ import org.openqa.selenium.interactions.Sequence;
 
 public class SwipeAction implements Interaction {
 
-    protected enum SwipeDirection {
+    private enum SwipeDirection {
         UP,
         DOWN,
         LEFT,
@@ -36,7 +35,7 @@ public class SwipeAction implements Interaction {
     private static final int SWIPE_SPEED = 101;
     private final SwipeDirection direction;
 
-    protected SwipeAction(SwipeDirection direction) {
+    private SwipeAction(SwipeDirection direction) {
         this.direction = direction;
     }
 
@@ -122,18 +121,18 @@ public class SwipeAction implements Interaction {
     }
 
     public static SwipeAction toDown() {
-        return Tasks.instrumented(SwipeAction.class, SwipeDirection.DOWN);
+        return new SwipeAction(SwipeDirection.DOWN);
     }
 
     public static SwipeAction toUp() {
-        return Tasks.instrumented(SwipeAction.class, SwipeDirection.UP);
+        return new SwipeAction(SwipeDirection.UP);
     }
 
     public static SwipeAction toLeft() {
-        return Tasks.instrumented(SwipeAction.class, SwipeDirection.LEFT);
+        return new SwipeAction(SwipeDirection.LEFT);
     }
 
     public static SwipeAction toRight() {
-        return Tasks.instrumented(SwipeAction.class, SwipeDirection.RIGHT);
+        return new SwipeAction(SwipeDirection.RIGHT);
     }
 }

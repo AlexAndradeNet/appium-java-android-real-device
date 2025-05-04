@@ -17,12 +17,11 @@ import io.cucumber.java.PendingException;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Interaction;
 import net.serenitybdd.screenplay.Performable;
-import net.serenitybdd.screenplay.Tasks;
 
 public class SkipScenarioAction implements Interaction {
     private final String cause;
 
-    protected SkipScenarioAction(String cause) {
+    private SkipScenarioAction(String cause) {
         this.cause = cause;
     }
 
@@ -32,6 +31,6 @@ public class SkipScenarioAction implements Interaction {
     }
 
     public static Performable withReason(String reason) {
-        return Tasks.instrumented(SkipScenarioAction.class, reason);
+        return new SkipScenarioAction(reason);
     }
 }

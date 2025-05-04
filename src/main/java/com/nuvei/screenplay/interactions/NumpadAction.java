@@ -22,7 +22,6 @@ import net.serenitybdd.core.pages.WebElementFacade;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Interaction;
 import net.serenitybdd.screenplay.Performable;
-import net.serenitybdd.screenplay.Tasks;
 import net.serenitybdd.screenplay.targets.Target;
 import org.openqa.selenium.WebElement;
 
@@ -30,14 +29,15 @@ public class NumpadAction implements Interaction {
 
     private final String numberSequence;
     private final Target onScreenNumpadNumberButton;
-
-    // Thread-safe cache for numeric button Targets. Don't change it to static.
     private final Map<String, WebElementFacade> cachedTargets = new ConcurrentHashMap<>();
 
-    protected NumpadAction(Target onScreenNumpadNumberButton, String numberSequence) {
+    private NumpadAction(Target onScreenNumpadNumberButton, String numberSequence) {
         this.onScreenNumpadNumberButton = onScreenNumpadNumberButton;
-        numberSequence = numberSequence.replace("\"", "");
-        this.numberSequence = numberSequence;
+        this.numberSequence = numberSequence.replace("\"", "");
+    }
+
+    public static NumpadAction digit(Target onScreenNumpadNumberButton, String numberSequence) {
+        return new NumpadAction(onScreenNumpadNumberButton, numberSequence);
     }
 
     @Override
@@ -54,26 +54,19 @@ public class NumpadAction implements Interaction {
                 numberSequence
                         .chars()
                         .mapToObj(c -> String.valueOf((char) c)) // Convert each character to String
-                        .map(
-                                digit ->
-                                        ClickAction.on(
-                                                getOrCreateButtonForDigit(
-                                                        actor, digit))) // Resolve Target
+                        .map(digit -> ClickAction.on(getOrCreateButtonForDigit(actor, digit)))
                         .toList();
 
         actor.attemptsTo(tapActions.toArray(new Performable[0]));
     }
 
     private void performOnPhysicalNumpad(Actor actor) {
-        // Use physical keyboard for M-Series
-
-        // Prepare the ADB shell command
         Map<String, Object> adbCommand = new HashMap<>();
-        adbCommand.put("command", "input"); // Command name (e.g., "ls", "pm", etc.)
+        adbCommand.put("command", "input"); // Command name (e.g., "ls", "input", etc.)
         adbCommand.put(
                 "args",
                 "keyboard text \"%s\""
-                        .formatted(numberSequence)); // Command arguments (e.g., "/sdcard")
+                        .formatted(numberSequence)); // Command arguments (e.g., "/sdcard"
 
         var driver = BrowseTheApp.driverFor(actor);
         driver.executeScript("mobile: shell", adbCommand);
@@ -83,9 +76,5 @@ public class NumpadAction implements Interaction {
         // Cache the Target only if it doesn't exist
         return cachedTargets.computeIfAbsent(
                 digit, d -> onScreenNumpadNumberButton.of(digit).resolveFor(actor));
-    }
-
-    public static NumpadAction digit(Target onScreenNumpadNumberButton, String numberSequence) {
-        return Tasks.instrumented(NumpadAction.class, onScreenNumpadNumberButton, numberSequence);
     }
 }

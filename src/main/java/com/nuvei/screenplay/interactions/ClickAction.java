@@ -18,7 +18,6 @@ import java.time.Duration;
 import java.util.Collections;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Interaction;
-import net.serenitybdd.screenplay.Tasks;
 import net.serenitybdd.screenplay.targets.Target;
 import net.thucydides.core.webdriver.WebDriverFacade;
 import org.openqa.selenium.WebElement;
@@ -29,11 +28,13 @@ import org.openqa.selenium.interactions.Sequence;
 /** The Nuvei app does not support the click action, so we need to use the tap action instead. */
 public class ClickAction implements Interaction {
 
+    public static final int MIN_WAIT_TIME_FOR_ACTION = 0;
+    public static final int MAX_WAIT_TIME_FOR_ACTION = 100;
     private final Target target;
     private final WebElement webElement;
     private final int duration;
 
-    protected ClickAction(Target target, WebElement webElement, int duration) {
+    private ClickAction(Target target, WebElement webElement, int duration) {
         this.target = target;
         this.webElement = webElement;
         this.duration = duration;
@@ -65,18 +66,18 @@ public class ClickAction implements Interaction {
     }
 
     public static ClickAction on(Target target) {
-        return Tasks.instrumented(ClickAction.class, target, null, 0);
+        return new ClickAction(target, null, MIN_WAIT_TIME_FOR_ACTION);
     }
 
     public static ClickAction on(WebElement webElement) {
-        return Tasks.instrumented(ClickAction.class, null, webElement, 0);
+        return new ClickAction(null, webElement, MIN_WAIT_TIME_FOR_ACTION);
     }
 
     public static ClickAction withLongPressOn(Target target) {
-        return Tasks.instrumented(ClickAction.class, target, null, 100);
+        return new ClickAction(target, null, MAX_WAIT_TIME_FOR_ACTION);
     }
 
     public static ClickAction withLongPressOn(WebElement webElement) {
-        return Tasks.instrumented(ClickAction.class, null, webElement, 100);
+        return new ClickAction(null, webElement, MAX_WAIT_TIME_FOR_ACTION);
     }
 }
