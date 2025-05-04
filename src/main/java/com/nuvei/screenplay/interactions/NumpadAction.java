@@ -68,7 +68,7 @@ public class NumpadAction implements Interaction {
                 "keyboard text \"%s\""
                         .formatted(numberSequence)); // Command arguments (e.g., "/sdcard"
 
-        var driver = BrowseTheApp.driverFor(actor);
+        var driver = actor.usingAbilityTo(BrowseTheApp.class).driver();
         driver.executeScript("mobile: shell", adbCommand);
     }
 

@@ -19,7 +19,6 @@ import java.util.Collections;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Interaction;
 import net.serenitybdd.screenplay.targets.Target;
-import net.thucydides.core.webdriver.WebDriverFacade;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Pause;
 import org.openqa.selenium.interactions.PointerInput;
@@ -61,7 +60,7 @@ public class ClickAction implements Interaction {
                         .addAction(new Pause(finger, Duration.ofMillis(duration)))
                         .addAction(finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
 
-        WebDriverFacade driver = BrowseTheApp.driverFor(actor);
+        var driver = actor.usingAbilityTo(BrowseTheApp.class).driver();
         driver.perform(Collections.singletonList(tapSequence));
     }
 

@@ -42,7 +42,7 @@ public class CommonTasks {
     public static Performable pressPhysicalBackKey() {
         return Task.where(
                 "{0} press the physical back key",
-                actor -> BrowseTheApp.driverFor(actor).navigate().back());
+                actor -> actor.usingAbilityTo(BrowseTheApp.class).driver().navigate().back());
     }
 
     public static Performable tapBackArrow(Actor actor) {

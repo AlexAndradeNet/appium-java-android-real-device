@@ -36,14 +36,9 @@ public class BrowseTheApp implements Ability {
         return driver;
     }
 
-    /** Convenient accessor so callers write actor.usingAbilityTo(BrowseTheApp.class).driver() */
-    public static WebDriverFacade driverFor(Actor actor) {
-        return actor.usingAbilityTo(BrowseTheApp.class).driver();
-    }
-
     /** During Verifone screens the driver is detached from the app, so we need to re-attach it */
     public static void reAttachDriver(Actor actor) {
-        var driver = driverFor(actor);
+        var driver = actor.usingAbilityTo(BrowseTheApp.class).driver();
 
         String appPackage = driver.getCapabilities().getCapability("appPackage").toString();
         String appActivity = driver.getCapabilities().getCapability("appActivity").toString();

@@ -18,7 +18,6 @@ import java.time.Duration;
 import java.util.Collections;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Interaction;
-import net.thucydides.core.webdriver.WebDriverFacade;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.interactions.PointerInput;
 import org.openqa.selenium.interactions.Sequence;
@@ -41,9 +40,9 @@ public class SwipeAction implements Interaction {
 
     @Override
     public <T extends Actor> void performAs(T actor) {
-        WebDriverFacade appiumDriver = BrowseTheApp.driverFor(actor);
+        var driver = actor.usingAbilityTo(BrowseTheApp.class).driver();
 
-        Dimension windowSize = appiumDriver.manage().window().getSize();
+        Dimension windowSize = driver.manage().window().getSize();
 
         int startX = 0;
         int endX = 0;
@@ -85,7 +84,7 @@ public class SwipeAction implements Interaction {
             tapSequence = getHorizontalMovement(finger, startY, startX, endX);
         }
 
-        appiumDriver.perform(Collections.singletonList(tapSequence));
+        driver.perform(Collections.singletonList(tapSequence));
     }
 
     private static Sequence getVerticalMovement(

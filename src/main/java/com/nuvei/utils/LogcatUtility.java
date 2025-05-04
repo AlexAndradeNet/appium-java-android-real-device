@@ -31,7 +31,7 @@ public class LogcatUtility {
     private final ConcurrentLinkedQueue<String> logData = new ConcurrentLinkedQueue<>();
 
     public synchronized void startLogcat(Actor actor) {
-        var driver = BrowseTheApp.driverFor(actor);
+        var driver = actor.usingAbilityTo(BrowseTheApp.class).driver();
 
         if (!running.get() && (logThread == null || !logThread.isAlive())) {
             running.set(true);
@@ -56,7 +56,9 @@ public class LogcatUtility {
                                         }
                                     }
 
-                                    WaitAction.forSpecificTime(1); // Poll every second
+                                    actor.attemptsTo(
+                                            WaitAction.forSpecificTime(1) // Poll every second
+                                            );
                                 }
                             });
 

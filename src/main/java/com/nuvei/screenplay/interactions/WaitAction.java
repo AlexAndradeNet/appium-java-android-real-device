@@ -92,7 +92,7 @@ public class WaitAction implements Interaction {
      * @param actor The actor performing the action.
      */
     private void waitUntilElementIsPresent(Actor actor) {
-        var driver = BrowseTheApp.driverFor(actor);
+        var driver = actor.usingAbilityTo(BrowseTheApp.class).driver();
         new FluentWait<>(driver)
                 .withTimeout(Duration.ofSeconds(MAX_SECONDS))
                 .pollingEvery(Duration.ofSeconds(2))
