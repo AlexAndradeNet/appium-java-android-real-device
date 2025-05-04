@@ -28,6 +28,7 @@ ext {
             cucumber     : '7.21.1',
             junit        : '5.12.1',
             junitPlatform: '1.12.1',
+            archUnit     : '1.4.0',
             aeonbits     : '1.0.12',
             gson         : '2.12.1',
             slf4j        : '2.0.17',
@@ -52,9 +53,10 @@ dependencies {
 
     testImplementation "io.cucumber:cucumber-java:${versions.cucumber}",
             "io.cucumber:cucumber-junit-platform-engine:${versions.cucumber}",
-            "junit:junit:4.13.2",
+            "junit:junit:4.13.2", // Required for compatibility with cucumber
             "org.junit.platform:junit-platform-suite:${versions.junitPlatform}",
-            "org.junit.jupiter:junit-jupiter:${versions.junit}"
+            "org.junit.jupiter:junit-jupiter:${versions.junit}",
+            "com.tngtech.archunit:archunit-junit5:${versions.archUnit}"
 
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${versions.junit}"
 
@@ -192,6 +194,16 @@ tasks.named('sonar') {
 
 tasks.named('updateDaemonJvm') {
     languageVersion = JavaLanguageVersion.of(21)
+}
+
+sourceSets {
+    archTest {
+        java.srcDir 'src/test/java/architecture'
+
+        // include *both* production and test code so the rule sees every Task
+        compileClasspath += sourceSets.main.output  + configurations.testRuntimeClasspath
+        runtimeClasspath += output + compileClasspath + sourceSets.test.output
+    }
 }
 
 gradle.startParameter.continueOnFailure = false
