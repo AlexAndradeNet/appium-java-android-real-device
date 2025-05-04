@@ -59,9 +59,8 @@ public class NumpadTasks {
     }
 
     private static Performable useOnScreenNumpad(Actor actor, String numberSequence) {
-        String recalledValue = actor.recall("numpadUsageCount");
-        int numpadUsageCount =
-                (StringUtils.isNotBlank(recalledValue)) ? Integer.parseInt(recalledValue) : 0;
+        Object recalledValue = actor.recall("numpadUsageCount");
+        int numpadUsageCount = recalledValue == null ? 0 : (int) recalledValue;
 
         boolean isNotLongerNeededTestTheNumpad = numpadUsageCount > 2;
         boolean isPlainText = !numberSequence.contains(".");
