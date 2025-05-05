@@ -76,7 +76,7 @@ Follow these steps to run the tests on an Android device:
 3. Set the **Glue** field to the root package of your project (or the location
    of your step definitions): `com.nuvei.features.steps`.
 4. Set the **VM Options** to
-   `-Dcucumber.filter.tags=\~@ignore -Denvironment=uk`.
+   `-Dcucumber.filter.tags=~@ignore -Denvironment=uk`.
 5. Click **Apply**.
 6. For more details,
    visit [John Ferguson Smart's blog on running Cucumber Serenity feature files in IntelliJ](https://johnfergusonsmart.com/running-cucumber-serenity-feature-files-directly-intellij/).
