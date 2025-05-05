@@ -57,6 +57,11 @@ public class ReportUtility {
         }
 
         File screenshot = ((TakesScreenshot) webDriver).getScreenshotAs(OutputType.FILE);
+        if (screenshot == null) {
+            logger.error("Screenshot capture failed: returned null.");
+            return;
+        }
+
         File destination = new File("target/screenshots/" + scenario.getName() + ".png");
 
         try {
