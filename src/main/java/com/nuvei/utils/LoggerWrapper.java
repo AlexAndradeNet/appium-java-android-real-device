@@ -16,26 +16,12 @@ package com.nuvei.utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class SimpleLogger {
-
-    private static final String DEFAULT_LOG_FORMAT =
-            "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36}: %n%msg%n";
+public class LoggerWrapper {
 
     private final Logger logger;
 
-    public SimpleLogger(Class<?> clazz) {
-        this(clazz, DEFAULT_LOG_FORMAT);
-    }
-
-    public SimpleLogger(Class<?> clazz, String logFormat) {
-        // Configure slf4j-simple with desired log format
-        System.setProperty(
-                "org.slf4j.simpleLogger.logFile",
-                "stdout"); // Change "stdout" to filename for file logging
-        System.setProperty("org.slf4j.simpleLogger.showThreadName", "true");
-        System.setProperty("org.slf4j.simpleLogger.dateTimeFormat", logFormat);
-
-        logger = LoggerFactory.getLogger(clazz);
+    public LoggerWrapper(Class<?> clazz) {
+        this.logger = LoggerFactory.getLogger(clazz);
     }
 
     public void debug(String message) {

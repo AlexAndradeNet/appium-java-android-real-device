@@ -25,7 +25,7 @@ import org.openqa.selenium.WebDriver;
 
 public class ReportUtility {
 
-    private static final SimpleLogger logger = new SimpleLogger(ReportUtility.class);
+    private static final LoggerWrapper logger = new LoggerWrapper(ReportUtility.class);
 
     private ReportUtility() {
         // Prevent instantiation

@@ -34,13 +34,14 @@ ext {
             slf4j        : '2.0.17',
             appium       : '9.4.0',
             googleFormat : '1.25.2',
-            lombok       : '1.18.36'
+            lombok       : '1.18.36',
+            logback     : '1.5.18'
     ]
 }
 
 dependencies {
     implementation "org.aeonbits.owner:owner:${versions.aeonbits}",
-            "org.slf4j:slf4j-simple:${versions.slf4j}",
+            "ch.qos.logback:logback-classic:${versions.logback}",
             "org.slf4j:slf4j-api:${versions.slf4j}",
             "com.google.code.gson:gson:${versions.gson}",
             "net.serenity-bdd:serenity-core:${versions.serenityCore}",
@@ -64,6 +65,10 @@ dependencies {
     annotationProcessor "org.projectlombok:lombok:${versions.lombok}"
     testCompileOnly "org.projectlombok:lombok:${versions.lombok}"
     testAnnotationProcessor "org.projectlombok:lombok:${versions.lombok}"
+}
+
+configurations.all {
+    exclude group: 'org.slf4j', module: 'slf4j-simple'
 }
 
 spotless {

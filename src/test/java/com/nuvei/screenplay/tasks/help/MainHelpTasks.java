@@ -15,7 +15,7 @@ package com.nuvei.screenplay.tasks.help;
 
 import com.nuvei.features.steps.Hooks;
 import com.nuvei.screenplay.tasks.commons.LoginFillPasswordTasks;
-import com.nuvei.utils.SimpleLogger;
+import com.nuvei.utils.LoggerWrapper;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import net.serenitybdd.annotations.Step;
@@ -25,7 +25,7 @@ import net.serenitybdd.screenplay.Task;
 
 public class MainHelpTasks implements Task {
 
-    private static final SimpleLogger logger = new SimpleLogger(Hooks.class);
+    private static final LoggerWrapper logger = new LoggerWrapper(Hooks.class);
     private final String terminalId;
 
     public MainHelpTasks(String terminalId) {

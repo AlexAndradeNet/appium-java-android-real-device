@@ -17,7 +17,7 @@ import static net.serenitybdd.screenplay.matchers.WebElementStateMatchers.*;
 
 import com.nuvei.screenplay.ability.BrowseTheApp;
 import com.nuvei.screenplay.questions.VisibilityQuestion;
-import com.nuvei.utils.SimpleLogger;
+import com.nuvei.utils.LoggerWrapper;
 import java.time.Duration;
 import java.time.Instant;
 import net.serenitybdd.screenplay.*;
@@ -28,7 +28,7 @@ import org.openqa.selenium.support.ui.FluentWait;
 
 public class WaitAction implements Interaction {
 
-    private static final SimpleLogger logger = new SimpleLogger(WaitAction.class);
+    private static final LoggerWrapper logger = new LoggerWrapper(WaitAction.class);
     public static final int MAX_SECONDS = 100;
     private final long seconds;
     private final Target target;

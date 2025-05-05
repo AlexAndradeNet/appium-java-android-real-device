@@ -24,7 +24,7 @@ import net.serenitybdd.screenplay.Actor;
 import org.openqa.selenium.logging.LogEntry;
 
 public class LogcatUtility {
-    private static final SimpleLogger LOGGER = new SimpleLogger(LogcatUtility.class);
+    private static final LoggerWrapper LOGGER = new LoggerWrapper(LogcatUtility.class);
 
     private Thread logThread;
     private final AtomicBoolean running = new AtomicBoolean(false);
