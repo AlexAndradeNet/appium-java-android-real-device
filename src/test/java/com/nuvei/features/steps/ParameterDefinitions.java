@@ -14,7 +14,7 @@ from Nuvei Inc.
 package com.nuvei.features.steps;
 
 import com.nuvei.screenplay.ability.BrowseTheApp;
-import com.nuvei.screenplay.tasks.DashboardScreenTasks;
+import com.nuvei.screenplay.tasks.dashboard.DashboardWaitUntilSpinnerDisappearsTask;
 import io.cucumber.java.ParameterType;
 import net.serenitybdd.core.Serenity;
 import net.serenitybdd.screenplay.Actor;
@@ -43,7 +43,7 @@ public class ParameterDefinitions {
         actor.can(BrowseTheApp.with(driver));
 
         // 3. Set the actor's name in the context for later use.
-        actor.attemptsTo(DashboardScreenTasks.waitUntilTheSpinnerDisappears(actor));
+        actor.attemptsTo(DashboardWaitUntilSpinnerDisappearsTask.now());
 
         // 4. Return the fully configured actor to Cucumber.
         return actor;

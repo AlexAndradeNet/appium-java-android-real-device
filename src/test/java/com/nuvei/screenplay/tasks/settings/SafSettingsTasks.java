@@ -17,10 +17,10 @@ import com.nuvei.screenplay.interactions.SkipScenarioAction;
 import com.nuvei.screenplay.interactions.ToggleAction;
 import com.nuvei.screenplay.questions.EnvironmentQuestion;
 import com.nuvei.screenplay.questions.VisibilityQuestion;
-import com.nuvei.screenplay.tasks.DashboardScreenTasks;
 import com.nuvei.screenplay.tasks.commons.CommonTasks;
 import com.nuvei.screenplay.tasks.commons.LoginFillClerkIDTasks;
 import com.nuvei.screenplay.tasks.commons.LoginFillPasswordTasks;
+import com.nuvei.screenplay.tasks.dashboard.DashboardSettingsTask;
 import com.nuvei.screenplay.ui.DashboardScreen;
 import com.nuvei.screenplay.ui.settings.SafSettingsScreen;
 import net.serenitybdd.screenplay.Actor;
@@ -60,7 +60,7 @@ public class SafSettingsTasks {
         }
 
         actor.attemptsTo(
-                DashboardScreenTasks.openSettings(actor),
+                DashboardSettingsTask.open(),
                 MainSettingsTasks.openSafOptionsScreen(actor),
                 LoginFillClerkIDTasks.withDetails(clerkId),
                 LoginFillPasswordTasks.withDetails(password));

@@ -16,9 +16,10 @@ package com.nuvei.features.steps.help;
 import com.nuvei.screenplay.interactions.SwipeAction;
 import com.nuvei.screenplay.questions.TextQuestion;
 import com.nuvei.screenplay.questions.VisibilityQuestion;
-import com.nuvei.screenplay.tasks.DashboardScreenTasks;
 import com.nuvei.screenplay.tasks.commons.CommonTasks;
 import com.nuvei.screenplay.tasks.commons.LoginFillPasswordTasks;
+import com.nuvei.screenplay.tasks.dashboard.DashboardHelpDeskTask;
+import com.nuvei.screenplay.tasks.dashboard.DashboardTIDTask;
 import com.nuvei.screenplay.tasks.help.MainHelpTasks;
 import com.nuvei.screenplay.ui.common.NumericScreen;
 import com.nuvei.screenplay.ui.help.MainHelpScreen;
@@ -33,7 +34,7 @@ public class HelpDeskSteps {
     @When("he attempts to open the help menu with a calculated super-password")
     public void heAttemptsToOpenTheHelpMenuWithACalculatedSuperPassword() {
         Actor actor = OnStage.theActorInTheSpotlight();
-        actor.attemptsTo(DashboardScreenTasks.openTIDInfo(actor));
+        actor.attemptsTo(DashboardTIDTask.open());
         String tid = actor.asksFor(TextQuestion.of(MainTIDScreen.LABEL_TID));
         actor.attemptsTo(
                 CommonTasks.tapBackArrow(actor),
@@ -41,8 +42,7 @@ public class HelpDeskSteps {
                 SwipeAction.toRight() // For M-Series
                 );
         actor.attemptsTo(
-                DashboardScreenTasks.openHelpDeskMenu(actor, true),
-                MainHelpTasks.resolveSuperPassword(tid));
+                DashboardHelpDeskTask.withVerification(), MainHelpTasks.resolveSuperPassword(tid));
     }
 
     @Then("he should have access to the help menu")
@@ -61,7 +61,7 @@ public class HelpDeskSteps {
         Actor actor = OnStage.theActorInTheSpotlight();
 
         actor.attemptsTo(
-                DashboardScreenTasks.openHelpDeskMenu(actor, true),
+                DashboardHelpDeskTask.withVerification(),
                 LoginFillPasswordTasks.withDetails(password));
     }
 

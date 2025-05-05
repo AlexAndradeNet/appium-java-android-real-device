@@ -16,11 +16,12 @@ package com.nuvei.features.steps.settings.transactionoptions.transactionflow;
 import com.nuvei.screenplay.ability.BrowseTheApp;
 import com.nuvei.screenplay.interactions.ToggleAction;
 import com.nuvei.screenplay.questions.VisibilityQuestion;
-import com.nuvei.screenplay.tasks.DashboardScreenTasks;
 import com.nuvei.screenplay.tasks.commons.CommonTasks;
 import com.nuvei.screenplay.tasks.commons.NumpadTasks;
 import com.nuvei.screenplay.tasks.commons.PrintAndCaptureReceiptTasks;
 import com.nuvei.screenplay.tasks.commons.TogglesTasks;
+import com.nuvei.screenplay.tasks.dashboard.DashboardSaleTask;
+import com.nuvei.screenplay.tasks.dashboard.ReturnToInitialScreenTask;
 import com.nuvei.screenplay.tasks.settings.MainSettingsTasks;
 import com.nuvei.screenplay.ui.CommonObjects;
 import com.nuvei.screenplay.ui.common.NumericScreen;
@@ -50,8 +51,8 @@ public class TransactionFlowSteps {
         Actor actor = OnStage.theActorInTheSpotlight();
         actor.attemptsTo(
                 CommonTasks.returnToTheDashboardScreen(actor),
-                DashboardScreenTasks.returnToInitialScreen(actor),
-                DashboardScreenTasks.openSale(actor));
+                ReturnToInitialScreenTask.now(),
+                DashboardSaleTask.open());
 
         actor.attemptsTo(
                 Ensure.that(

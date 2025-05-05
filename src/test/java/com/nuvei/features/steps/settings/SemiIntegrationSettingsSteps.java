@@ -20,10 +20,11 @@ import com.nuvei.screenplay.interactions.ToggleAction;
 import com.nuvei.screenplay.interactions.WaitAction;
 import com.nuvei.screenplay.questions.TextQuestion;
 import com.nuvei.screenplay.questions.VisibilityQuestion;
-import com.nuvei.screenplay.tasks.DashboardScreenTasks;
 import com.nuvei.screenplay.tasks.commons.CommonTasks;
 import com.nuvei.screenplay.tasks.commons.LoginFillClerkIDTasks;
 import com.nuvei.screenplay.tasks.commons.LoginFillPasswordTasks;
+import com.nuvei.screenplay.tasks.dashboard.DashboardTIDTask;
+import com.nuvei.screenplay.tasks.dashboard.ReturnToInitialScreenTask;
 import com.nuvei.screenplay.tasks.settings.MainSettingsTasks;
 import com.nuvei.screenplay.ui.CommonObjects;
 import com.nuvei.screenplay.ui.DashboardScreen;
@@ -61,7 +62,7 @@ public class SemiIntegrationSettingsSteps {
 
         actor.attemptsTo(
                 CommonTasks.returnToTheDashboardScreen(actor),
-                DashboardScreenTasks.openTIDInfo(actor),
+                DashboardTIDTask.open(),
                 Ensure.that(
                                 "Should not see the Semi-Integration URL",
                                 VisibilityQuestion.isPresent(
@@ -91,7 +92,7 @@ public class SemiIntegrationSettingsSteps {
 
         actor.attemptsTo(
                 CommonTasks.returnToTheDashboardScreen(actor),
-                DashboardScreenTasks.openTIDInfo(actor),
+                DashboardTIDTask.open(),
                 Ensure.that(
                                 "Should see the Label for Semi-Integration is present",
                                 VisibilityQuestion.isPresent(
@@ -114,8 +115,7 @@ public class SemiIntegrationSettingsSteps {
         Actor actor = OnStage.theActorInTheSpotlight();
 
         actor.attemptsTo(
-                CommonTasks.returnToTheDashboardScreen(actor),
-                DashboardScreenTasks.returnToInitialScreen(actor));
+                CommonTasks.returnToTheDashboardScreen(actor), ReturnToInitialScreenTask.now());
 
         actor.attemptsTo(
                 WaitAction.forSpecificTime(seconds + 2),
