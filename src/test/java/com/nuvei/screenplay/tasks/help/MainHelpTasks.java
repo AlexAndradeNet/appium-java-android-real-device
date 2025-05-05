@@ -14,20 +14,23 @@ from Nuvei Inc.
 package com.nuvei.screenplay.tasks.help;
 
 import com.nuvei.features.steps.Hooks;
-import com.nuvei.screenplay.tasks.commons.LoginAsTasks;
+import com.nuvei.screenplay.tasks.commons.LoginFillPasswordTasks;
 import com.nuvei.utils.SimpleLogger;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import net.serenitybdd.annotations.Step;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Performable;
 import net.serenitybdd.screenplay.Task;
 
-public class MainHelpTasks {
-    private MainHelpTasks() {
-        throw new IllegalStateException("Utility class - cannot be instantiated");
-    }
+public class MainHelpTasks implements Task {
 
     private static final SimpleLogger logger = new SimpleLogger(Hooks.class);
+    private final String terminalId;
+
+    public MainHelpTasks(String terminalId) {
+        this.terminalId = terminalId;
+    }
 
     /**
      * Calculate the super password for the given date and terminalId. Extracted from
@@ -88,7 +91,13 @@ public class MainHelpTasks {
         return currentDate.format(formatter);
     }
 
-    public static Performable resolveSuperPassword(Actor actor, String terminalId) {
+    public static Performable resolveSuperPassword(String terminalId) {
+        return new MainHelpTasks(terminalId);
+    }
+
+    @Override
+    @Step("{0} fills super password")
+    public <T extends Actor> void performAs(T actor) {
         String currentDate = getCurrentDateInYYYYmmdd();
         String superPassword = calculateSuperPassword(currentDate, terminalId);
 
@@ -96,7 +105,6 @@ public class MainHelpTasks {
                 "Super password for today '%s' for TID '%s' is: %s"
                         .formatted(currentDate, terminalId, superPassword));
 
-        actor.attemptsTo(LoginAsTasks.fillPassword(actor, superPassword));
-        return Task.where("{0} fills super password: " + superPassword);
+        actor.attemptsTo(LoginFillPasswordTasks.withDetails(superPassword));
     }
 }

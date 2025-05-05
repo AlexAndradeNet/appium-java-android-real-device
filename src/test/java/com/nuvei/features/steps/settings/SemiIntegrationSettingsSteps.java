@@ -22,7 +22,8 @@ import com.nuvei.screenplay.questions.TextQuestion;
 import com.nuvei.screenplay.questions.VisibilityQuestion;
 import com.nuvei.screenplay.tasks.DashboardScreenTasks;
 import com.nuvei.screenplay.tasks.commons.CommonTasks;
-import com.nuvei.screenplay.tasks.commons.LoginAsTasks;
+import com.nuvei.screenplay.tasks.commons.LoginFillClerkIDTasks;
+import com.nuvei.screenplay.tasks.commons.LoginFillPasswordTasks;
 import com.nuvei.screenplay.tasks.settings.MainSettingsTasks;
 import com.nuvei.screenplay.ui.CommonObjects;
 import com.nuvei.screenplay.ui.DashboardScreen;
@@ -170,7 +171,7 @@ public class SemiIntegrationSettingsSteps {
 
         actor.attemptsTo(ClickAction.on(CommonObjects.BUTTON_GO_TO_STANDALONE));
 
-        actor.attemptsTo(LoginAsTasks.fillClerkID(actor, clerkId));
+        actor.attemptsTo(LoginFillClerkIDTasks.withDetails(clerkId));
     }
 
     @When("he attempts to log-in to Standalone Mode with ID {word} and password {word}")
@@ -180,8 +181,8 @@ public class SemiIntegrationSettingsSteps {
         actor.attemptsTo(ClickAction.on(CommonObjects.BUTTON_GO_TO_STANDALONE));
 
         actor.attemptsTo(
-                LoginAsTasks.fillClerkID(actor, SEMI_INTEGRATION_PASSWORD_TITLE, clerkId),
-                LoginAsTasks.fillPassword(actor, SEMI_INTEGRATION_PASSWORD_TITLE, password));
+                LoginFillClerkIDTasks.withDetails(SEMI_INTEGRATION_PASSWORD_TITLE, clerkId),
+                LoginFillPasswordTasks.withDetails(SEMI_INTEGRATION_PASSWORD_TITLE, password));
     }
 
     @Then("he should see the Main screen")

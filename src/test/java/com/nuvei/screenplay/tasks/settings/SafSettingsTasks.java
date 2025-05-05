@@ -19,7 +19,8 @@ import com.nuvei.screenplay.questions.EnvironmentQuestion;
 import com.nuvei.screenplay.questions.VisibilityQuestion;
 import com.nuvei.screenplay.tasks.DashboardScreenTasks;
 import com.nuvei.screenplay.tasks.commons.CommonTasks;
-import com.nuvei.screenplay.tasks.commons.LoginAsTasks;
+import com.nuvei.screenplay.tasks.commons.LoginFillClerkIDTasks;
+import com.nuvei.screenplay.tasks.commons.LoginFillPasswordTasks;
 import com.nuvei.screenplay.ui.DashboardScreen;
 import com.nuvei.screenplay.ui.settings.SafSettingsScreen;
 import net.serenitybdd.screenplay.Actor;
@@ -42,7 +43,8 @@ public class SafSettingsTasks {
                 SemiIntegrationTasks.turnOffSemiIntegration(actor),
                 CommonTasks.tapBackArrow(actor),
                 MainSettingsTasks.openSafOptionsScreen(actor),
-                LoginAsTasks.as(actor, clerkId, password));
+                LoginFillClerkIDTasks.withDetails(clerkId),
+                LoginFillPasswordTasks.withDetails(password));
         actor.attemptsTo(ToggleAction.toOn(SafSettingsScreen.TOGGLE_ENABLE_SAF));
         actor.attemptsTo(goToMainScreen(actor));
 
@@ -60,8 +62,11 @@ public class SafSettingsTasks {
         actor.attemptsTo(
                 DashboardScreenTasks.openSettings(actor),
                 MainSettingsTasks.openSafOptionsScreen(actor),
-                LoginAsTasks.as(actor, clerkId, password));
+                LoginFillClerkIDTasks.withDetails(clerkId),
+                LoginFillPasswordTasks.withDetails(password));
+
         actor.attemptsTo(ToggleAction.toOff(SafSettingsScreen.TOGGLE_ENABLE_SAF));
+
         actor.attemptsTo(goToMainScreen(actor));
 
         return Task.where("{0} turns off SAF");

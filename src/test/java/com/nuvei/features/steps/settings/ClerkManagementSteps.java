@@ -17,7 +17,8 @@ import com.nuvei.screenplay.questions.ElementListQuestion;
 import com.nuvei.screenplay.questions.TextQuestion;
 import com.nuvei.screenplay.questions.VisibilityQuestion;
 import com.nuvei.screenplay.tasks.commons.CommonTasks;
-import com.nuvei.screenplay.tasks.commons.LoginAsTasks;
+import com.nuvei.screenplay.tasks.commons.LoginFillClerkIDTasks;
+import com.nuvei.screenplay.tasks.commons.LoginFillPasswordTasks;
 import com.nuvei.screenplay.tasks.settings.ClerkManagementTasks;
 import com.nuvei.screenplay.tasks.settings.MainSettingsTasks;
 import com.nuvei.screenplay.ui.common.NumericScreen;
@@ -51,8 +52,8 @@ public class ClerkManagementSteps {
     private void managesClerks(Actor actor, String clerkId, String clerkPassword) {
         actor.attemptsTo(
                 MainSettingsTasks.openClerkManagementScreen(actor),
-                LoginAsTasks.fillClerkID(actor, clerkId),
-                LoginAsTasks.fillPassword(actor, clerkPassword));
+                LoginFillClerkIDTasks.withDetails(clerkId),
+                LoginFillPasswordTasks.withDetails(clerkPassword));
 
         actor.remember( // Save the clerk ID for later use
                 CLERK_ID, clerkId);
@@ -499,7 +500,7 @@ public class ClerkManagementSteps {
     @When("he tries to manage clerks with a wrong Clerk ID")
     public void heTriesToManageClerks() {
         Actor actor = OnStage.theActorInTheSpotlight();
-        actor.attemptsTo(LoginAsTasks.fillClerkID(actor, SCREEN_TITLE, actor.recall(CLERK_ID)));
+        actor.attemptsTo(LoginFillClerkIDTasks.withDetails(SCREEN_TITLE, actor.recall(CLERK_ID)));
     }
 
     @Then("he should receive the error message error message {string} with the title {string}")
@@ -538,8 +539,8 @@ public class ClerkManagementSteps {
     public void heTriesToManageClerksWithAWrongPassword() {
         Actor actor = OnStage.theActorInTheSpotlight();
         actor.attemptsTo(
-                LoginAsTasks.fillClerkID(actor, actor.recall(CLERK_ID)),
-                LoginAsTasks.fillPassword(actor, SCREEN_TITLE, actor.recall(CLERK_PASSWORD)));
+                LoginFillClerkIDTasks.withDetails(actor.recall(CLERK_ID)),
+                LoginFillPasswordTasks.withDetails(SCREEN_TITLE, actor.recall(CLERK_PASSWORD)));
     }
 
     @When("he attempts to go to the previous screen")

@@ -18,7 +18,7 @@ import com.nuvei.screenplay.questions.TextQuestion;
 import com.nuvei.screenplay.questions.VisibilityQuestion;
 import com.nuvei.screenplay.tasks.DashboardScreenTasks;
 import com.nuvei.screenplay.tasks.commons.CommonTasks;
-import com.nuvei.screenplay.tasks.commons.LoginAsTasks;
+import com.nuvei.screenplay.tasks.commons.LoginFillPasswordTasks;
 import com.nuvei.screenplay.tasks.help.MainHelpTasks;
 import com.nuvei.screenplay.ui.common.NumericScreen;
 import com.nuvei.screenplay.ui.help.MainHelpScreen;
@@ -42,7 +42,7 @@ public class HelpDeskSteps {
                 );
         actor.attemptsTo(
                 DashboardScreenTasks.openHelpDeskMenu(actor, true),
-                MainHelpTasks.resolveSuperPassword(actor, tid));
+                MainHelpTasks.resolveSuperPassword(tid));
     }
 
     @Then("he should have access to the help menu")
@@ -62,7 +62,7 @@ public class HelpDeskSteps {
 
         actor.attemptsTo(
                 DashboardScreenTasks.openHelpDeskMenu(actor, true),
-                LoginAsTasks.fillPassword(actor, password));
+                LoginFillPasswordTasks.withDetails(password));
     }
 
     @Then("he should see the message {string} with description {string}")

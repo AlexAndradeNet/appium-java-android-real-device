@@ -16,7 +16,8 @@ package com.nuvei.features.steps.password;
 import com.nuvei.screenplay.questions.VisibilityQuestion;
 import com.nuvei.screenplay.tasks.DashboardScreenTasks;
 import com.nuvei.screenplay.tasks.commons.CommonTasks;
-import com.nuvei.screenplay.tasks.commons.LoginAsTasks;
+import com.nuvei.screenplay.tasks.commons.LoginFillClerkIDTasks;
+import com.nuvei.screenplay.tasks.commons.LoginFillPasswordTasks;
 import com.nuvei.screenplay.ui.common.NumericScreen;
 import com.nuvei.screenplay.ui.saf.SafMainScreen;
 import com.nuvei.screenplay.ui.settle.MainSettleScreen;
@@ -53,7 +54,7 @@ public class PasswordProtectedSteps {
         // Ensure the title matches the expected functionality
         String expectedTitle = functionality.toUpperCase();
 
-        actor.attemptsTo(LoginAsTasks.fillClerkID(actor, expectedTitle, clerkID));
+        actor.attemptsTo(LoginFillClerkIDTasks.withDetails(expectedTitle, clerkID));
 
         boolean wasTheUserAllowedToContinue =
                 actor.asksFor(
@@ -62,7 +63,7 @@ public class PasswordProtectedSteps {
 
         // Check if the "Enter your Password" label is visible and fill the password
         if (wasTheUserAllowedToContinue) {
-            actor.attemptsTo(LoginAsTasks.fillPassword(actor, expectedTitle, password));
+            actor.attemptsTo(LoginFillPasswordTasks.withDetails(expectedTitle, password));
         }
     }
 

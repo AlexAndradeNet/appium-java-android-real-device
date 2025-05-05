@@ -17,19 +17,25 @@ import com.nuvei.screenplay.interactions.ClickAction;
 import com.nuvei.screenplay.questions.TextQuestion;
 import com.nuvei.screenplay.questions.VisibilityQuestion;
 import com.nuvei.screenplay.ui.common.NumericScreen;
+import net.serenitybdd.annotations.Step;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Performable;
 import net.serenitybdd.screenplay.Task;
 import net.serenitybdd.screenplay.ensure.Ensure;
 import org.junit.platform.commons.util.StringUtils;
 
-public class LoginAsTasks {
+public class LoginFillClerkIDTasks implements Task {
+    private final String screenTitle;
+    private final String clerkID;
 
-    private LoginAsTasks() {
-        throw new IllegalStateException("Utility class - cannot be instantiated");
+    public LoginFillClerkIDTasks(String screenTitle, String clerkID) {
+        this.screenTitle = screenTitle;
+        this.clerkID = clerkID;
     }
 
-    public static Performable fillClerkID(Actor actor, String screenTitle, String clerkId) {
+    @Override
+    @Step("{0} fills the clerk ID and password for #functionality")
+    public <T extends Actor> void performAs(T actor) {
         boolean withValidation = StringUtils.isNotBlank(screenTitle);
 
         if (withValidation) {
@@ -45,55 +51,25 @@ public class LoginAsTasks {
                                             NumericScreen.LABEL_REASON.of("Enter your Clerk ID")))
                             .isTrue());
         }
-        actor.attemptsTo(NumpadTasks.digit(actor, clerkId));
+        actor.attemptsTo(NumpadTasks.digit(actor, clerkID));
 
         if (withValidation) {
             actor.attemptsTo(
                     Ensure.that(
                                     "Should see the value of the Clerk ID field: '%s'"
-                                            .formatted(clerkId),
+                                            .formatted(clerkID),
                                     TextQuestion.of(NumericScreen.TEXTBOX_VALUE))
-                            .isEqualTo(clerkId));
+                            .isEqualTo(clerkID));
         }
 
         actor.attemptsTo(ClickAction.on(NumericScreen.BUTTON_CONTINUE_OR_CONFIRM));
-
-        return Task.where("{0} fills the clerk ID and password");
     }
 
-    public static Performable fillClerkID(Actor actor, String clerkId) {
-        return fillClerkID(actor, null, clerkId);
+    public static Performable withDetails(String screenTitle, String clerkID) {
+        return new LoginFillClerkIDTasks(screenTitle, clerkID);
     }
 
-    public static Performable fillPassword(Actor actor, String screenTitle, String clerkPassword) {
-        boolean withValidation = StringUtils.isNotBlank(screenTitle);
-
-        if (withValidation) {
-            actor.attemptsTo(
-                    Ensure.that(
-                                    "Should see the title: '%s'".formatted(screenTitle),
-                                    VisibilityQuestion.isPresent(
-                                            NumericScreen.TITLE.of(screenTitle)))
-                            .isTrue(),
-                    Ensure.that(
-                                    "Should see the label: 'Enter your Password'",
-                                    VisibilityQuestion.isPresent(
-                                            NumericScreen.LABEL_REASON.of("Enter your Password")))
-                            .isTrue());
-        }
-
-        actor.attemptsTo(NumpadTasks.digitAndConfirmValueOrPrompt(actor, clerkPassword));
-
-        return Task.where("{0} fills the clerk ID and password {1}");
-    }
-
-    public static Performable fillPassword(Actor actor, String clerkPassword) {
-        return fillPassword(actor, null, clerkPassword);
-    }
-
-    public static Performable as(Actor actor, String clerkId, String clerkPassword) {
-        return Task.where(
-                "{0} fills the clerk ID and password",
-                fillClerkID(actor, clerkId), fillPassword(actor, clerkPassword));
+    public static Performable withDetails(String clerkID) {
+        return new LoginFillClerkIDTasks(null, clerkID);
     }
 }
