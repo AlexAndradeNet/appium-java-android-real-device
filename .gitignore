@@ -6,7 +6,6 @@
 **/.idea/*.*
 !**/.idea/externalDependencies.xml
 !**/.idea/appium-java-android-real-device.iml
-!**/.idea/modules/appium-java-android-real-device.test.iml
 
 # IntelliJ IDEA files
 # Ignore everything in the folder .idea except .idea/externalDependencies.xml
