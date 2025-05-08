@@ -20,12 +20,13 @@ import com.nuvei.screenplay.interactions.ToggleAction;
 import com.nuvei.screenplay.interactions.WaitAction;
 import com.nuvei.screenplay.questions.TextQuestion;
 import com.nuvei.screenplay.questions.VisibilityQuestion;
-import com.nuvei.screenplay.tasks.commons.CommonTasks;
-import com.nuvei.screenplay.tasks.commons.LoginFillClerkIDTasks;
-import com.nuvei.screenplay.tasks.commons.LoginFillPasswordTasks;
+import com.nuvei.screenplay.tasks.commons.LoginFillClerkIDTask;
+import com.nuvei.screenplay.tasks.commons.LoginFillPasswordTask;
+import com.nuvei.screenplay.tasks.commons.PopupValidateAndDismissTask;
 import com.nuvei.screenplay.tasks.dashboard.DashboardTIDTask;
+import com.nuvei.screenplay.tasks.dashboard.ReturnToDashboardScreenTask;
 import com.nuvei.screenplay.tasks.dashboard.ReturnToInitialScreenTask;
-import com.nuvei.screenplay.tasks.settings.MainSettingsTasks;
+import com.nuvei.screenplay.tasks.settings.SettingsSemiIntegrationOpenTask;
 import com.nuvei.screenplay.ui.CommonObjects;
 import com.nuvei.screenplay.ui.DashboardScreen;
 import com.nuvei.screenplay.ui.common.NumericScreen;
@@ -45,7 +46,7 @@ public class SemiIntegrationSettingsSteps {
 
     @Given("{actor} is managing the Semi-Integration settings")
     public void aurelianoIsManagingTheSemiIntegrationSettings(Actor actor) {
-        actor.attemptsTo(MainSettingsTasks.openSemiIntegrationOptionsScreen(actor));
+        actor.attemptsTo(SettingsSemiIntegrationOpenTask.now());
     }
 
     @When("he attempts to deactivate the Semi-Integration feature")
@@ -61,7 +62,7 @@ public class SemiIntegrationSettingsSteps {
         Actor actor = OnStage.theActorInTheSpotlight();
 
         actor.attemptsTo(
-                CommonTasks.returnToTheDashboardScreen(actor),
+                ReturnToDashboardScreenTask.now(),
                 DashboardTIDTask.open(),
                 Ensure.that(
                                 "Should not see the Semi-Integration URL",
@@ -91,7 +92,7 @@ public class SemiIntegrationSettingsSteps {
         Actor actor = OnStage.theActorInTheSpotlight();
 
         actor.attemptsTo(
-                CommonTasks.returnToTheDashboardScreen(actor),
+                ReturnToDashboardScreenTask.now(),
                 DashboardTIDTask.open(),
                 Ensure.that(
                                 "Should see the Label for Semi-Integration is present",
@@ -114,8 +115,7 @@ public class SemiIntegrationSettingsSteps {
     public void heShouldSeeThatNoPasswordPromptIsRequiredAfterSeconds(int seconds) {
         Actor actor = OnStage.theActorInTheSpotlight();
 
-        actor.attemptsTo(
-                CommonTasks.returnToTheDashboardScreen(actor), ReturnToInitialScreenTask.now());
+        actor.attemptsTo(ReturnToDashboardScreenTask.now(), ReturnToInitialScreenTask.now());
 
         actor.attemptsTo(
                 WaitAction.forSpecificTime(seconds + 2),
@@ -171,7 +171,7 @@ public class SemiIntegrationSettingsSteps {
 
         actor.attemptsTo(ClickAction.on(CommonObjects.BUTTON_GO_TO_STANDALONE));
 
-        actor.attemptsTo(LoginFillClerkIDTasks.withDetails(clerkId));
+        actor.attemptsTo(LoginFillClerkIDTask.withDetails(clerkId));
     }
 
     @When("he attempts to log-in to Standalone Mode with ID {word} and password {word}")
@@ -181,8 +181,8 @@ public class SemiIntegrationSettingsSteps {
         actor.attemptsTo(ClickAction.on(CommonObjects.BUTTON_GO_TO_STANDALONE));
 
         actor.attemptsTo(
-                LoginFillClerkIDTasks.withDetails(SEMI_INTEGRATION_PASSWORD_TITLE, clerkId),
-                LoginFillPasswordTasks.withDetails(SEMI_INTEGRATION_PASSWORD_TITLE, password));
+                LoginFillClerkIDTask.withDetails(SEMI_INTEGRATION_PASSWORD_TITLE, clerkId),
+                LoginFillPasswordTask.withDetails(SEMI_INTEGRATION_PASSWORD_TITLE, password));
     }
 
     @Then("he should see the Main screen")
@@ -209,8 +209,7 @@ public class SemiIntegrationSettingsSteps {
         String expectedTitle = "Semi-Integration";
 
         actor.attemptsTo(
-                CommonTasks.validateAndDismissPopupAlertWithOkButton(
-                        actor, "Alert Message", "Access Not Granted!"),
+                PopupValidateAndDismissTask.with("Alert Message", "Access Not Granted!"),
                 Ensure.that(
                                 "Should see the main screen title: '%s'".formatted(expectedTitle),
                                 VisibilityQuestion.isPresent(NumericScreen.TITLE.of(expectedTitle)))
@@ -229,7 +228,7 @@ public class SemiIntegrationSettingsSteps {
         Actor actor = OnStage.theActorInTheSpotlight();
 
         actor.attemptsTo(
-                MainSettingsTasks.openSemiIntegrationOptionsScreen(actor),
+                SettingsSemiIntegrationOpenTask.now(),
                 ToggleAction.toOff(SemiIntegrationOptionsScreen.TOGGLE_ENABLE_SEMI_INTEGRATION),
                 ToggleAction.toOn(SemiIntegrationOptionsScreen.TOGGLE_ENABLE_STANDALONE_PASSWORD),
                 ClickAction.on(SemiIntegrationOptionsScreen.RADIO_RETAIL));
@@ -249,7 +248,7 @@ public class SemiIntegrationSettingsSteps {
     @Then("he should immediately see the Idle screen after returning to the Main Screen")
     public void heShouldSeeImmediatelyTheIdleScreenAfterReturningToTheMainScreen() {
         Actor actor = OnStage.theActorInTheSpotlight();
-        actor.attemptsTo(CommonTasks.returnToTheDashboardScreen(actor));
+        actor.attemptsTo(ReturnToDashboardScreenTask.now());
         heShouldSeeThatTheIdleScreenAfterWaitingSecondsOnTheMainScreen(0);
     }
 }

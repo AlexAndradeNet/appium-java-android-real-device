@@ -18,47 +18,56 @@ import com.nuvei.screenplay.interactions.EnterAction;
 import com.nuvei.screenplay.interactions.NumpadAction;
 import com.nuvei.screenplay.questions.EnvironmentQuestion;
 import com.nuvei.screenplay.ui.common.NumericScreen;
+import net.serenitybdd.annotations.Step;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Performable;
 import net.serenitybdd.screenplay.Task;
 import net.serenitybdd.screenplay.targets.Target;
 import org.junit.platform.commons.util.StringUtils;
 
-public class NumpadTasks {
+public class NumpadTask implements Task {
 
-    private NumpadTasks() {
-        throw new IllegalStateException("Utility class - cannot be instantiated");
+    private final String numberSequence;
+    private final boolean confirmValue;
+
+    private NumpadTask(String numberSequence, boolean confirmValue) {
+        this.numberSequence = numberSequence;
+        this.confirmValue = confirmValue;
     }
 
-    public static Performable digit(Actor actor, String numberSequence) {
+    public static Performable digit(String numberSequence) {
+        return Task.where("{0} enters the number sequence", new NumpadTask(numberSequence, false));
+    }
 
+    public static Performable digitAndConfirm(String numberSequence) {
+        return Task.where(
+                "{0} enters and confirms the number sequence",
+                new NumpadTask(numberSequence, true));
+    }
+
+    @Override
+    public <T extends Actor> void performAs(T actor) {
         if (StringUtils.isBlank(numberSequence)) {
-            return Task.where("{0} do nothing because the number sequence is empty");
+            return; // Do nothing if the number sequence is empty
         }
 
         if (actor.asksFor(EnvironmentQuestion.isTSeries())) {
-            return useOnScreenNumpad(actor, numberSequence);
+            useOnScreenNumpad(actor);
+        } else if (actor.asksFor(EnvironmentQuestion.isMSeries())) {
+            usePhysicalNumpad(actor);
+        } else if (actor.asksFor(EnvironmentQuestion.isPSeries())) {
+            useTextField(actor);
+        } else {
+            throw new UnsupportedOperationException("Unknown environment for numpad interaction.");
         }
 
-        if (actor.asksFor(EnvironmentQuestion.isMSeries())) {
-            return usePhysicalNumpad(actor, numberSequence);
+        if (confirmValue) {
+            actor.attemptsTo(ClickAction.on(NumericScreen.BUTTON_CONTINUE_OR_CONFIRM));
         }
-
-        if (actor.asksFor(EnvironmentQuestion.isPSeries())) {
-            return useTextField(actor, numberSequence);
-        }
-
-        throw new UnsupportedOperationException("Unknown environment for numpad interaction.");
     }
 
-    public static Performable digitAndConfirmValueOrPrompt(Actor actor, String value) {
-        actor.attemptsTo(
-                NumpadTasks.digit(actor, value),
-                ClickAction.on(NumericScreen.BUTTON_CONTINUE_OR_CONFIRM));
-        return Task.where("{0} confirms the value '%s'".formatted(value));
-    }
-
-    private static Performable useOnScreenNumpad(Actor actor, String numberSequence) {
+    @Step("{0} uses the numpad to digit '#numberSequence'")
+    private void useOnScreenNumpad(Actor actor) {
         Object recalledValue = actor.recall("numpadUsageCount");
         int numpadUsageCount = recalledValue == null ? 0 : (int) recalledValue;
 
@@ -66,25 +75,22 @@ public class NumpadTasks {
         boolean isPlainText = !numberSequence.contains(".");
 
         if (isPlainText && isNotLongerNeededTestTheNumpad) {
-            return useTextField(actor, numberSequence);
+            useTextField(actor);
+            return;
         }
 
         Target onScreenNumpadNumberButton = NumericScreen.BUTTON_NUMPAD_NUMBER;
-
         actor.attemptsTo(NumpadAction.digit(onScreenNumpadNumberButton, numberSequence));
-
         actor.remember("numpadUsageCount", numpadUsageCount + 1);
-        return Task.where("{0} uses the on screen numpad to digit: '%s'".formatted(numberSequence));
     }
 
-    private static Performable usePhysicalNumpad(Actor actor, String numberSequence) {
+    @Step("{0} uses the numpad to digit '#numberSequence' using the physical numpad")
+    private void usePhysicalNumpad(Actor actor) {
         actor.attemptsTo(NumpadAction.digit(null, numberSequence));
-        return Task.where("{0} uses the physical numpad to digit: '%s'".formatted(numberSequence));
     }
 
-    private static Performable useTextField(Actor actor, String numberSequence) {
+    private void useTextField(Actor actor) {
         Target onScreenTextField = NumericScreen.TEXTBOX_VALUE;
         actor.attemptsTo(EnterAction.into(onScreenTextField, numberSequence));
-        return Task.where("{0} uses the text field to digit: '%s'".formatted(numberSequence));
     }
 }

@@ -22,11 +22,11 @@ import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Interaction;
 import net.serenitybdd.screenplay.targets.Target;
 
-public class NavigateUntilVisibleAndClick implements Interaction {
+public class NavigateUntilVisibleAndClickAction implements Interaction {
 
     private final Target target;
 
-    public NavigateUntilVisibleAndClick(Target target) {
+    public NavigateUntilVisibleAndClickAction(Target target) {
         this.target = target;
     }
 
@@ -40,7 +40,7 @@ public class NavigateUntilVisibleAndClick implements Interaction {
         actor.attemptsTo(ClickAction.on(target));
     }
 
-    public static NavigateUntilVisibleAndClick on(Target target) {
-        return instrumented(NavigateUntilVisibleAndClick.class, target);
+    public static NavigateUntilVisibleAndClickAction on(Target target) {
+        return instrumented(NavigateUntilVisibleAndClickAction.class, target);
     }
 }

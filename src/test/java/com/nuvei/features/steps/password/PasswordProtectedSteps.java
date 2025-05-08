@@ -14,9 +14,9 @@ from Nuvei Inc.
 package com.nuvei.features.steps.password;
 
 import com.nuvei.screenplay.questions.VisibilityQuestion;
-import com.nuvei.screenplay.tasks.commons.CommonTasks;
-import com.nuvei.screenplay.tasks.commons.LoginFillClerkIDTasks;
-import com.nuvei.screenplay.tasks.commons.LoginFillPasswordTasks;
+import com.nuvei.screenplay.tasks.commons.LoginFillClerkIDTask;
+import com.nuvei.screenplay.tasks.commons.LoginFillPasswordTask;
+import com.nuvei.screenplay.tasks.commons.PopupValidateAndDismissTask;
 import com.nuvei.screenplay.tasks.dashboard.*;
 import com.nuvei.screenplay.ui.common.NumericScreen;
 import com.nuvei.screenplay.ui.saf.SafMainScreen;
@@ -54,7 +54,7 @@ public class PasswordProtectedSteps {
         // Ensure the title matches the expected functionality
         String expectedTitle = functionality.toUpperCase();
 
-        actor.attemptsTo(LoginFillClerkIDTasks.withDetails(expectedTitle, clerkID));
+        actor.attemptsTo(LoginFillClerkIDTask.withDetails(expectedTitle, clerkID));
 
         boolean wasTheUserAllowedToContinue =
                 actor.asksFor(
@@ -63,7 +63,7 @@ public class PasswordProtectedSteps {
 
         // Check if the "Enter your Password" label is visible and fill the password
         if (wasTheUserAllowedToContinue) {
-            actor.attemptsTo(LoginFillPasswordTasks.withDetails(expectedTitle, password));
+            actor.attemptsTo(LoginFillPasswordTask.withDetails(expectedTitle, password));
         }
     }
 
@@ -127,8 +127,7 @@ public class PasswordProtectedSteps {
         String expectedTitle = functionality.toUpperCase();
 
         actor.attemptsTo(
-                CommonTasks.validateAndDismissPopupAlertWithOkButton(
-                        actor, "Alert Message", "Access Not Granted!"),
+                PopupValidateAndDismissTask.with("Alert Message", "Access Not Granted!"),
                 Ensure.that(
                                 "Should see the main screen title: '%s'".formatted(expectedTitle),
                                 VisibilityQuestion.isPresent(NumericScreen.TITLE.of(expectedTitle)))

@@ -13,14 +13,14 @@ from Nuvei Inc.
 */
 package com.nuvei.features.steps.settings;
 
+import com.nuvei.screenplay.interactions.NavigateBackAction;
 import com.nuvei.screenplay.questions.ElementListQuestion;
 import com.nuvei.screenplay.questions.TextQuestion;
 import com.nuvei.screenplay.questions.VisibilityQuestion;
-import com.nuvei.screenplay.tasks.commons.CommonTasks;
-import com.nuvei.screenplay.tasks.commons.LoginFillClerkIDTasks;
-import com.nuvei.screenplay.tasks.commons.LoginFillPasswordTasks;
-import com.nuvei.screenplay.tasks.settings.ClerkManagementTasks;
-import com.nuvei.screenplay.tasks.settings.MainSettingsTasks;
+import com.nuvei.screenplay.tasks.commons.*;
+import com.nuvei.screenplay.tasks.dashboard.ReturnToDashboardScreenTask;
+import com.nuvei.screenplay.tasks.settings.SettingsClerkManagementOpenTask;
+import com.nuvei.screenplay.tasks.settings.clerkmanagement.*;
 import com.nuvei.screenplay.ui.common.NumericScreen;
 import com.nuvei.screenplay.ui.settings.MainSettingsScreen;
 import com.nuvei.screenplay.ui.settings.clerkmanagement.MainClerkManagementScreen;
@@ -51,9 +51,9 @@ public class ClerkManagementSteps {
 
     private void managesClerks(Actor actor, String clerkId, String clerkPassword) {
         actor.attemptsTo(
-                MainSettingsTasks.openClerkManagementScreen(actor),
-                LoginFillClerkIDTasks.withDetails(clerkId),
-                LoginFillPasswordTasks.withDetails(clerkPassword));
+                SettingsClerkManagementOpenTask.now(),
+                LoginFillClerkIDTask.withDetails(clerkId),
+                LoginFillPasswordTask.withDetails(clerkPassword));
 
         actor.remember( // Save the clerk ID for later use
                 CLERK_ID, clerkId);
@@ -75,21 +75,21 @@ public class ClerkManagementSteps {
             String alias, String clerkId, String oldRole, String newRole) {
         Actor actor = OnStage.theActorInTheSpotlight();
         actor.attemptsTo(
-                ClerkManagementTasks.openAccountDetailsForProfile(actor, clerkId),
-                ClerkManagementTasks.changeRole(actor, newRole),
-                CommonTasks.returnToTheDashboardScreen(actor));
+                ClerkManagementOpenAccountDetailsTask.withId(clerkId),
+                ClerkManagementChangeRoleTask.to(newRole),
+                ReturnToDashboardScreenTask.now());
     }
 
     @When("he search for the Clerk ID {word}")
     public void searchForTheClerkID(String clerkId) {
         Actor actor = OnStage.theActorInTheSpotlight();
-        actor.attemptsTo(ClerkManagementTasks.searchForClerkId(actor, clerkId));
+        actor.attemptsTo(ClerkManagementSearchUserTask.withId(clerkId));
     }
 
     @When("he requests his account details, which is {word}")
     public void requestsAnAccountDetails(String clerkId) {
         Actor actor = OnStage.theActorInTheSpotlight();
-        actor.attemptsTo(ClerkManagementTasks.openAccountDetailsForProfile(actor, clerkId));
+        actor.attemptsTo(ClerkManagementOpenAccountDetailsTask.withId(clerkId));
     }
 
     @When("he requests another clerk's account details \\(ex: ID {word})")
@@ -102,8 +102,8 @@ public class ClerkManagementSteps {
             String clerkId, String currentPassword) {
         Actor actor = OnStage.theActorInTheSpotlight();
         actor.attemptsTo(
-                ClerkManagementTasks.openAccountDetailsForProfile(actor, clerkId),
-                ClerkManagementTasks.changePassword(actor, currentPassword, currentPassword));
+                ClerkManagementOpenAccountDetailsTask.withId(clerkId),
+                ClerkManagementChangePasswordTask.fromTo(currentPassword, currentPassword));
     }
 
     @When(
@@ -113,8 +113,8 @@ public class ClerkManagementSteps {
             String clerkId, String newPassword, String wrongConfirmationPassword) {
         Actor actor = OnStage.theActorInTheSpotlight();
         actor.attemptsTo(
-                ClerkManagementTasks.openAccountDetailsForProfile(actor, clerkId),
-                ClerkManagementTasks.changePassword(actor, newPassword, wrongConfirmationPassword));
+                ClerkManagementOpenAccountDetailsTask.withId(clerkId),
+                ClerkManagementChangePasswordTask.fromTo(newPassword, wrongConfirmationPassword));
     }
 
     @When("he, with ID {word}, attempts to change his password to {word}")
@@ -122,15 +122,14 @@ public class ClerkManagementSteps {
             String clerkId, String newPassword) {
         Actor actor = OnStage.theActorInTheSpotlight();
         actor.attemptsTo(
-                ClerkManagementTasks.openAccountDetailsForProfile(actor, clerkId),
-                ClerkManagementTasks.changePassword(actor, newPassword, newPassword));
+                ClerkManagementOpenAccountDetailsTask.withId(clerkId),
+                ClerkManagementChangePasswordTask.fromTo(newPassword, newPassword));
     }
 
     @When("he attempts to create a new clerk with his own Clerk ID {word}")
     public void attemptsToCreateANewClerkWithHisOwnClerkID(String clerkId) {
         Actor actor = OnStage.theActorInTheSpotlight();
-        actor.attemptsTo(
-                ClerkManagementTasks.addANewUser(actor, true, clerkId, "Employee", "111111"));
+        actor.attemptsTo(ClerkManagementAddUserTask.with(clerkId, "Employee", "111111", true));
     }
 
     @When("he attempts to update {word} Clerk ID from {word} to {word}")
@@ -138,8 +137,8 @@ public class ClerkManagementSteps {
             String alias, String currentClerkId, String newClerkId) {
         Actor actor = OnStage.theActorInTheSpotlight();
         actor.attemptsTo(
-                ClerkManagementTasks.openAccountDetailsForProfile(actor, currentClerkId),
-                ClerkManagementTasks.changeClerkId(actor, newClerkId));
+                ClerkManagementOpenAccountDetailsTask.withId(currentClerkId),
+                ClerkManagementChangeIdTask.to(newClerkId));
     }
 
     @When("he attempts to update {word} \\(ID {word}) password to {word}")
@@ -147,17 +146,17 @@ public class ClerkManagementSteps {
             String alias, String clerkId, String newPassword) {
         Actor actor = OnStage.theActorInTheSpotlight();
         actor.attemptsTo(
-                ClerkManagementTasks.openAccountDetailsForProfile(actor, clerkId),
-                ClerkManagementTasks.changePassword(actor, newPassword, newPassword));
+                ClerkManagementOpenAccountDetailsTask.withId(clerkId),
+                ClerkManagementChangePasswordTask.fromTo(newPassword, newPassword));
     }
 
     @When("he attempts to delete {word} account \\(ID {word}) but regrets it")
     public void attemptsToDeleteAClerkButRegretsIt(String alias, String clerkId) {
         Actor actor = OnStage.theActorInTheSpotlight();
         actor.attemptsTo(
-                ClerkManagementTasks.openAccountDetailsForProfile(actor, clerkId),
-                ClerkManagementTasks.deleteClerk(actor, true, false),
-                CommonTasks.returnToTheDashboardScreen(actor));
+                ClerkManagementOpenAccountDetailsTask.withId(clerkId),
+                ClerkManagementDeleteUserTask.with(true, false),
+                ReturnToDashboardScreenTask.now());
     }
 
     @Then(
@@ -259,7 +258,7 @@ public class ClerkManagementSteps {
     public void shouldStillBeAbleToUseHisOldPasswordToManageClerks(
             String clerkId, String oldPassword) {
         Actor actor = OnStage.theActorInTheSpotlight();
-        actor.attemptsTo(CommonTasks.returnToTheDashboardScreen(actor));
+        actor.attemptsTo(ReturnToDashboardScreenTask.now());
         managesClerks(actor, clerkId, oldPassword);
         checkAbilityToAddNewClerks(true);
     }
@@ -275,21 +274,19 @@ public class ClerkManagementSteps {
     private void testNewPasswordAndChangeIt(
             String clerkId, String currentPassword, String newPassword) {
         Actor actor = OnStage.theActorInTheSpotlight();
-        actor.attemptsTo(CommonTasks.returnToTheDashboardScreen(actor));
+        actor.attemptsTo(ReturnToDashboardScreenTask.now());
         managesClerks(actor, clerkId, currentPassword);
 
         // Reverts previous password
         requestsAnAccountDetails(clerkId);
-        actor.attemptsTo(ClerkManagementTasks.changePassword(actor, newPassword, newPassword));
+        actor.attemptsTo(ClerkManagementChangePasswordTask.fromTo(newPassword, newPassword));
     }
 
     @Then("he should receive the error message {string}")
     public void shouldReceiveTheErrorMessage(String messageError) {
         Actor actor = OnStage.theActorInTheSpotlight();
 
-        actor.attemptsTo(
-                CommonTasks.validateAndDismissPopupAlertWithOkButton(
-                        actor, "Alert Message", messageError));
+        actor.attemptsTo(PopupValidateAndDismissTask.with("Alert Message", messageError));
     }
 
     @Then("he should see {word} new Clerk ID is {word} in the clerks list")
@@ -300,7 +297,7 @@ public class ClerkManagementSteps {
                 MainClerkManagementScreen.LABEL_USER_PROFILE_ROLE.of(clerkId).resolveFor(actor);
 
         actor.attemptsTo(
-                CommonTasks.navigateMenuUntilElementIsVisible(actor, clerkElement),
+                ScrollUntilVisibleTask.forObject(clerkElement),
                 Ensure.that(
                                 "Should see that the new ID '%s' for %s is present"
                                         .formatted(clerkId, alias),
@@ -330,10 +327,8 @@ public class ClerkManagementSteps {
                             String password = row.get(3);
 
                             actor.attemptsTo(
-                                    ClerkManagementTasks.addANewUser(
-                                            actor, false, clerkId, role, password),
-                                    ClerkManagementTasks
-                                            .dismissSuccessConfirmationAfterAddingANewUser(actor));
+                                    ClerkManagementAddUserTask.with(clerkId, role, password, false),
+                                    ClerkManagementDismissAddConfirmationTask.afterAdd());
                         });
 
         actor.remember("clerkListDataTable", dataTable);
@@ -357,8 +352,7 @@ public class ClerkManagementSteps {
                                             .resolveFor(actor);
 
                             actor.attemptsTo(
-                                    CommonTasks.navigateMenuUntilElementIsVisible(
-                                            actor, clerkElement),
+                                    ScrollUntilVisibleTask.forObject(clerkElement),
                                     Ensure.that(
                                                     "Should see that the role for Clerk ID %s is '%s'"
                                                             .formatted(clerkId, role),
@@ -436,10 +430,10 @@ public class ClerkManagementSteps {
     public void heAttemptsToDeleteArcadioSAccountID(String alias, String clerkId) {
         Actor actor = OnStage.theActorInTheSpotlight();
         actor.attemptsTo(
-                ClerkManagementTasks.openAccountDetailsForProfile(actor, clerkId),
-                ClerkManagementTasks.deleteClerk(actor, false, true),
-                ClerkManagementTasks.dismissSuccessConfirmationAfterDeletingClerk(actor, true),
-                CommonTasks.returnToTheDashboardScreen(actor));
+                ClerkManagementOpenAccountDetailsTask.withId(clerkId),
+                ClerkManagementDeleteUserTask.with(false, true),
+                ClerkManagementDismissDeleteConfirmationTask.afterDelete(true),
+                ReturnToDashboardScreenTask.now());
     }
 
     @Then("he should not see {word} account \\(ID {word}) in the clerks list")
@@ -462,8 +456,8 @@ public class ClerkManagementSteps {
     public void heCleansTheClerksList(String clerkId) {
         Actor actor = OnStage.theActorInTheSpotlight();
         actor.attemptsTo(
-                ClerkManagementTasks.removeClerksDifferentThan(actor, clerkId),
-                CommonTasks.returnToTheDashboardScreen(actor));
+                ClerkManagementRemoveAllUsersTask.except(clerkId),
+                ReturnToDashboardScreenTask.now());
     }
 
     @Then("he should see only his ID {word} is the only one in the list")
@@ -472,7 +466,7 @@ public class ClerkManagementSteps {
         reLogin(actor);
         actor.attemptsTo(
                 Ensure.that(
-                                "Should see that the list just have one element",
+                                "Should see that the count of the list is",
                                 ElementListQuestion.quantityOf(
                                         MainClerkManagementScreen.LIST_OF_USER_PROFILE_IDS))
                         .isEqualTo(1),
@@ -492,7 +486,7 @@ public class ClerkManagementSteps {
 
     @Given("{actor} is using the wrong Clerk ID {word}")
     public void aurelianoIsUsingTheWrongClerkID(Actor actor, String clerkId) {
-        actor.attemptsTo(MainSettingsTasks.openClerkManagementScreen(actor));
+        actor.attemptsTo(SettingsClerkManagementOpenTask.now());
         actor.remember( // Save the clerk ID for later use
                 CLERK_ID, clerkId);
     }
@@ -500,7 +494,7 @@ public class ClerkManagementSteps {
     @When("he tries to manage clerks with a wrong Clerk ID")
     public void heTriesToManageClerks() {
         Actor actor = OnStage.theActorInTheSpotlight();
-        actor.attemptsTo(LoginFillClerkIDTasks.withDetails(SCREEN_TITLE, actor.recall(CLERK_ID)));
+        actor.attemptsTo(LoginFillClerkIDTask.withDetails(SCREEN_TITLE, actor.recall(CLERK_ID)));
     }
 
     @Then("he should receive the error message error message {string} with the title {string}")
@@ -509,9 +503,8 @@ public class ClerkManagementSteps {
         Actor actor = OnStage.theActorInTheSpotlight();
 
         actor.attemptsTo(
-                CommonTasks.validateAndDismissPopupAlertWithOkButton(
-                        actor, alertTitle, alertMessage),
-                CommonTasks.tapBackArrow(actor));
+                PopupValidateAndDismissTask.with(alertTitle, alertMessage),
+                NavigateBackAction.clickingBackArrow());
 
         if (alertMessage.contains("User")) {
             heShouldSeeTheMainFunctionScreenInsteadOfThePasswordProtectedFunctionScreen();
@@ -528,7 +521,7 @@ public class ClerkManagementSteps {
 
     @Given("{actor}, with ID {word} and wrong Password {word}")
     public void aurelianoWithIDAndPassword(Actor actor, String clerkId, String clerkPassword) {
-        actor.attemptsTo(MainSettingsTasks.openClerkManagementScreen(actor));
+        actor.attemptsTo(SettingsClerkManagementOpenTask.now());
         actor.remember( // Save the clerk ID for later use
                 CLERK_ID, clerkId);
         actor.remember( // Save the clerk password for later use
@@ -539,19 +532,20 @@ public class ClerkManagementSteps {
     public void heTriesToManageClerksWithAWrongPassword() {
         Actor actor = OnStage.theActorInTheSpotlight();
         actor.attemptsTo(
-                LoginFillClerkIDTasks.withDetails(actor.recall(CLERK_ID)),
-                LoginFillPasswordTasks.withDetails(SCREEN_TITLE, actor.recall(CLERK_PASSWORD)));
+                LoginFillClerkIDTask.withDetails(actor.recall(CLERK_ID)),
+                LoginFillPasswordTask.withDetails(SCREEN_TITLE, actor.recall(CLERK_PASSWORD)));
     }
 
     @When("he attempts to go to the previous screen")
     public void heAttemptsToGoToThePreviousScreen() {
         Actor actor = OnStage.theActorInTheSpotlight();
-        actor.attemptsTo(CommonTasks.tapBackArrow(actor));
+        actor.attemptsTo(NavigateBackAction.clickingBackArrow());
     }
 
     @When("he attempts to go to the previous screen using the physical back key")
     public void heAttemptsToGoToThePreviousScreenUsingThePhysicalBackKey() {
-        OnStage.theActorInTheSpotlight().attemptsTo(CommonTasks.pressPhysicalBackKey());
+        Actor actor = OnStage.theActorInTheSpotlight();
+        actor.attemptsTo(NavigateBackAction.pressingPhysicalBackKey());
     }
 
     @Then(

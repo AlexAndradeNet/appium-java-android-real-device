@@ -13,14 +13,15 @@ from Nuvei Inc.
 */
 package com.nuvei.features.steps.help;
 
+import com.nuvei.screenplay.interactions.NavigateBackAction;
 import com.nuvei.screenplay.interactions.SwipeAction;
 import com.nuvei.screenplay.questions.TextQuestion;
 import com.nuvei.screenplay.questions.VisibilityQuestion;
-import com.nuvei.screenplay.tasks.commons.CommonTasks;
-import com.nuvei.screenplay.tasks.commons.LoginFillPasswordTasks;
+import com.nuvei.screenplay.tasks.commons.LoginFillPasswordTask;
+import com.nuvei.screenplay.tasks.commons.PopupValidateAndDismissTask;
 import com.nuvei.screenplay.tasks.dashboard.DashboardHelpDeskTask;
 import com.nuvei.screenplay.tasks.dashboard.DashboardTIDTask;
-import com.nuvei.screenplay.tasks.help.MainHelpTasks;
+import com.nuvei.screenplay.tasks.help.MainHelpTask;
 import com.nuvei.screenplay.ui.common.NumericScreen;
 import com.nuvei.screenplay.ui.help.MainHelpScreen;
 import com.nuvei.screenplay.ui.tid.MainTIDScreen;
@@ -37,12 +38,12 @@ public class HelpDeskSteps {
         actor.attemptsTo(DashboardTIDTask.open());
         String tid = actor.asksFor(TextQuestion.of(MainTIDScreen.LABEL_TID));
         actor.attemptsTo(
-                CommonTasks.tapBackArrow(actor),
+                NavigateBackAction.clickingBackArrow(),
                 SwipeAction.toRight(), // For M-Series
                 SwipeAction.toRight() // For M-Series
                 );
         actor.attemptsTo(
-                DashboardHelpDeskTask.withVerification(), MainHelpTasks.resolveSuperPassword(tid));
+                DashboardHelpDeskTask.withVerification(), MainHelpTask.resolveSuperPassword(tid));
     }
 
     @Then("he should have access to the help menu")
@@ -62,7 +63,7 @@ public class HelpDeskSteps {
 
         actor.attemptsTo(
                 DashboardHelpDeskTask.withVerification(),
-                LoginFillPasswordTasks.withDetails(password));
+                LoginFillPasswordTask.withDetails(password));
     }
 
     @Then("he should see the message {string} with description {string}")
@@ -70,8 +71,7 @@ public class HelpDeskSteps {
         Actor actor = OnStage.theActorInTheSpotlight();
 
         actor.attemptsTo(
-                CommonTasks.validateAndDismissPopupAlertWithOkButton(
-                        actor, alertTitle, alertDescription),
+                PopupValidateAndDismissTask.with(alertTitle, alertDescription),
                 Ensure.that(
                                 "Should see the Help Desk subtitle",
                                 VisibilityQuestion.isPresent(

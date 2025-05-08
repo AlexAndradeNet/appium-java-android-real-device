@@ -15,7 +15,7 @@ package com.nuvei.screenplay.tasks.dashboard;
 
 import static com.nuvei.screenplay.ui.DashboardScreen.BUTTON_VOID_TRANSACTION;
 
-import com.nuvei.screenplay.interactions.NavigateUntilVisibleAndClick;
+import com.nuvei.screenplay.interactions.NavigateUntilVisibleAndClickAction;
 import net.serenitybdd.annotations.Step;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Task;
@@ -25,7 +25,7 @@ public class DashboardVoidTask implements Task {
     @Override
     @Step("Open the Void Transaction screen")
     public <T extends Actor> void performAs(T actor) {
-        actor.attemptsTo(NavigateUntilVisibleAndClick.on(BUTTON_VOID_TRANSACTION));
+        actor.attemptsTo(NavigateUntilVisibleAndClickAction.on(BUTTON_VOID_TRANSACTION));
     }
 
     public static DashboardVoidTask open() {

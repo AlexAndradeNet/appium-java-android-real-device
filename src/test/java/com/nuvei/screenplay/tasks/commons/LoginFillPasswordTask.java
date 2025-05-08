@@ -22,12 +22,12 @@ import net.serenitybdd.screenplay.Task;
 import net.serenitybdd.screenplay.ensure.Ensure;
 import org.junit.platform.commons.util.StringUtils;
 
-public class LoginFillPasswordTasks implements Task {
+public class LoginFillPasswordTask implements Task {
 
     private final String screenTitle;
     private final String clerkPassword;
 
-    public LoginFillPasswordTasks(String screenTitle, String clerkPassword) {
+    public LoginFillPasswordTask(String screenTitle, String clerkPassword) {
         this.screenTitle = screenTitle;
         this.clerkPassword = clerkPassword;
     }
@@ -51,14 +51,14 @@ public class LoginFillPasswordTasks implements Task {
                             .isTrue());
         }
 
-        actor.attemptsTo(NumpadTasks.digitAndConfirmValueOrPrompt(actor, clerkPassword));
+        actor.attemptsTo(NumpadTask.digitAndConfirm(clerkPassword));
     }
 
     public static Performable withDetails(String clerkPassword) {
-        return new LoginFillPasswordTasks(null, clerkPassword);
+        return new LoginFillPasswordTask(null, clerkPassword);
     }
 
     public static Performable withDetails(String screenTitle, String clerkPassword) {
-        return new LoginFillPasswordTasks(screenTitle, clerkPassword);
+        return new LoginFillPasswordTask(screenTitle, clerkPassword);
     }
 }

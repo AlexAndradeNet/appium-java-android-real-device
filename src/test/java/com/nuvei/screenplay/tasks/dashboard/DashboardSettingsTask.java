@@ -15,7 +15,7 @@ package com.nuvei.screenplay.tasks.dashboard;
 
 import static com.nuvei.screenplay.ui.DashboardScreen.BUTTON_SETTINGS;
 
-import com.nuvei.screenplay.interactions.NavigateUntilVisibleAndClick;
+import com.nuvei.screenplay.interactions.NavigateUntilVisibleAndClickAction;
 import net.serenitybdd.annotations.Step;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Task;
@@ -25,7 +25,7 @@ public class DashboardSettingsTask implements Task {
     @Override
     @Step("Open the Settings screen")
     public <T extends Actor> void performAs(T actor) {
-        actor.attemptsTo(NavigateUntilVisibleAndClick.on(BUTTON_SETTINGS));
+        actor.attemptsTo(NavigateUntilVisibleAndClickAction.on(BUTTON_SETTINGS));
     }
 
     public static DashboardSettingsTask open() {

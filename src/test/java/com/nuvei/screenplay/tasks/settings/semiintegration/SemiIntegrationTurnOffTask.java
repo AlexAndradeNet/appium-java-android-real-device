@@ -11,23 +11,27 @@ Dissemination of this information or reproduction of this material
 is strictly forbidden unless prior written permission is obtained
 from Nuvei Inc.
 */
-package com.nuvei.screenplay.tasks.settings;
+package com.nuvei.screenplay.tasks.settings.semiintegration;
 
 import com.nuvei.screenplay.interactions.ToggleAction;
+import com.nuvei.screenplay.tasks.settings.SettingsSemiIntegrationOpenTask;
 import com.nuvei.screenplay.ui.settings.SemiIntegrationOptionsScreen;
+import net.serenitybdd.annotations.Step;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Performable;
 import net.serenitybdd.screenplay.Task;
 
-public class SemiIntegrationTasks {
-    private SemiIntegrationTasks() {
-        throw new IllegalStateException("Utility class - cannot be instantiated");
+public class SemiIntegrationTurnOffTask implements Task {
+
+    @Override
+    @Step("{0} turns off Semi Integration")
+    public <T extends Actor> void performAs(T actor) {
+        actor.attemptsTo(
+                SettingsSemiIntegrationOpenTask.now(),
+                ToggleAction.toOff(SemiIntegrationOptionsScreen.TOGGLE_ENABLE_SEMI_INTEGRATION));
     }
 
-    public static Performable turnOffSemiIntegration(Actor actor) {
-        actor.attemptsTo(
-                MainSettingsTasks.openSemiIntegrationOptionsScreen(actor),
-                ToggleAction.toOff(SemiIntegrationOptionsScreen.TOGGLE_ENABLE_SEMI_INTEGRATION));
-        return Task.where("{0} turns off Semi Integration");
+    public static Performable turnOffSemiIntegration() {
+        return new SemiIntegrationTurnOffTask();
     }
 }

@@ -14,7 +14,7 @@ from Nuvei Inc.
 package com.nuvei.screenplay.tasks.help;
 
 import com.nuvei.features.steps.Hooks;
-import com.nuvei.screenplay.tasks.commons.LoginFillPasswordTasks;
+import com.nuvei.screenplay.tasks.commons.LoginFillPasswordTask;
 import com.nuvei.utils.LoggerWrapper;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -23,12 +23,12 @@ import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Performable;
 import net.serenitybdd.screenplay.Task;
 
-public class MainHelpTasks implements Task {
+public class MainHelpTask implements Task {
 
     private static final LoggerWrapper logger = new LoggerWrapper(Hooks.class);
     private final String terminalId;
 
-    public MainHelpTasks(String terminalId) {
+    public MainHelpTask(String terminalId) {
         this.terminalId = terminalId;
     }
 
@@ -92,7 +92,7 @@ public class MainHelpTasks implements Task {
     }
 
     public static Performable resolveSuperPassword(String terminalId) {
-        return new MainHelpTasks(terminalId);
+        return new MainHelpTask(terminalId);
     }
 
     @Override
@@ -105,6 +105,6 @@ public class MainHelpTasks implements Task {
                 "Super password for today '%s' for TID '%s' is: %s"
                         .formatted(currentDate, terminalId, superPassword));
 
-        actor.attemptsTo(LoginFillPasswordTasks.withDetails(superPassword));
+        actor.attemptsTo(LoginFillPasswordTask.withDetails(superPassword));
     }
 }

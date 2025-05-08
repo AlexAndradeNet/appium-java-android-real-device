@@ -15,7 +15,7 @@ package com.nuvei.screenplay.tasks.dashboard;
 
 import static com.nuvei.screenplay.ui.DashboardScreen.BUTTON_BATCH_OR_SETTLE;
 
-import com.nuvei.screenplay.interactions.NavigateUntilVisibleAndClick;
+import com.nuvei.screenplay.interactions.NavigateUntilVisibleAndClickAction;
 import net.serenitybdd.annotations.Step;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Task;
@@ -25,7 +25,7 @@ public class DashboardBatchOrSettleTask implements Task {
     @Override
     @Step("Open the Batch or Settle screen")
     public <T extends Actor> void performAs(T actor) {
-        actor.attemptsTo(NavigateUntilVisibleAndClick.on(BUTTON_BATCH_OR_SETTLE));
+        actor.attemptsTo(NavigateUntilVisibleAndClickAction.on(BUTTON_BATCH_OR_SETTLE));
     }
 
     public static DashboardBatchOrSettleTask open() {

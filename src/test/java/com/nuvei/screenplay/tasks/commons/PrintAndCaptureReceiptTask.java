@@ -26,28 +26,33 @@ import net.serenitybdd.screenplay.Performable;
 import net.serenitybdd.screenplay.Task;
 import net.serenitybdd.screenplay.ensure.Ensure;
 
-public class PrintAndCaptureReceiptTasks {
+public class PrintAndCaptureReceiptTask implements Task {
 
-    enum responseType {
+    enum ResponseType {
         APPROVED,
         DECLINED
     }
 
-    private PrintAndCaptureReceiptTasks() {
-        throw new IllegalStateException("Utility class - cannot be instantiated");
+    private final ResponseType responseType;
+
+    private PrintAndCaptureReceiptTask(ResponseType responseType) {
+        this.responseType = responseType;
     }
 
-    public static Performable approved(Actor actor) {
-        printAndCaptureReceipt(actor, responseType.APPROVED);
-        return Task.where("{0} prints and captures an approved receipt");
+    public static Performable approved() {
+        return Task.where(
+                "{0} prints and captures an approved receipt",
+                new PrintAndCaptureReceiptTask(ResponseType.APPROVED));
     }
 
-    public static Performable declined(Actor actor) {
-        printAndCaptureReceipt(actor, responseType.DECLINED);
-        return Task.where("{0} prints and captures a declined receipt");
+    public static Performable declined() {
+        return Task.where(
+                "{0} prints and captures a declined receipt",
+                new PrintAndCaptureReceiptTask(ResponseType.DECLINED));
     }
 
-    private static void printAndCaptureReceipt(Actor actor, responseType responseType) {
+    @Override
+    public <T extends Actor> void performAs(T actor) {
         actor.attemptsTo(WaitAction.untilElementIsPresent(PrintingScreen.BUTTON_RECEIPT_OPTIONS));
 
         String saveLabelResponseForSoftAssertion =

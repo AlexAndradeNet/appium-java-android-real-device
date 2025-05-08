@@ -14,8 +14,8 @@ from Nuvei Inc.
 package com.nuvei.features.steps;
 
 import com.nuvei.screenplay.interactions.ToggleAction;
-import com.nuvei.screenplay.tasks.commons.CommonTasks;
-import com.nuvei.screenplay.tasks.settings.MainSettingsTasks;
+import com.nuvei.screenplay.tasks.dashboard.ReturnToDashboardScreenTask;
+import com.nuvei.screenplay.tasks.settings.SettingsTransactionFlowOpenTask;
 import com.nuvei.screenplay.ui.CommonObjects;
 import com.nuvei.utils.LoggerWrapper;
 import com.nuvei.utils.ReportUtility;
@@ -54,12 +54,12 @@ public class Hooks {
             String toggleName = actor.recall("toggleName");
             if (StringUtils.isNotBlank(toggleName)) {
                 actor.attemptsTo(
-                        MainSettingsTasks.openTransactionFlowScreen(actor),
+                        SettingsTransactionFlowOpenTask.now(),
                         ToggleAction.toOff(CommonObjects.TOGGLE.of(toggleName)));
             }
         }
 
-        actor.attemptsTo(CommonTasks.returnToTheDashboardScreen(actor));
+        actor.attemptsTo(ReturnToDashboardScreenTask.now());
     }
 
     @AfterAll

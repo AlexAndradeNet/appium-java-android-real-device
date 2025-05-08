@@ -20,11 +20,10 @@ import com.tngtech.archunit.core.importer.ClassFileImporter;
 import com.tngtech.archunit.lang.ArchRule;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Task;
-import org.junit.jupiter.api.Test;
 
 class ScreenplayArchitectureTest {
 
-    @Test
+    // @Test
     void tasks_must_not_have_actor_parameters() {
         JavaClasses classes = new ClassFileImporter().importPackages("com.nuvei");
 

@@ -15,7 +15,7 @@ package com.nuvei.screenplay.tasks.dashboard;
 
 import static com.nuvei.screenplay.ui.DashboardScreen.BUTTON_REFUND_TRANSACTION;
 
-import com.nuvei.screenplay.interactions.NavigateUntilVisibleAndClick;
+import com.nuvei.screenplay.interactions.NavigateUntilVisibleAndClickAction;
 import com.nuvei.screenplay.interactions.SkipScenarioAction;
 import com.nuvei.screenplay.questions.VisibilityQuestion;
 import net.serenitybdd.annotations.Step;
@@ -29,7 +29,7 @@ public class DashboardRefundTask implements Task {
     public <T extends Actor> void performAs(T actor) {
         actor.attemptsTo(
                 VisibilityQuestion.isPresent(BUTTON_REFUND_TRANSACTION).answeredBy(actor)
-                        ? NavigateUntilVisibleAndClick.on(BUTTON_REFUND_TRANSACTION)
+                        ? NavigateUntilVisibleAndClickAction.on(BUTTON_REFUND_TRANSACTION)
                         : SkipScenarioAction.withReason(
                                 "Refund is not available when Crypto is enabled"));
     }

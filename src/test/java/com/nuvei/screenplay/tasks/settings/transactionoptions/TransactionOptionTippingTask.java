@@ -11,24 +11,23 @@ Dissemination of this information or reproduction of this material
 is strictly forbidden unless prior written permission is obtained
 from Nuvei Inc.
 */
-package com.nuvei.screenplay.tasks.dashboard;
+package com.nuvei.screenplay.tasks.settings.transactionoptions;
 
-import static com.nuvei.screenplay.ui.DashboardScreen.BUTTON_MOTO_TRANSACTION;
-
-import com.nuvei.screenplay.interactions.NavigateUntilVisibleAndClickAction;
+import com.nuvei.screenplay.interactions.ClickAction;
+import com.nuvei.screenplay.ui.settings.transactionoptions.MainTransactionOptionsScreen;
 import net.serenitybdd.annotations.Step;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Task;
 
-public class DashboardMotoTask implements Task {
+public class TransactionOptionTippingTask implements Task {
 
     @Override
-    @Step("Open the MOTO Transaction screen")
+    @Step("{0} opens the Tipping Options screen")
     public <T extends Actor> void performAs(T actor) {
-        actor.attemptsTo(NavigateUntilVisibleAndClickAction.on(BUTTON_MOTO_TRANSACTION));
+        actor.attemptsTo(ClickAction.on(MainTransactionOptionsScreen.BUTTON_TIPPING_OPTIONS));
     }
 
-    public static DashboardMotoTask open() {
-        return new DashboardMotoTask();
+    public static TransactionOptionTippingTask open() {
+        return new TransactionOptionTippingTask();
     }
 }

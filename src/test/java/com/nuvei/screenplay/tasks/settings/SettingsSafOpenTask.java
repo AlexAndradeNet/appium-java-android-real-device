@@ -11,24 +11,26 @@ Dissemination of this information or reproduction of this material
 is strictly forbidden unless prior written permission is obtained
 from Nuvei Inc.
 */
-package com.nuvei.screenplay.tasks.dashboard;
+package com.nuvei.screenplay.tasks.settings;
 
-import static com.nuvei.screenplay.ui.DashboardScreen.BUTTON_MOTO_TRANSACTION;
-
-import com.nuvei.screenplay.interactions.NavigateUntilVisibleAndClickAction;
+import com.nuvei.screenplay.interactions.ClickAction;
+import com.nuvei.screenplay.tasks.commons.ScrollUntilVisibleTask;
+import com.nuvei.screenplay.ui.settings.MainSettingsScreen;
 import net.serenitybdd.annotations.Step;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Task;
 
-public class DashboardMotoTask implements Task {
+public class SettingsSafOpenTask implements Task {
 
     @Override
-    @Step("Open the MOTO Transaction screen")
+    @Step("{0} opens the Settings > SAF screen")
     public <T extends Actor> void performAs(T actor) {
-        actor.attemptsTo(NavigateUntilVisibleAndClickAction.on(BUTTON_MOTO_TRANSACTION));
+        actor.attemptsTo(
+                ScrollUntilVisibleTask.forObject(MainSettingsScreen.BUTTON_SAF),
+                ClickAction.on(MainSettingsScreen.BUTTON_SAF));
     }
 
-    public static DashboardMotoTask open() {
-        return new DashboardMotoTask();
+    public static SettingsSafOpenTask now() {
+        return new SettingsSafOpenTask();
     }
 }

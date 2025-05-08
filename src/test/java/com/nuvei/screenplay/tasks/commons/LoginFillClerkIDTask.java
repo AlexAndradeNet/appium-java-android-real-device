@@ -24,11 +24,11 @@ import net.serenitybdd.screenplay.Task;
 import net.serenitybdd.screenplay.ensure.Ensure;
 import org.junit.platform.commons.util.StringUtils;
 
-public class LoginFillClerkIDTasks implements Task {
+public class LoginFillClerkIDTask implements Task {
     private final String screenTitle;
     private final String clerkID;
 
-    public LoginFillClerkIDTasks(String screenTitle, String clerkID) {
+    public LoginFillClerkIDTask(String screenTitle, String clerkID) {
         this.screenTitle = screenTitle;
         this.clerkID = clerkID;
     }
@@ -51,7 +51,7 @@ public class LoginFillClerkIDTasks implements Task {
                                             NumericScreen.LABEL_REASON.of("Enter your Clerk ID")))
                             .isTrue());
         }
-        actor.attemptsTo(NumpadTasks.digit(actor, clerkID));
+        actor.attemptsTo(NumpadTask.digit(clerkID));
 
         if (withValidation) {
             actor.attemptsTo(
@@ -66,10 +66,10 @@ public class LoginFillClerkIDTasks implements Task {
     }
 
     public static Performable withDetails(String screenTitle, String clerkID) {
-        return new LoginFillClerkIDTasks(screenTitle, clerkID);
+        return new LoginFillClerkIDTask(screenTitle, clerkID);
     }
 
     public static Performable withDetails(String clerkID) {
-        return new LoginFillClerkIDTasks(null, clerkID);
+        return new LoginFillClerkIDTask(null, clerkID);
     }
 }

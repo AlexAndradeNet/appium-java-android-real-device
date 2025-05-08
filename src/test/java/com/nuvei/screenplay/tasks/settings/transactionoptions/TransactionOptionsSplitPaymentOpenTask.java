@@ -11,28 +11,23 @@ Dissemination of this information or reproduction of this material
 is strictly forbidden unless prior written permission is obtained
 from Nuvei Inc.
 */
-package com.nuvei.screenplay.tasks.settings;
+package com.nuvei.screenplay.tasks.settings.transactionoptions;
 
 import com.nuvei.screenplay.interactions.ClickAction;
 import com.nuvei.screenplay.ui.settings.transactionoptions.MainTransactionOptionsScreen;
+import net.serenitybdd.annotations.Step;
 import net.serenitybdd.screenplay.Actor;
-import net.serenitybdd.screenplay.Performable;
 import net.serenitybdd.screenplay.Task;
 
-public class TransactionsOptionsTasks {
-    private TransactionsOptionsTasks() {
-        throw new IllegalStateException("Utility class - cannot be instantiated");
-    }
+public class TransactionOptionsSplitPaymentOpenTask implements Task {
 
-    public static Performable openSplitPayment(Actor actor) {
+    @Override
+    @Step("{0} opens the Split Payment screen")
+    public <T extends Actor> void performAs(T actor) {
         actor.attemptsTo(ClickAction.on(MainTransactionOptionsScreen.BUTTON_SPLIT_PAYMENT));
-
-        return Task.where("{0} opens the Split Payment screen");
     }
 
-    public static Performable openTipping(Actor actor) {
-        actor.attemptsTo(ClickAction.on(MainTransactionOptionsScreen.BUTTON_TIPPING_OPTIONS));
-
-        return Task.where("{0} opens the Tipping Options screen");
+    public static TransactionOptionsSplitPaymentOpenTask open() {
+        return new TransactionOptionsSplitPaymentOpenTask();
     }
 }

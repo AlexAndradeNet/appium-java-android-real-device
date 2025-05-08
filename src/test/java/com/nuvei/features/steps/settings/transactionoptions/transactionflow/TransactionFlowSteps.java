@@ -16,13 +16,13 @@ package com.nuvei.features.steps.settings.transactionoptions.transactionflow;
 import com.nuvei.screenplay.ability.BrowseTheApp;
 import com.nuvei.screenplay.interactions.ToggleAction;
 import com.nuvei.screenplay.questions.VisibilityQuestion;
-import com.nuvei.screenplay.tasks.commons.CommonTasks;
-import com.nuvei.screenplay.tasks.commons.NumpadTasks;
-import com.nuvei.screenplay.tasks.commons.PrintAndCaptureReceiptTasks;
-import com.nuvei.screenplay.tasks.commons.TogglesTasks;
+import com.nuvei.screenplay.tasks.commons.NumpadTask;
+import com.nuvei.screenplay.tasks.commons.PrintAndCaptureReceiptTask;
 import com.nuvei.screenplay.tasks.dashboard.DashboardSaleTask;
+import com.nuvei.screenplay.tasks.dashboard.ReturnToDashboardScreenTask;
 import com.nuvei.screenplay.tasks.dashboard.ReturnToInitialScreenTask;
-import com.nuvei.screenplay.tasks.settings.MainSettingsTasks;
+import com.nuvei.screenplay.tasks.settings.SettingsTransactionFlowOpenTask;
+import com.nuvei.screenplay.tasks.settings.transactionoptions.TransactionOptionsDeactivateAllTogglesTask;
 import com.nuvei.screenplay.ui.CommonObjects;
 import com.nuvei.screenplay.ui.common.NumericScreen;
 import io.cucumber.java.en.And;
@@ -40,7 +40,7 @@ public class TransactionFlowSteps {
     public void heEnablesThePrompt(String toggleName) {
         Actor actor = OnStage.theActorInTheSpotlight();
         actor.attemptsTo(
-                MainSettingsTasks.openTransactionFlowScreen(actor),
+                SettingsTransactionFlowOpenTask.now(),
                 ToggleAction.toOn(CommonObjects.TOGGLE.of(toggleName)));
 
         actor.remember("toggleName", toggleName);
@@ -50,7 +50,7 @@ public class TransactionFlowSteps {
     public void heSeeThePromptIsEnabled(String toggleLabel) {
         Actor actor = OnStage.theActorInTheSpotlight();
         actor.attemptsTo(
-                CommonTasks.returnToTheDashboardScreen(actor),
+                ReturnToDashboardScreenTask.now(),
                 ReturnToInitialScreenTask.now(),
                 DashboardSaleTask.open());
 
@@ -65,7 +65,7 @@ public class TransactionFlowSteps {
     @When("he deactivates all toggles options")
     public void heDeactivatesAllTogglesOptions() {
         Actor actor = OnStage.theActorInTheSpotlight();
-        actor.attemptsTo(TogglesTasks.deactivateAllToggles(actor));
+        actor.attemptsTo(TransactionOptionsDeactivateAllTogglesTask.now());
     }
 
     @Then("he should see all toggles were deactivated")
@@ -81,9 +81,9 @@ public class TransactionFlowSteps {
         BrowseTheApp.reAttachDriver(actor);
 
         actor.attemptsTo(
-                PrintAndCaptureReceiptTasks.approved(actor),
-                CommonTasks.returnToTheDashboardScreen(actor),
-                MainSettingsTasks.openTransactionFlowScreen(actor),
+                PrintAndCaptureReceiptTask.approved(),
+                ReturnToDashboardScreenTask.now(),
+                SettingsTransactionFlowOpenTask.now(),
                 ToggleAction.toOff(CommonObjects.TOGGLE.of(toggleName)));
 
         actor.remember("toggleName", "");
@@ -94,7 +94,6 @@ public class TransactionFlowSteps {
         Actor actor = OnStage.theActorInTheSpotlight();
 
         actor.attemptsTo(
-                NumpadTasks.digitAndConfirmValueOrPrompt(actor, promptValue),
-                NumpadTasks.digitAndConfirmValueOrPrompt(actor, SALE_AMOUNT));
+                NumpadTask.digitAndConfirm(promptValue), NumpadTask.digitAndConfirm(SALE_AMOUNT));
     }
 }

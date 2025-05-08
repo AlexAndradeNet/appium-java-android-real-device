@@ -17,7 +17,7 @@ import static com.nuvei.screenplay.ui.DashboardScreen.BUTTON_HELP_DESK;
 import static com.nuvei.screenplay.ui.common.NumericScreen.LABEL_REASON;
 import static com.nuvei.screenplay.ui.common.NumericScreen.TITLE;
 
-import com.nuvei.screenplay.interactions.NavigateUntilVisibleAndClick;
+import com.nuvei.screenplay.interactions.NavigateUntilVisibleAndClickAction;
 import com.nuvei.screenplay.questions.VisibilityQuestion;
 import net.serenitybdd.annotations.Step;
 import net.serenitybdd.screenplay.Actor;
@@ -35,7 +35,7 @@ public class DashboardHelpDeskTask implements Task {
     @Override
     @Step("Open the Help Desk screen")
     public <T extends Actor> void performAs(T actor) {
-        actor.attemptsTo(NavigateUntilVisibleAndClick.on(BUTTON_HELP_DESK));
+        actor.attemptsTo(NavigateUntilVisibleAndClickAction.on(BUTTON_HELP_DESK));
 
         if (withVerification) {
             actor.attemptsTo(

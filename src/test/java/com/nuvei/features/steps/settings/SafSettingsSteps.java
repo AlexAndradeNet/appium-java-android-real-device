@@ -14,7 +14,8 @@ from Nuvei Inc.
 package com.nuvei.features.steps.settings;
 
 import com.nuvei.screenplay.questions.VisibilityQuestion;
-import com.nuvei.screenplay.tasks.settings.SafSettingsTasks;
+import com.nuvei.screenplay.tasks.settings.safsettings.SafSettingsTurnOffTask;
+import com.nuvei.screenplay.tasks.settings.safsettings.SafSettingsTurnOnTask;
 import com.nuvei.screenplay.ui.DashboardScreen;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -26,7 +27,7 @@ public class SafSettingsSteps {
     @When("he enables the SAF mode with ID {word} and Password {word}")
     public void heEnablesTheSAFMode(String clerkId, String password) {
         Actor actor = OnStage.theActorInTheSpotlight();
-        actor.attemptsTo(SafSettingsTasks.turnOnSaf(actor, clerkId, password));
+        actor.attemptsTo(SafSettingsTurnOnTask.with(clerkId, password));
     }
 
     @Then("he should see that SAF was enabled")
@@ -42,7 +43,7 @@ public class SafSettingsSteps {
     @When("he disables the SAF mode with ID {word} and Password {word}")
     public void heDisablesTheSAFModeWithIDAndPassword(String clerkId, String password) {
         Actor actor = OnStage.theActorInTheSpotlight();
-        actor.attemptsTo(SafSettingsTasks.turnOffSaf(actor, clerkId, password));
+        actor.attemptsTo(SafSettingsTurnOffTask.with(clerkId, password));
     }
 
     @Then("he should see that SAF was disabled")
