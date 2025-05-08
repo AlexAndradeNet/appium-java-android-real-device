@@ -15,23 +15,23 @@ echo "Running pre-commit checks..."
 
 # Run gherkin-lint
 npm run lint
-gherkinstatus=$? # Save the exit status of the previous command
+gherkinStatus=$? # Save the exit status of the previous command
 
-checkIfError $gherkinstatus 0 # Accumulate way to check if the previous command was successful
-gherkinstatus=$? # Save the exit of the function
+checkIfError $gherkinStatus 0 # Accumulate way to check if the previous command was successful
+gherkinStatus=$? # Save the exit of the function
 
 
 # Run linters (e.g., Spotless, ESLint, etc.)
 ./gradlew spotlessApply
-checkIfError $gherkinstatus $? # Accumulate way to check if the previous command was successful
-spotlessstatus=$? # Save the exit of the function
+checkIfError $gherkinStatus $? # Accumulate way to check if the previous command was successful
+spotlessStatus=$? # Save the exit of the function
 
 # Run unit tests
 #./gradlew test
 
 echo ""
 
-if [[ $spotlessstatus -ne 0 ]]; then
+if [[ $spotlessStatus -ne 0 ]]; then
     echo "RESULT: Pre-commit checks failed. Please fix the issues before committing."
     echo ""
     exit 1

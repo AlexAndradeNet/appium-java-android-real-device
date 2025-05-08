@@ -4,22 +4,22 @@ set -euo pipefail # Error handling and Strict mode
 echo "Running pre-commit checks..."
 
 source snyk.env
-tokenfileresult=$? # Save the exit status of the previous command
+tokenFileResult=$? # Save the exit status of the previous command
 
 echo ""
 
-if [[ tokenfileresult -ne 0 ]]; then
+if [[ $tokenFileResult -ne 0 ]]; then
     echo "RESULT: Pre-push checks failed. Please create the snyk.env file with the token."
     echo ""
     exit 1
 fi
 
 npx snyk test --all-projects
-snykresult=$? # Save the exit status of the previous command
+snykResult=$? # Save the exit status of the previous command
 
 echo ""
 
-if [[ $snykresult -ne 0 ]]; then
+if [[ $snykResult -ne 0 ]]; then
     echo "RESULT: Pre-push checks failed. Please fix the issues before committing."
     echo ""
     exit 1

@@ -16,7 +16,7 @@ and maintainable, please follow these best practices:
 
 1. **Small Commits**: Follow the KISS (Keep It So Simple) principle. Make small,
    incremental commits. Read more about this
-   in [“The Power of Small Commits.”](https://levelup.gitconnected.com/the-power-of-working-in-small-commits-8bae57ecfbda).
+   in [“The Power of Small Commits.”](https://levelup.gitconnected.com/the-power-of-working-in-small-commits-8bae57ecfbda)
 
 2. **Use GitMoji**: To make commit messages more descriptive,
    use [GitMoji](https://gitmoji.dev/) to add emojis that signify the purpose or

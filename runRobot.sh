@@ -150,7 +150,7 @@ echo ""
 echo "Executing: ./gradlew $clean_gradle_flag test --rerun-tasks $fail_fast_flag -Denvironment=$env_code"
 echo ""
 ./gradlew $clean_gradle_flag test --rerun-tasks $fail_fast_flag -Denvironment=$env_code
-gradlewstatus=$? # Save the exit status of the previous command
+gradlewStatus=$? # Save the exit status of the previous command
 
 # Revert the mac from going to sleep
 killall caffeinate
@@ -160,4 +160,4 @@ killall caffeinate > /dev/null 2>&1 || true
 echo "Test report is available at: build/reports/tests/test/index.html"
 open build/reports/tests/test/index.html
 
-exit $gradlewstatus
+exit $gradlewStatus

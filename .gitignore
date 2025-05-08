@@ -4,6 +4,7 @@
 *.iws
 *.ipr
 **/.idea/*.*
+**/.idea/*/*.*
 !**/.idea/externalDependencies.xml
 !**/.idea/appium-java-android-real-device.iml
 

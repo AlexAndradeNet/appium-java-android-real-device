@@ -2,9 +2,9 @@
 set -euo pipefail # Error handling and Strict mode
 
 npx gherkin-lint -c .gherkin-lintrc.json ./src
-lastcommandresult=$?
+lastCommandResult=$?
 
-if [ $lastcommandresult -ne 0 ]; then
+if [ $lastCommandResult -ne 0 ]; then
   echo "Gherkin lint failed"
   exit 1
 fi
