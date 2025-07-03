@@ -11,6 +11,7 @@ Feature: Password-protected notable transactions
     Then he should see all toggles were deactivated
 
   #@ignore
+  @saf
   Scenario: 2 - Setup - Enable SAF mode
     Given Aureliano is in the Main Screen
     When he enables the SAF mode with ID 1 and Password 111111
@@ -33,7 +34,7 @@ Feature: Password-protected notable transactions
     Then he should see the each new clerk was created correctly
 
   #@ignore
-  Scenario Outline: 5 - Check Admins are allowed when minimum access level is Admin
+  Scenario Outline: 5a - Check Admins are allowed when minimum access level is Admin
     Given Aureliano defined the minimum access level as Admin and opened the <functionality> option
     # TODO: implement VHQ
     When he attempts to login in <functionality> using the <role>, with ID <clerk_id> and Password <password>
@@ -45,11 +46,19 @@ Feature: Password-protected notable transactions
       | Moto: Admins are allowed   | Moto          | 1        | Admin | 111111   |
       | Batch: Admins are allowed  | Settle        | 1        | Admin | 111111   |
       | Void: Admins are allowed   | Void          | 1        | Admin | 111111   |
-      | SAF: Admins are allowed    | SAF           | 1        | Admin | 111111   |
+      # SAF requires a different scenario because of the cucumber parser does not allow use tags in examples
+
+  @saf
+  #@ignore
+  Scenario: 5b - SAF Check Admins are allowed when minimum access level is Admin
+    Given Aureliano defined the minimum access level as Admin and opened the SAF option
+    # TODO: implement VHQ
+    When he attempts to login in SAF using the Admin, with ID 1 and Password 111111
+    Then he should be ALLOWED to access the functionality SAF as admin
 
   #@ignore
   # This is failing because needs to implement the role management against VHQ
-  Scenario Outline: 6 - (EXPECTING TO FAIL) Check Managers and Employees are rejected when minimum access level is Admin
+  Scenario Outline: 6a - (EXPECTING TO FAIL) Check Managers and Employees are rejected when minimum access level is Admin
     Given Aureliano defined the minimum access level as Admin and opened the <functionality> option
     # TODO: implement VHQ
     When he attempts to login in <functionality> using the <role>, with ID <clerk_id> and Password <password>
@@ -69,11 +78,25 @@ Feature: Password-protected notable transactions
       # Void
       | Void: Managers are rejected    | Void          | 2        | Manager  | 111111   |
       | Void: Employees are rejected   | Void          | 3        | Employee | 111111   |
+      # SAF requires a different scenario because of the cucumber parser does not allow use tags in examples
+
+  @saf
+  #@ignore
+  # This is failing because needs to implement the role management against VHQ
+  Scenario Outline: 6b - SAF (EXPECTING TO FAIL) Check Managers and Employees are rejected when minimum access level is Admin
+    Given Aureliano defined the minimum access level as Admin and opened the <functionality> option
+    # TODO: implement VHQ
+    When he attempts to login in <functionality> using the <role>, with ID <clerk_id> and Password <password>
+    Then he should be REJECTED to access the functionality <functionality> as <role>
+
+    Examples:
+      | Title                       | functionality | clerk_id | role     | password |
       # SAF
-      | SAF: Managers are rejected     | SAF           | 2        | Manager  | 111111   |
-      | SAF: Employees are rejected    | SAF           | 3        | Employee | 111111   |
+      | SAF: Managers are rejected  | SAF           | 2        | Manager  | 111111   |
+      | SAF: Employees are rejected | SAF           | 3        | Employee | 111111   |
 
   #@ignore
+  @saf
   Scenario: 7 - Post-Setup - Disable SAF mode
     Given Aureliano is in the Main Screen
     When he disables the SAF mode with ID 1 and Password 111111

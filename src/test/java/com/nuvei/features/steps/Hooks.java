@@ -15,6 +15,8 @@ package com.nuvei.features.steps;
 
 import com.nuvei.screenplay.interactions.ToggleAction;
 import com.nuvei.screenplay.interactions.WaitAction;
+import com.nuvei.screenplay.tasks.commons.CheckPrintingAvailability;
+import com.nuvei.screenplay.tasks.commons.CheckSafAvailability;
 import com.nuvei.screenplay.tasks.dashboard.ReturnToDashboardScreenTask;
 import com.nuvei.screenplay.tasks.settings.SettingsTransactionFlowOpenTask;
 import com.nuvei.screenplay.ui.CommonObjects;
@@ -22,6 +24,7 @@ import com.nuvei.utils.DotenvReader;
 import com.nuvei.utils.LoggerWrapper;
 import com.nuvei.utils.SerenityReportHelper;
 import io.cucumber.java.*;
+import java.util.Collection;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.actors.OnlineCast;
@@ -38,12 +41,19 @@ public class Hooks {
     }
 
     @Before(order = 1)
-    public void beforeEachScenario() {
-        logger.info(
-                "####################### Cucumber Execution Order: "
-                        + System.getProperty("cucumber.execution.order"));
+    public void beforeEachScenario(Scenario scenario) {
         OnStage.drawTheCurtain(); // Clears all actors and contexts
         OnStage.setTheStage(new OnlineCast()); // Re-initialize actors
+
+        Collection<String> tags = scenario.getSourceTagNames();
+
+        if (tags.contains("@saf")) {
+            OnStage.theActorCalled("Skipper").attemptsTo(CheckSafAvailability.orSkip());
+        }
+
+        if (tags.contains("@printing")) {
+            OnStage.theActorCalled("Skipper").attemptsTo(CheckPrintingAvailability.orSkip());
+        }
     }
 
     @After(order = 1)
