@@ -17,6 +17,7 @@ import com.nuvei.screenplay.interactions.ToggleAction;
 import com.nuvei.screenplay.tasks.dashboard.ReturnToDashboardScreenTask;
 import com.nuvei.screenplay.tasks.settings.SettingsTransactionFlowOpenTask;
 import com.nuvei.screenplay.ui.CommonObjects;
+import com.nuvei.utils.DotenvReader;
 import com.nuvei.utils.LoggerWrapper;
 import com.nuvei.utils.ReportUtility;
 import io.cucumber.java.*;
@@ -32,7 +33,7 @@ public class Hooks {
     @BeforeAll
     public static void beforeAll() {
         OnStage.setTheStage(new OnlineCast());
-        logger.info("####################### BEFORE ALL Cucumber");
+        DotenvReader.loadEnvFile();
     }
 
     @Before(order = 1)
