@@ -24,7 +24,7 @@ java {
 
 ext {
     versions = [
-            serenityCore : '4.2.30',
+            serenityCore : '4.2.34',
             cucumber     : '7.22.2',
             junit        : '5.13.0',
             junitPlatform: '1.13.0',

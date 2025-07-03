@@ -11,7 +11,7 @@ function checkIfError() {
     return 0
 }
 
-echo "Running pre-commit checks..."
+echo "Running pre-push checks..."
 
 export $(cat .env | grep SNYK) # Load Snyk token from .env file
 tokenFileResult=$? # Save the exit status of the previous command
@@ -37,7 +37,7 @@ snykStatus=$? # Save the exit of the function
 echo ""
 
 if [[ $snykStatus -ne 0 ]]; then
-    echo "RESULT: Pre-push checks failed. Please fix the issues before committing."
+    echo "RESULT: Pre-push checks failed. Please fix the issues before pushing."
     echo ""
     exit 1
 fi
