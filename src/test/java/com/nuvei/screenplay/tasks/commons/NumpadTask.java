@@ -16,8 +16,9 @@ package com.nuvei.screenplay.tasks.commons;
 import com.nuvei.screenplay.interactions.ClickAction;
 import com.nuvei.screenplay.interactions.EnterAction;
 import com.nuvei.screenplay.interactions.NumpadAction;
-import com.nuvei.screenplay.questions.EnvironmentQuestion;
+import com.nuvei.screenplay.questions.WhatSeriesIsThisTerminalQuestion;
 import com.nuvei.screenplay.ui.common.NumericScreen;
+import com.nuvei.utils.VariablesSingleton;
 import net.serenitybdd.annotations.Step;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Performable;
@@ -51,11 +52,13 @@ public class NumpadTask implements Task {
             return; // Do nothing if the number sequence is empty
         }
 
-        if (actor.asksFor(EnvironmentQuestion.isTSeries())) {
+        if (Boolean.TRUE.equals(actor.asksFor(WhatSeriesIsThisTerminalQuestion.isTSeries()))) {
             useOnScreenNumpad(actor);
-        } else if (actor.asksFor(EnvironmentQuestion.isMSeries())) {
+        } else if (Boolean.TRUE.equals(
+                actor.asksFor(WhatSeriesIsThisTerminalQuestion.isMSeries()))) {
             usePhysicalNumpad(actor);
-        } else if (actor.asksFor(EnvironmentQuestion.isPSeries())) {
+        } else if (Boolean.TRUE.equals(
+                actor.asksFor(WhatSeriesIsThisTerminalQuestion.isPSeries()))) {
             useTextField(actor);
         } else {
             throw new UnsupportedOperationException("Unknown environment for numpad interaction.");
@@ -68,10 +71,9 @@ public class NumpadTask implements Task {
 
     @Step("{0} uses the numpad to digit '#numberSequence'")
     private void useOnScreenNumpad(Actor actor) {
-        Object recalledValue = actor.recall("numpadUsageCount");
-        int numpadUsageCount = recalledValue == null ? 0 : (int) recalledValue;
-
+        int numpadUsageCount = VariablesSingleton.getInstance().getNumpadUsageCount();
         boolean isNotLongerNeededTestTheNumpad = numpadUsageCount > 2;
+
         boolean isPlainText = !numberSequence.contains(".");
 
         if (isPlainText && isNotLongerNeededTestTheNumpad) {
@@ -81,7 +83,7 @@ public class NumpadTask implements Task {
 
         Target onScreenNumpadNumberButton = NumericScreen.BUTTON_NUMPAD_NUMBER;
         actor.attemptsTo(NumpadAction.digit(onScreenNumpadNumberButton, numberSequence));
-        actor.remember("numpadUsageCount", numpadUsageCount + 1);
+        VariablesSingleton.getInstance().setNumpadUsageCount(numpadUsageCount + 1);
     }
 
     @Step("{0} uses the numpad to digit '#numberSequence' using the physical numpad")
