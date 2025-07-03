@@ -16,7 +16,7 @@ by [Jacobvu84 on Serenity Screenplay with Appium](https://github.com/Jacobvu84/s
 
 This project is built using the following technologies:
 
-- **Java 17 (Corretto)**.
+- **Java 21 (Temurin)**.
 - **Gradle**.
 - **Appium >= 2.13.1**.
 - **Appium Inspector**.
@@ -146,5 +146,14 @@ sh scripts/gherkin_check.sh
 ```
 
 ---
+
+## Troubleshooting
+
+The most common issues when running the tests are related to the Appium server and the executable at terminal level, sometimes the are outdated. Solve it with the following commands:
+
+```bash
+adb -s 192.168.2.126:5037 uninstall io.appium.uiautomator2.server
+adb -s 192.168.2.126:5037 uninstall io.appium.uiautomator2.server.test
+```
 
 Happy coding! 🚀
