@@ -50,7 +50,9 @@ dependencies {
             "net.serenity-bdd:serenity-screenplay:${versions.serenityCore}",
             "net.serenity-bdd:serenity-screenplay-webdriver:${versions.serenityCore}",
             "net.serenity-bdd:serenity-cucumber:${versions.serenityCore}",
-            "io.appium:java-client:${versions.appium}"
+            "io.appium:java-client:${versions.appium}",
+            "org.apache.httpcomponents.client5:httpclient5:5.4.4",
+            "com.fasterxml.jackson.core:jackson-databind:2.19.0"
 
     testImplementation "io.cucumber:cucumber-java:${versions.cucumber}",
             "io.cucumber:cucumber-junit-platform-engine:${versions.cucumber}",
