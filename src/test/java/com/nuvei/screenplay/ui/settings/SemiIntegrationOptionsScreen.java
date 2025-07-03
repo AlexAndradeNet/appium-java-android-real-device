@@ -16,6 +16,7 @@ package com.nuvei.screenplay.ui.settings;
 import com.nuvei.screenplay.ui.CommonObjects;
 import io.appium.java_client.AppiumBy;
 import net.serenitybdd.screenplay.targets.Target;
+import org.openqa.selenium.By;
 
 public class SemiIntegrationOptionsScreen {
     private SemiIntegrationOptionsScreen() {
@@ -38,6 +39,5 @@ public class SemiIntegrationOptionsScreen {
             CommonObjects.TOGGLE.of("Enable Standalone Password");
 
     public static final Target RADIO_RETAIL =
-            Target.the("Retail radio button")
-                    .located(AppiumBy.xpath(BASE_SELECTOR.formatted("Retail")));
+            Target.the("Retail radio button").located(By.xpath(BASE_SELECTOR.formatted("Retail")));
 }

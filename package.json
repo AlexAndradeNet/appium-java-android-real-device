@@ -5,6 +5,7 @@
     },
     "scripts": {
         "lintFix:feature": "npx gherkin-lint --ignore .gitignore --config .gherkin-lintrc.json src/test/resources/features/**/*.feature",
-        "lint": "npm run lintFix:feature"
+        "lint": "npm run lintFix:feature",
+        "snyk": "export $(cat .env | grep SNYK) ; npx snyk code test --all-projects"
     }
 }

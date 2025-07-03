@@ -22,7 +22,6 @@ import java.time.Duration;
 import java.time.Instant;
 import net.serenitybdd.screenplay.*;
 import net.serenitybdd.screenplay.targets.Target;
-import net.serenitybdd.screenplay.waits.WaitUntil;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.support.ui.FluentWait;
 
@@ -30,15 +29,15 @@ public class WaitAction implements Interaction {
 
     private static final LoggerWrapper logger = new LoggerWrapper(WaitAction.class);
     public static final int MAX_SECONDS = 100;
-    private final long seconds;
+    private final int seconds;
     private final Target target;
 
-    private WaitAction(long seconds, Target target) {
+    private WaitAction(int seconds, Target target) {
         this.seconds = seconds;
         this.target = target;
     }
 
-    public static Performable forSpecificTime(long seconds) {
+    public static Performable forSpecificTime(int seconds) {
         return new WaitAction(seconds, null);
     }
 
@@ -64,7 +63,7 @@ public class WaitAction implements Interaction {
                 logger.debug(
                         "Waiting for element: %s to be not present (Started at: %s)"
                                 .formatted(target.getName(), startTime));
-                waitUntilElementIsNotPresent();
+                waitUntilElementIsNotPresent(actor);
             }
         } else {
             logger.debug("Waiting for %s seconds (Started at: %s)".formatted(seconds, startTime));
@@ -79,7 +78,6 @@ public class WaitAction implements Interaction {
             Thread.sleep(Duration.ofSeconds(seconds).toMillis());
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            throw new RuntimeException("Thread was interrupted during sleep", e);
         }
     }
 
@@ -97,10 +95,21 @@ public class WaitAction implements Interaction {
                 .withTimeout(Duration.ofSeconds(MAX_SECONDS))
                 .pollingEvery(Duration.ofSeconds(2))
                 .ignoring(NoSuchElementException.class)
-                .until(driverLambda -> actor.asksFor(VisibilityQuestion.isPresent(target)));
+                .until(
+                        driverLambda ->
+                                Boolean.TRUE.equals(
+                                        actor.asksFor(VisibilityQuestion.isPresent(target))));
     }
 
-    private void waitUntilElementIsNotPresent() {
-        WaitUntil.the(target, isNotPresent()).forNoMoreThan(MAX_SECONDS).seconds();
+    private void waitUntilElementIsNotPresent(Actor actor) {
+        var driver = actor.usingAbilityTo(BrowseTheApp.class).driver();
+        new FluentWait<>(driver)
+                .withTimeout(Duration.ofSeconds(MAX_SECONDS))
+                .pollingEvery(Duration.ofSeconds(2))
+                .ignoring(NoSuchElementException.class)
+                .until(
+                        driverLambda ->
+                                Boolean.TRUE.equals(
+                                        actor.asksFor(VisibilityQuestion.notPresent(target))));
     }
 }

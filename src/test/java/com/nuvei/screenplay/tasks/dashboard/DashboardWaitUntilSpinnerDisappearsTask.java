@@ -14,7 +14,6 @@ from Nuvei Inc.
 package com.nuvei.screenplay.tasks.dashboard;
 
 import static com.nuvei.screenplay.ui.DashboardScreen.BUTTON_SALE_TRANSACTION;
-import static com.nuvei.screenplay.ui.DashboardScreen.SPINNER;
 
 import com.nuvei.screenplay.interactions.WaitAction;
 import net.serenitybdd.annotations.Step;
@@ -26,9 +25,7 @@ public class DashboardWaitUntilSpinnerDisappearsTask implements Task {
     @Override
     @Step("Wait until the spinner disappears")
     public <T extends Actor> void performAs(T actor) {
-        actor.attemptsTo(
-                WaitAction.untilElementIsNotPresent(SPINNER),
-                WaitAction.untilElementIsPresent(BUTTON_SALE_TRANSACTION));
+        actor.attemptsTo(WaitAction.untilElementIsPresent(BUTTON_SALE_TRANSACTION));
     }
 
     public static DashboardWaitUntilSpinnerDisappearsTask now() {

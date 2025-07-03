@@ -42,7 +42,7 @@ public class ParameterDefinitions {
         WebDriverFacade driver = (WebDriverFacade) Serenity.getDriver();
         actor.can(BrowseTheApp.with(driver));
 
-        // 3. Set the actor's name in the context for later use.
+        // Wait for the app to be ready.
         actor.attemptsTo(DashboardWaitUntilSpinnerDisappearsTask.now());
 
         // 4. Return the fully configured actor to Cucumber.

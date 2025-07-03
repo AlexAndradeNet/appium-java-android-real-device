@@ -95,12 +95,14 @@ Feature: Clerk and Role management
     Then he should see Melquiades' new Clerk ID is 22 in the clerks list
 
   #@ignore
+  #rule: depends on #12
   Scenario: 13 - Change other clerk's password
     Given Aureliano, with ID 1 and Password 111111, is managing clerks
     When he attempts to update Melquiades' (ID 22) password to 222222
     Then he should use the ID 22 with the new password 222222 to revert it to 111111
 
   #@ignore
+  #rule: depends on #12
   Scenario: 14 - Filter the clerks list as Manager
     Given Melquiades, with ID 22 and Password 111111, is managing clerks
     When he lists the clerks
@@ -123,6 +125,7 @@ Feature: Clerk and Role management
     And he should have the option to add new clerks
 
   #@ignore
+  #rule: depends on #12
   Scenario: 17 - Change a clerk's role from Manager to Admin
     Given Aureliano, with ID 1 and Password 111111, is managing clerks
     When he changes Melquiades', with ID 22, role from Manager to Admin

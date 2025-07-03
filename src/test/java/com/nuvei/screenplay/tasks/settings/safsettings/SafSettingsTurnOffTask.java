@@ -39,7 +39,8 @@ public class SafSettingsTurnOffTask implements Task {
     @Override
     @Step("{0} turns off SAF")
     public <T extends Actor> void performAs(T actor) {
-        if (actor.asksFor(VisibilityQuestion.notPresent(DashboardScreen.LABEL_SAF))) return;
+        if (Boolean.TRUE.equals(
+                actor.asksFor(VisibilityQuestion.notPresent(DashboardScreen.LABEL_SAF)))) return;
 
         actor.attemptsTo(
                 DashboardSettingsTask.open(),

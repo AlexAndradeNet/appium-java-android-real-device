@@ -15,6 +15,7 @@ package com.nuvei.screenplay.ui.tid;
 
 import io.appium.java_client.AppiumBy;
 import net.serenitybdd.screenplay.targets.Target;
+import org.openqa.selenium.By;
 
 public class MainTIDScreen {
     private MainTIDScreen() {
@@ -31,13 +32,13 @@ public class MainTIDScreen {
             "//android.widget.TextView[contains(@resource-id, \"%s\")]";
 
     public static final Target LABEL_TID =
-            Target.the("TID").located(AppiumBy.xpath(BASE_XPATH.formatted("tv_tid")));
+            Target.the("TID").located(By.xpath(BASE_XPATH.formatted("tv_tid")));
 
     public static final Target LABEL_SEMI_INTEGRATION_URL =
             Target.the("Semi-Integration URL label")
-                    .located(AppiumBy.xpath(BASE_XPATH.formatted("title_value")));
+                    .located(By.xpath(BASE_XPATH.formatted("title_value")));
 
     public static final Target LABEL_SEMI_INTEGRATION_PORT =
             Target.the("Semi-Integration PORT label")
-                    .located(AppiumBy.xpath(BASE_XPATH.formatted("port_value")));
+                    .located(By.xpath(BASE_XPATH.formatted("port_value")));
 }

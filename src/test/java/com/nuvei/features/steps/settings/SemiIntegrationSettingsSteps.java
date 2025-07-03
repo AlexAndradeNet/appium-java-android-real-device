@@ -42,7 +42,7 @@ import net.serenitybdd.screenplay.ensure.Ensure;
 import net.serenitybdd.screenplay.waits.WaitUntil;
 
 public class SemiIntegrationSettingsSteps {
-    private static final String SEMI_INTEGRATION_PASSWORD_TITLE = "CLERK";
+    private static final String SEMI_INTEGRATION_LOGIN_SCREEN_TITLE = "CLERK";
 
     @Given("{actor} is managing the Semi-Integration settings")
     public void aurelianoIsManagingTheSemiIntegrationSettings(Actor actor) {
@@ -146,7 +146,7 @@ public class SemiIntegrationSettingsSteps {
 
         actor.attemptsTo(
                 WaitUntil.the(CommonObjects.BUTTON_GO_TO_STANDALONE, isEnabled())
-                        .forNoMoreThan(secondsForPasswordScreenToAppear + 2)
+                        .forNoMoreThan(secondsForPasswordScreenToAppear + 2L)
                         .seconds());
 
         actor.attemptsTo(
@@ -181,8 +181,8 @@ public class SemiIntegrationSettingsSteps {
         actor.attemptsTo(ClickAction.on(CommonObjects.BUTTON_GO_TO_STANDALONE));
 
         actor.attemptsTo(
-                LoginFillClerkIDTask.withDetails(SEMI_INTEGRATION_PASSWORD_TITLE, clerkId),
-                LoginFillPasswordTask.withDetails(SEMI_INTEGRATION_PASSWORD_TITLE, password));
+                LoginFillClerkIDTask.withDetails(SEMI_INTEGRATION_LOGIN_SCREEN_TITLE, clerkId),
+                LoginFillPasswordTask.withDetails(SEMI_INTEGRATION_LOGIN_SCREEN_TITLE, password));
     }
 
     @Then("he should see the Main screen")

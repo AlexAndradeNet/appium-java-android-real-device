@@ -16,6 +16,7 @@ package com.nuvei.screenplay.ui.settings.transactionoptions;
 import com.nuvei.screenplay.ui.CommonObjects;
 import io.appium.java_client.AppiumBy;
 import net.serenitybdd.screenplay.targets.Target;
+import org.openqa.selenium.By;
 
 public class SplitPaymentOptionsScreen {
     private SplitPaymentOptionsScreen() {
@@ -37,5 +38,5 @@ public class SplitPaymentOptionsScreen {
 
     public static final Target TEXTBOX_MINIMUM_SPLIT_PAYMENT_AMOUNT =
             Target.the("Minimum Split Payment Amount Textbox")
-                    .located(AppiumBy.xpath(TEXTBOX_BASE_SELECTOR.formatted("1")));
+                    .located(By.xpath(TEXTBOX_BASE_SELECTOR.formatted("1")));
 }

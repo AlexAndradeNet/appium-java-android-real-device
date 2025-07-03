@@ -22,6 +22,7 @@ import com.nuvei.screenplay.tasks.commons.PopupValidateAndDismissTask;
 import com.nuvei.screenplay.tasks.dashboard.DashboardHelpDeskTask;
 import com.nuvei.screenplay.tasks.dashboard.DashboardTIDTask;
 import com.nuvei.screenplay.tasks.help.MainHelpTask;
+import com.nuvei.screenplay.ui.DashboardScreen;
 import com.nuvei.screenplay.ui.common.NumericScreen;
 import com.nuvei.screenplay.ui.help.MainHelpScreen;
 import com.nuvei.screenplay.ui.tid.MainTIDScreen;
@@ -39,8 +40,8 @@ public class HelpDeskSteps {
         String tid = actor.asksFor(TextQuestion.of(MainTIDScreen.LABEL_TID));
         actor.attemptsTo(
                 NavigateBackAction.clickingBackArrow(),
-                SwipeAction.toRight(), // For M-Series
-                SwipeAction.toRight() // For M-Series
+                SwipeAction.overTargetToRight(DashboardScreen.FRAME_DASHBOARD), // For M-Series
+                SwipeAction.overTargetToRight(DashboardScreen.FRAME_DASHBOARD) // For M-Series
                 );
         actor.attemptsTo(
                 DashboardHelpDeskTask.withVerification(), MainHelpTask.resolveSuperPassword(tid));

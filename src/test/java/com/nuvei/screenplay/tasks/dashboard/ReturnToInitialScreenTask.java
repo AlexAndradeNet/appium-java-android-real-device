@@ -13,10 +13,9 @@ from Nuvei Inc.
 */
 package com.nuvei.screenplay.tasks.dashboard;
 
-import static com.nuvei.screenplay.ui.DashboardScreen.BUTTON_PREVIOUS;
-
 import com.nuvei.screenplay.interactions.SwipeAction;
 import com.nuvei.screenplay.questions.VisibilityQuestion;
+import com.nuvei.screenplay.ui.DashboardScreen;
 import net.serenitybdd.annotations.Step;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Task;
@@ -26,8 +25,9 @@ public class ReturnToInitialScreenTask implements Task {
     @Override
     @Step("Return to the initial screen")
     public <T extends Actor> void performAs(T actor) {
-        while (actor.asksFor(VisibilityQuestion.isPresent(BUTTON_PREVIOUS))) {
-            actor.attemptsTo(SwipeAction.toRight());
+        while (Boolean.TRUE.equals(
+                actor.asksFor(VisibilityQuestion.isPresent(DashboardScreen.BUTTON_PREVIOUS)))) {
+            actor.attemptsTo(SwipeAction.overTargetToRight(DashboardScreen.FRAME_DASHBOARD));
         }
     }
 

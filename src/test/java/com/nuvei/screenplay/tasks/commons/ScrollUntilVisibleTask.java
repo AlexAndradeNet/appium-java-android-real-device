@@ -38,7 +38,8 @@ public class ScrollUntilVisibleTask implements Task {
         int scrolls = 0;
         final int MAX = 3;
 
-        while (actor.asksFor(VisibilityQuestion.notPresent(element)) && scrolls < MAX) {
+        while (Boolean.TRUE.equals(actor.asksFor(VisibilityQuestion.notPresent(element)))
+                && scrolls < MAX) {
             actor.attemptsTo(SwipeAction.toUp());
             scrolls++;
         }

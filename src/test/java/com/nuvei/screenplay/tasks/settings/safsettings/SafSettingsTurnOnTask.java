@@ -39,17 +39,21 @@ public class SafSettingsTurnOnTask implements Task {
     @Override
     @Step("{0} turns on SAF")
     public <T extends Actor> void performAs(T actor) {
-        if (actor.asksFor(VisibilityQuestion.isPresent(DashboardScreen.LABEL_SAF))) return;
+        boolean isSafAlreadyEnabled =
+                Boolean.TRUE.equals(
+                        actor.asksFor(VisibilityQuestion.isPresent(DashboardScreen.LABEL_SAF)));
 
-        actor.attemptsTo(
-                SemiIntegrationTurnOffTask.turnOffSemiIntegration(),
-                NavigateBackAction.clickingBackArrow(),
-                SettingsSafOpenTask.now(),
-                LoginFillClerkIDTask.withDetails(clerkId),
-                LoginFillPasswordTask.withDetails(password),
-                ToggleAction.toOn(SafSettingsScreen.TOGGLE_ENABLE_SAF),
-                NavigateBackAction.clickingBackArrow(),
-                NavigateBackAction.clickingBackArrow());
+        if (!isSafAlreadyEnabled) {
+            actor.attemptsTo(
+                    SemiIntegrationTurnOffTask.turnOffSemiIntegration(),
+                    NavigateBackAction.clickingBackArrow(),
+                    SettingsSafOpenTask.now(),
+                    LoginFillClerkIDTask.withDetails(clerkId),
+                    LoginFillPasswordTask.withDetails(password),
+                    ToggleAction.toOn(SafSettingsScreen.TOGGLE_ENABLE_SAF),
+                    NavigateBackAction.clickingBackArrow(),
+                    NavigateBackAction.clickingBackArrow());
+        }
     }
 
     public static SafSettingsTurnOnTask with(String clerkId, String password) {

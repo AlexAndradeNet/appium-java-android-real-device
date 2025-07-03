@@ -68,13 +68,13 @@ the [official Android Studio installation guide](https://developer.android.com/s
 
    ```bash
    # Silicon Macs
-   sdkmanager "build-tools;34.0.0" "platform-tools" "emulator" "system-images;android-34;google_apis;arm64-v8a" "platforms;android-34"
+   sdkmanager "build-tools;27.0.0" "platform-tools" "emulator" "system-images;android-27;google_apis;arm64-v8a" "platforms;android-27"
    ```
 
    For Intel-Based Macs ⚠️:
     ```bash
    # Intel Macs
-   sdkmanager "build-tools;34.0.0" "platform-tools" "emulator" "system-images;android-34;google_apis;x86_64" "platforms;android-34"
+   sdkmanager "build-tools;27.0.0" "platform-tools" "emulator" "system-images;android-27;google_apis;x86_64" "platforms;android-27"
    ```
 
 5. **Verify Installation**
@@ -107,6 +107,7 @@ packages.
 
    ```bash
    npm i -g appium
+   npm i -g @appium/doctor 
    ```
 
 2. **Install the Required WebDriver**
@@ -120,6 +121,7 @@ packages.
    Check the installation by running the following command:
 
     ```bash
+    appium-doctor
     appium driver doctor uiautomator2
     ```
 

@@ -15,6 +15,7 @@ package com.nuvei.screenplay.ui.common;
 
 import io.appium.java_client.AppiumBy;
 import net.serenitybdd.screenplay.targets.Target;
+import org.openqa.selenium.By;
 
 public class ConfirmationScreen {
     private ConfirmationScreen() {
@@ -24,13 +25,13 @@ public class ConfirmationScreen {
     private static final String BASE_XPATH = "(//android.widget.TextView)[%s]";
 
     public static final Target TITLE =
-            Target.the("Title").located(AppiumBy.xpath(BASE_XPATH.formatted("1")));
+            Target.the("Title").located(By.xpath(BASE_XPATH.formatted("1")));
 
     public static final Target LABEL_MESSAGE_TITLE =
-            Target.the("Label Success").located(AppiumBy.xpath(BASE_XPATH.formatted("2")));
+            Target.the("Label Success").located(By.xpath(BASE_XPATH.formatted("2")));
 
     public static final Target LABEL_MESSAGE_DETAIL =
-            Target.the("Label Clerk Deleted").located(AppiumBy.xpath(BASE_XPATH.formatted("3")));
+            Target.the("Label Clerk Deleted").located(By.xpath(BASE_XPATH.formatted("3")));
 
     private static final String BASE_SELECTOR = "new UiSelector().text(\"%s\")";
 

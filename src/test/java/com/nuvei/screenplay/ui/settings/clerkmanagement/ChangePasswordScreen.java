@@ -15,6 +15,7 @@ package com.nuvei.screenplay.ui.settings.clerkmanagement;
 
 import io.appium.java_client.AppiumBy;
 import net.serenitybdd.screenplay.targets.Target;
+import org.openqa.selenium.By;
 
 public class ChangePasswordScreen {
     private ChangePasswordScreen() {
@@ -30,12 +31,11 @@ public class ChangePasswordScreen {
                                     BASE_SELECTOR.formatted("CHANGE PASSWORD")));
 
     public static final Target TEXTBOX_PASSWORD =
-            Target.the("Password textbox")
-                    .located(AppiumBy.xpath("(//android.widget.EditText)[1]"));
+            Target.the("Password textbox").located(By.xpath("(//android.widget.EditText)[1]"));
 
     public static final Target TEXTBOX_CONFIRM =
             Target.the("Confirm Password textbox")
-                    .located(AppiumBy.xpath("(//android.widget.EditText)[2]"));
+                    .located(By.xpath("(//android.widget.EditText)[2]"));
 
     public static final Target BUTTON_CONFIRM =
             Target.the("Button Confirm")

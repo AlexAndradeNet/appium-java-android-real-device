@@ -43,6 +43,7 @@ public class ClerkManagementSteps {
     private static final String CLERK_ID = "clerkId";
     private static final String CLERK_PASSWORD = "clerkPassword";
     private static final String SCREEN_TITLE = "CLERK MANAGEMENT";
+    private static final String CLERK_LIST = "clerkList";
 
     @Given("{actor}, with ID {word} and Password {word}, is managing clerks")
     public void isManagingClerks(Actor actor, String clerkId, String password) {
@@ -65,8 +66,9 @@ public class ClerkManagementSteps {
     public void listsTheClerks() {
         OnStage.theActorInTheSpotlight()
                 .remember( // Save the list of clerks for later use
-                        "clerksList",
+                        CLERK_LIST,
                         ElementListQuestion.listOfValues(
+                                MainClerkManagementScreen.FRAME_CLERK_LIST,
                                 MainClerkManagementScreen.LIST_OF_USER_PROFILE_IDS));
     }
 
@@ -123,7 +125,8 @@ public class ClerkManagementSteps {
         Actor actor = OnStage.theActorInTheSpotlight();
         actor.attemptsTo(
                 ClerkManagementOpenAccountDetailsTask.withId(clerkId),
-                ClerkManagementChangePasswordTask.fromTo(newPassword, newPassword));
+                ClerkManagementChangePasswordTask.fromTo(newPassword, newPassword),
+                ReturnToDashboardScreenTask.now());
     }
 
     @When("he attempts to create a new clerk with his own Clerk ID {word}")
@@ -147,7 +150,8 @@ public class ClerkManagementSteps {
         Actor actor = OnStage.theActorInTheSpotlight();
         actor.attemptsTo(
                 ClerkManagementOpenAccountDetailsTask.withId(clerkId),
-                ClerkManagementChangePasswordTask.fromTo(newPassword, newPassword));
+                ClerkManagementChangePasswordTask.fromTo(newPassword, newPassword),
+                ReturnToDashboardScreenTask.now());
     }
 
     @When("he attempts to delete {word} account \\(ID {word}) but regrets it")
@@ -165,7 +169,7 @@ public class ClerkManagementSteps {
     public void verifyClerkListCheckingSorting(String clerksList) {
         Actor actor = OnStage.theActorInTheSpotlight();
 
-        actor.attemptsTo(Ensure.that(actor.recall("clerksList").toString()).isEqualTo(clerksList));
+        actor.attemptsTo(Ensure.that(actor.recall(CLERK_LIST).toString()).isEqualTo(clerksList));
     }
 
     @Then("he should see that the clerk {word}, with ID {word}, is listed as a {word}")
@@ -274,12 +278,13 @@ public class ClerkManagementSteps {
     private void testNewPasswordAndChangeIt(
             String clerkId, String currentPassword, String newPassword) {
         Actor actor = OnStage.theActorInTheSpotlight();
-        actor.attemptsTo(ReturnToDashboardScreenTask.now());
         managesClerks(actor, clerkId, currentPassword);
 
         // Reverts previous password
         requestsAnAccountDetails(clerkId);
-        actor.attemptsTo(ClerkManagementChangePasswordTask.fromTo(newPassword, newPassword));
+        actor.attemptsTo(
+                ClerkManagementChangePasswordTask.fromTo(newPassword, newPassword),
+                ReturnToDashboardScreenTask.now());
     }
 
     @Then("he should receive the error message {string}")
@@ -287,6 +292,7 @@ public class ClerkManagementSteps {
         Actor actor = OnStage.theActorInTheSpotlight();
 
         actor.attemptsTo(PopupValidateAndDismissTask.with("Alert Message", messageError));
+        actor.attemptsTo(ReturnToDashboardScreenTask.now());
     }
 
     @Then("he should see {word} new Clerk ID is {word} in the clerks list")
@@ -569,7 +575,7 @@ public class ClerkManagementSteps {
     private void verifyClerkListWithOutCheckingSorting(String expectedClerksList) {
         Actor actor = OnStage.theActorInTheSpotlight();
 
-        String actualClerkList = toSortedList(actor.recall("clerksList").toString());
+        String actualClerkList = toSortedList(actor.recall(CLERK_LIST).toString());
         expectedClerksList = toSortedList(expectedClerksList);
 
         actor.attemptsTo(Ensure.that(actualClerkList).isEqualTo(expectedClerksList));

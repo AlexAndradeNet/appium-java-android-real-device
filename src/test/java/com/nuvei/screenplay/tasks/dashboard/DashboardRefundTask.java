@@ -16,22 +16,28 @@ package com.nuvei.screenplay.tasks.dashboard;
 import static com.nuvei.screenplay.ui.DashboardScreen.BUTTON_REFUND_TRANSACTION;
 
 import com.nuvei.screenplay.interactions.NavigateUntilVisibleAndClickAction;
-import com.nuvei.screenplay.interactions.SkipScenarioAction;
 import com.nuvei.screenplay.questions.VisibilityQuestion;
 import net.serenitybdd.annotations.Step;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Task;
+import org.junit.jupiter.api.Assumptions;
 
 public class DashboardRefundTask implements Task {
 
     @Override
     @Step("Open the Refund Transaction screen")
     public <T extends Actor> void performAs(T actor) {
-        actor.attemptsTo(
-                VisibilityQuestion.isPresent(BUTTON_REFUND_TRANSACTION).answeredBy(actor)
-                        ? NavigateUntilVisibleAndClickAction.on(BUTTON_REFUND_TRANSACTION)
-                        : SkipScenarioAction.withReason(
-                                "Refund is not available when Crypto is enabled"));
+        boolean isRefundAvailable =
+                Boolean.TRUE.equals(
+                        actor.asksFor(VisibilityQuestion.isPresent(BUTTON_REFUND_TRANSACTION)));
+
+        Assumptions.assumeTrue(
+                isRefundAvailable,
+                "Refund is not available in this terminal. Crypto is enabled, so refund is not"
+                        + " available.");
+
+        // Continue with the action if refund is available
+        actor.attemptsTo(NavigateUntilVisibleAndClickAction.on(BUTTON_REFUND_TRANSACTION));
     }
 
     public static DashboardRefundTask open() {
