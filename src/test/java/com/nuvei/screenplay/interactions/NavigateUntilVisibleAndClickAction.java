@@ -33,9 +33,10 @@ public class NavigateUntilVisibleAndClickAction implements Interaction {
     @Override
     @Step("{0} navigates until the element is visible and clicks on it")
     public <T extends Actor> void performAs(T actor) {
-        while (actor.asksFor(VisibilityQuestion.notPresent(target))
-                && actor.asksFor(VisibilityQuestion.isPresent(DashboardScreen.BUTTON_NEXT))) {
-            actor.attemptsTo(SwipeAction.toLeft());
+        while (Boolean.TRUE.equals(actor.asksFor(VisibilityQuestion.notPresent(target)))
+                && Boolean.TRUE.equals(
+                        actor.asksFor(VisibilityQuestion.isPresent(DashboardScreen.BUTTON_NEXT)))) {
+            actor.attemptsTo(SwipeAction.overTargetToLeft(DashboardScreen.FRAME_DASHBOARD));
         }
         actor.attemptsTo(ClickAction.on(target));
     }

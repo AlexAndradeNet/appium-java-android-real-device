@@ -16,6 +16,9 @@ package com.nuvei.utils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.junit.platform.commons.util.StringUtils;
 
 public class ReceiptUtility {
@@ -55,7 +58,7 @@ public class ReceiptUtility {
         receipt = receipt.replace("PrintReceiptPre: ", ""); // Remove the prefix
         receipt = removeHtmlTags(receipt);
         receipt = removeEmptyLines(receipt);
-        receipt = receipt.replaceAll("  ", " "); // Remove all whitespace
+        receipt = cleanReceiptText(receipt);
         return receipt;
     }
 
@@ -77,7 +80,15 @@ public class ReceiptUtility {
     }
 
     private static String removeHtmlTags(String input) {
-        input = input.replaceAll("(?s)<style.*?>.*?</style>", ""); // Removes <style> and content
-        return input.replaceAll("<[^>]+>", ""); // Removes all HTML tags
+        Document doc = Jsoup.parse(input);
+        doc.select("style").remove(); // remove <style> and content
+        return doc.body().html().replaceAll("<[^>]+>", ""); // Removes all HTML tags
+    }
+
+    public static String cleanReceiptText(String input) {
+        return Arrays.stream(input.split("\\R")) // split on any linebreak
+                .map(String::trim) // remove leading/trailing whitespace from each line
+                .filter(line -> !line.isEmpty()) // remove empty lines
+                .collect(Collectors.joining("\n")); // join lines back with \n
     }
 }

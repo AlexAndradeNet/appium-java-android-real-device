@@ -31,14 +31,14 @@ public class ElementListQuestion {
         return actor -> target.resolveAllFor(actor).size();
     }
 
-    public static Question<String> listOfValues(Target target) {
+    public static Question<String> listOfValues(Target clerksFrame, Target clerkCard) {
         return actor -> {
             Set<String> uniqueTexts = new LinkedHashSet<>();
             int previousSize = 0; // Track the previous size of the uniqueTexts set
 
             do {
                 // Resolve all elements for the actor
-                ListOfWebElementFacades elements = target.resolveAllFor(actor);
+                ListOfWebElementFacades elements = clerkCard.resolveAllFor(actor);
                 List<String> texts =
                         elements.stream().toList().stream().map(WebElement::getText).toList();
 
@@ -52,7 +52,7 @@ public class ElementListQuestion {
                 if (isQuantityOfElementsGrowing) {
                     // Update the previous size and continue scrolling
                     previousSize = currentSize;
-                    actor.attemptsTo(SwipeAction.toUp());
+                    actor.attemptsTo(SwipeAction.overTargetToUp(clerksFrame));
                 } else {
                     // Break if no growth in size
                     break;

@@ -16,8 +16,6 @@ package com.nuvei.screenplay.tasks.dashboard;
 import static com.nuvei.screenplay.ui.DashboardScreen.BUTTON_SAF;
 
 import com.nuvei.screenplay.interactions.NavigateUntilVisibleAndClickAction;
-import com.nuvei.screenplay.interactions.SkipScenarioAction;
-import com.nuvei.screenplay.questions.EnvironmentQuestion;
 import net.serenitybdd.annotations.Step;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Task;
@@ -27,10 +25,7 @@ public class DashboardSafTask implements Task {
     @Override
     @Step("Open the SAF screen")
     public <T extends Actor> void performAs(T actor) {
-        actor.attemptsTo(
-                EnvironmentQuestion.isMSeries().answeredBy(actor)
-                        ? SkipScenarioAction.withReason("SAF is not available in P and M-Series")
-                        : NavigateUntilVisibleAndClickAction.on(BUTTON_SAF));
+        actor.attemptsTo(NavigateUntilVisibleAndClickAction.on(BUTTON_SAF));
     }
 
     public static DashboardSafTask open() {

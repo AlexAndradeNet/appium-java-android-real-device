@@ -15,6 +15,7 @@ package com.nuvei.screenplay.ui.settings.clerkmanagement;
 
 import io.appium.java_client.AppiumBy;
 import net.serenitybdd.screenplay.targets.Target;
+import org.openqa.selenium.By;
 
 public class MainClerkManagementScreen {
     private MainClerkManagementScreen() {
@@ -42,10 +43,17 @@ public class MainClerkManagementScreen {
                             "(//android.widget.TextView[contains(@resource-id, \"txtClerkId\") and"
                                     + " @text!=\"#{0}\"])[1]");
 
+    public static final Target FRAME_CLERK_LIST =
+            Target.the("List of Profiles IDs")
+                    .located(
+                            By.xpath(
+                                    "//androidx.recyclerview.widget.RecyclerView[ends-with(@resource-id,"
+                                        + " 'rvClerkList')]"));
+
     public static final Target LIST_OF_USER_PROFILE_IDS =
             Target.the("List of Profiles IDs")
                     .located(
-                            AppiumBy.xpath(
+                            By.xpath(
                                     "(//android.widget.TextView[contains(@resource-id,"
                                             + " \"txtClerkId\")])"));
 

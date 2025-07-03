@@ -13,8 +13,8 @@ from Nuvei Inc.
 */
 package com.nuvei.screenplay.ui;
 
-import io.appium.java_client.AppiumBy;
 import net.serenitybdd.screenplay.targets.Target;
+import org.openqa.selenium.By;
 
 public class CommonObjects {
     private CommonObjects() {
@@ -24,43 +24,45 @@ public class CommonObjects {
     private static final String BASE_SELECTOR =
             "//android.widget.TextView[contains(@resource-id, \"%s\")]";
 
+    private static final String BUTTON_NAME_CONSTRUCTOR = "Button {0}";
+
     public static final Target BUTTON_ARROW_BACK =
             Target.the("Arrow Back")
                     .located(
-                            AppiumBy.xpath(
+                            By.xpath(
                                     "//android.widget.RelativeLayout[contains(@resource-id,\"rlBackButton\")]"));
 
     public static final Target POPUP_MESSAGE_TITLE =
             Target.the("Popup Message Title")
-                    .located(AppiumBy.xpath(BASE_SELECTOR.formatted("txtHeader")));
+                    .located(By.xpath(BASE_SELECTOR.formatted("txtHeader")));
 
     public static final Target POPUP_MESSAGE_CONTENT =
             Target.the("Popup Message Content")
-                    .located(AppiumBy.xpath(BASE_SELECTOR.formatted("txtMessage")));
+                    .located(By.xpath(BASE_SELECTOR.formatted("txtMessage")));
 
     public static final Target POPUP_MESSAGE_BUTTON_OK =
-            Target.the("Button {0}")
-                    .located(AppiumBy.xpath(BASE_SELECTOR.formatted("btnPossitive")));
+            Target.the(BUTTON_NAME_CONSTRUCTOR)
+                    .located(By.xpath(BASE_SELECTOR.formatted("btnPossitive")));
 
     public static final Target POPUP_MESSAGE_BUTTON_CANCEL =
-            Target.the("Button {0}")
-                    .located(AppiumBy.xpath(BASE_SELECTOR.formatted("btnNegative")));
+            Target.the(BUTTON_NAME_CONSTRUCTOR)
+                    .located(By.xpath(BASE_SELECTOR.formatted("btnNegative")));
 
     public static final Target POPUP_MESSAGE_BUTTON_PRINT_MERCHANT = POPUP_MESSAGE_BUTTON_CANCEL;
 
     public static final Target BUTTON_GO_TO_STANDALONE =
             Target.the("Button Go To Stand Alone")
-                    .located(AppiumBy.xpath("//android.widget.Button[@text='GO TO STAND ALONE']"));
+                    .located(By.xpath("//android.widget.Button[@text='GO TO STAND ALONE']"));
 
     public static final Target POPUP_MESSAGE_SECOND_BUTTON =
-            Target.the("Button {0}").located(AppiumBy.xpath(BASE_SELECTOR.formatted(3)));
+            Target.the(BUTTON_NAME_CONSTRUCTOR).located(By.xpath(BASE_SELECTOR.formatted(3)));
 
     public static final Target POPUP_MESSAGE_BUTTON_PRINT_CUSTOMER = POPUP_MESSAGE_BUTTON_OK;
 
     public static final Target ALL_TOGGLE_LABEL_LIST =
             Target.the("List of labels for toggle")
                     .located(
-                            AppiumBy.xpath(
+                            By.xpath(
                                     "(//android.widget.TextView[following-sibling::android.widget.Switch])"));
 
     public static final Target TOGGLE =

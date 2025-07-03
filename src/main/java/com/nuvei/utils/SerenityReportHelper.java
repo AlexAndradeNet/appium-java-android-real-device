@@ -23,23 +23,24 @@ import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 
-public class ReportUtility {
+public class SerenityReportHelper {
 
-    private static final LoggerWrapper logger = new LoggerWrapper(ReportUtility.class);
+    private static final LoggerWrapper logger = new LoggerWrapper(SerenityReportHelper.class);
 
-    private ReportUtility() {
-        // Prevent instantiation
+    private SerenityReportHelper() {
+        throw new IllegalStateException("Utility class - cannot be instantiated");
     }
 
     /**
-     * Saves the merchant receipt from the logcat and adds it to the Serenity report.
+     * Saves data into the Serenity report.
      *
-     * @param receipt the receipt.
+     * @param content the content.
+     * @param title the title for the report.
      */
-    public static void saveReceipt(String receipt) {
-        logger.info("Receipt: \n" + receipt);
+    public static void saveData(String title, String content) {
+        logger.info("Receipt: \n" + content);
 
-        Serenity.recordReportData().withTitle("Merchant Receipt").andContents(receipt);
+        Serenity.recordReportData().withTitle(title).andContents(content);
     }
 
     /**

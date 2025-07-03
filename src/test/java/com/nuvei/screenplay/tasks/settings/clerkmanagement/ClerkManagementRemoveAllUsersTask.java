@@ -31,10 +31,12 @@ public class ClerkManagementRemoveAllUsersTask implements Task {
     @Override
     @Step("{0} removes all clerks except #exemptedClerkId")
     public <T extends Actor> void performAs(T actor) {
-        while (actor.asksFor(
-                VisibilityQuestion.isPresent(
-                        MainClerkManagementScreen.BUTTON_USER_FIRST_PROFILE_ID_DIFFERENT_THAN.of(
-                                exemptedClerkId)))) {
+        while (Boolean.TRUE.equals(
+                actor.asksFor(
+                        VisibilityQuestion.isPresent(
+                                MainClerkManagementScreen
+                                        .BUTTON_USER_FIRST_PROFILE_ID_DIFFERENT_THAN
+                                        .of(exemptedClerkId))))) {
 
             actor.attemptsTo(
                     ClickAction.on(

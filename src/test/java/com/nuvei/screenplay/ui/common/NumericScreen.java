@@ -33,6 +33,10 @@ public class NumericScreen {
     public static final Target BUTTON_NUMPAD_NUMBER =
             Target.the("Button number {0}").locatedBy(BASE_XPATH);
 
+    public static final Target BUTTON_CANCEL =
+            Target.the("Button Cancel {0}").locatedBy("//android.widget.Button[@text='CANCEL']");
+
     public static final Target BUTTON_CONTINUE_OR_CONFIRM =
-            Target.the("Button Confirm {0}").located(AppiumBy.className("android.widget.Button"));
+            Target.the("Button Continue {0}")
+                    .locatedBy("//android.widget.Button[@text='CONTINUE' or @text='CONFIRM']");
 }

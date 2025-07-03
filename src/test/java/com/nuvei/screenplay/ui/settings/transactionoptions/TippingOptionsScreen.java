@@ -16,6 +16,7 @@ package com.nuvei.screenplay.ui.settings.transactionoptions;
 import com.nuvei.screenplay.ui.CommonObjects;
 import io.appium.java_client.AppiumBy;
 import net.serenitybdd.screenplay.targets.Target;
+import org.openqa.selenium.By;
 
 public class TippingOptionsScreen {
     private TippingOptionsScreen() {
@@ -35,19 +36,19 @@ public class TippingOptionsScreen {
 
     public static final Target TEXTBOX_TIP_PRESET_1 =
             Target.the("Preset Tip 1 Textbox")
-                    .located(AppiumBy.xpath(TEXTBOX_BASE_SELECTOR.formatted("1")));
+                    .located(By.xpath(TEXTBOX_BASE_SELECTOR.formatted("1")));
 
     public static final Target TEXTBOX_TIP_PRESET_2 =
             Target.the("Preset Tip 2 Textbox")
-                    .located(AppiumBy.xpath(TEXTBOX_BASE_SELECTOR.formatted("2")));
+                    .located(By.xpath(TEXTBOX_BASE_SELECTOR.formatted("2")));
 
     public static final Target TEXTBOX_TIP_PRESET_3 =
             Target.the("Preset Tip 3 Textbox")
-                    .located(AppiumBy.xpath(TEXTBOX_BASE_SELECTOR.formatted("3")));
+                    .located(By.xpath(TEXTBOX_BASE_SELECTOR.formatted("3")));
 
     public static final Target TOGGLE_TIP_ADJUST = CommonObjects.TOGGLE.of("Tip Adjust");
 
     public static final Target TEXTBOX_EXCESS_TIP_ADJUST =
             Target.the("Excess Tip Adjust Textbox")
-                    .located(AppiumBy.xpath(TEXTBOX_BASE_SELECTOR.formatted("4")));
+                    .located(By.xpath(TEXTBOX_BASE_SELECTOR.formatted("4")));
 }

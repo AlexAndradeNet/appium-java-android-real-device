@@ -15,6 +15,7 @@ package com.nuvei.screenplay.ui.settings.clerkmanagement;
 
 import io.appium.java_client.AppiumBy;
 import net.serenitybdd.screenplay.targets.Target;
+import org.openqa.selenium.By;
 
 public class AddUserScreen {
     private AddUserScreen() {
@@ -24,18 +25,17 @@ public class AddUserScreen {
     private static final String BASE_SELECTOR = "new UiSelector().text(\"%s\")";
 
     public static final Target TITLE =
-            Target.the("Title").located(AppiumBy.xpath("(//android.widget.TextView)[1]"));
+            Target.the("Title").located(By.xpath("(//android.widget.TextView)[1]"));
 
     public static final Target TEXTBOX_USER_ID =
-            Target.the("User ID textbox").located(AppiumBy.xpath("(//android.widget.EditText)[1]"));
+            Target.the("User ID textbox").located(By.xpath("(//android.widget.EditText)[1]"));
 
     public static final Target TEXTBOX_PASSWORD =
-            Target.the("Password textbox")
-                    .located(AppiumBy.xpath("(//android.widget.EditText)[2]"));
+            Target.the("Password textbox").located(By.xpath("(//android.widget.EditText)[2]"));
 
     public static final Target TEXTBOX_CONFIRM =
             Target.the("Confirm Password textbox")
-                    .located(AppiumBy.xpath("(//android.widget.EditText)[3]"));
+                    .located(By.xpath("(//android.widget.EditText)[3]"));
 
     public static final Target BUTTON_CONFIRM =
             Target.the("Button Confirm")

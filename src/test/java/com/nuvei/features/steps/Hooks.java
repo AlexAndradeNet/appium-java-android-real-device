@@ -14,12 +14,13 @@ from Nuvei Inc.
 package com.nuvei.features.steps;
 
 import com.nuvei.screenplay.interactions.ToggleAction;
+import com.nuvei.screenplay.interactions.WaitAction;
 import com.nuvei.screenplay.tasks.dashboard.ReturnToDashboardScreenTask;
 import com.nuvei.screenplay.tasks.settings.SettingsTransactionFlowOpenTask;
 import com.nuvei.screenplay.ui.CommonObjects;
 import com.nuvei.utils.DotenvReader;
 import com.nuvei.utils.LoggerWrapper;
-import com.nuvei.utils.ReportUtility;
+import com.nuvei.utils.SerenityReportHelper;
 import io.cucumber.java.*;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.actors.OnStage;
@@ -50,7 +51,7 @@ public class Hooks {
         Actor actor = OnStage.theActorInTheSpotlight();
 
         if (scenario.isFailed()) {
-            ReportUtility.saveScreenshot(scenario);
+            SerenityReportHelper.saveScreenshot(scenario);
 
             String toggleName = actor.recall("toggleName");
             if (StringUtils.isNotBlank(toggleName)) {
@@ -60,7 +61,7 @@ public class Hooks {
             }
         }
 
-        actor.attemptsTo(ReturnToDashboardScreenTask.now());
+        actor.attemptsTo(ReturnToDashboardScreenTask.now(), WaitAction.forSpecificTime(1));
     }
 
     @AfterAll

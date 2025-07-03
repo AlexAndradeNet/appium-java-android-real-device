@@ -34,7 +34,8 @@ import net.serenitybdd.screenplay.ensure.Ensure;
 
 public class TransactionFlowSteps {
 
-    static final String SALE_AMOUNT = "1.00";
+    private static final String SALE_AMOUNT = "1.00";
+    private static final String TOGGLE_NAME = "toggleName";
 
     @When("he enables the {string} toggle")
     public void heEnablesThePrompt(String toggleName) {
@@ -43,7 +44,7 @@ public class TransactionFlowSteps {
                 SettingsTransactionFlowOpenTask.now(),
                 ToggleAction.toOn(CommonObjects.TOGGLE.of(toggleName)));
 
-        actor.remember("toggleName", toggleName);
+        actor.remember(TOGGLE_NAME, toggleName);
     }
 
     @Then("he should see the {string} is prompted in a Sale")
@@ -76,7 +77,7 @@ public class TransactionFlowSteps {
     @And("he gets a transaction approved validating its receipt")
     public void heShouldGetAnApprovalWithTheInvoiceNumber() {
         Actor actor = OnStage.theActorInTheSpotlight();
-        String toggleName = actor.recall("toggleName");
+        String toggleName = actor.recall(TOGGLE_NAME);
 
         BrowseTheApp.reAttachDriver(actor);
 
@@ -86,7 +87,7 @@ public class TransactionFlowSteps {
                 SettingsTransactionFlowOpenTask.now(),
                 ToggleAction.toOff(CommonObjects.TOGGLE.of(toggleName)));
 
-        actor.remember("toggleName", "");
+        actor.remember(TOGGLE_NAME, "");
     }
 
     @And("he fills the prompt with {word}")

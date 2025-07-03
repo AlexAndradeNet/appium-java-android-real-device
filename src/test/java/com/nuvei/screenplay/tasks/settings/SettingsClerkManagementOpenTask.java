@@ -25,9 +25,8 @@ public class SettingsClerkManagementOpenTask implements Task {
     @Override
     @Step("{0} opens the Settings > Clerk Management screen")
     public <T extends Actor> void performAs(T actor) {
-        actor.attemptsTo(
-                DashboardSettingsTask.open(),
-                ClickAction.on(MainSettingsScreen.BUTTON_CLERK_MANAGEMENT));
+        actor.attemptsTo(DashboardSettingsTask.open());
+        actor.attemptsTo(ClickAction.on(MainSettingsScreen.BUTTON_CLERK_MANAGEMENT));
     }
 
     public static SettingsClerkManagementOpenTask now() {

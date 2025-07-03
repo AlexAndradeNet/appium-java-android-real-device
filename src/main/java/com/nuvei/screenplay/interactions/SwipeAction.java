@@ -16,9 +16,12 @@ package com.nuvei.screenplay.interactions;
 import com.nuvei.screenplay.ability.BrowseTheApp;
 import java.time.Duration;
 import java.util.Collections;
+import net.serenitybdd.core.pages.WebElementFacade;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Interaction;
+import net.serenitybdd.screenplay.targets.Target;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.interactions.PointerInput;
 import org.openqa.selenium.interactions.Sequence;
 
@@ -33,8 +36,10 @@ public class SwipeAction implements Interaction {
 
     private static final int SWIPE_SPEED = 101;
     private final SwipeDirection direction;
+    private final Target target;
 
-    private SwipeAction(SwipeDirection direction) {
+    private SwipeAction(Target target, SwipeDirection direction) {
+        this.target = target;
         this.direction = direction;
     }
 
@@ -42,33 +47,46 @@ public class SwipeAction implements Interaction {
     public <T extends Actor> void performAs(T actor) {
         var driver = actor.usingAbilityTo(BrowseTheApp.class).driver();
 
-        Dimension windowSize = driver.manage().window().getSize();
-
+        int left = 0;
+        int top = 0;
         int startX = 0;
         int endX = 0;
         int startY = 0;
         int endY = 0;
 
+        Dimension targetSize;
+
+        if (target == null) {
+            targetSize = driver.manage().window().getSize();
+        } else {
+            WebElementFacade webElementFacade = target.resolveFor(actor);
+            targetSize = webElementFacade.getSize();
+
+            Point targetLocation = webElementFacade.getLocation();
+            left = targetLocation.getX();
+            top = targetLocation.getY();
+        }
+
         switch (direction) {
             case DOWN -> {
-                startX = windowSize.width / 2; // Start horizontally in the center
-                startY = (int) (windowSize.height * 0.45); // Start near the top
-                endY = (int) (windowSize.height * 0.65); // End near the bottom
+                startX = left + targetSize.width / 2; // Start horizontally in the center
+                startY = top + (int) (targetSize.height * 0.3); // Start near the top
+                endY = top + (int) (targetSize.height * 0.8); // End near the bottom
             }
             case UP -> {
-                startX = windowSize.width / 2; // Start horizontally in the center
-                startY = (int) (windowSize.height * 0.65); // Start near the bottom
-                endY = (int) (windowSize.height * 0.45); // End near the top
+                startX = left + targetSize.width / 2; // Start horizontally in the center
+                startY = top + (int) (targetSize.height * 0.8); // Start near the bottom
+                endY = top + (int) (targetSize.height * 0.3); // End near the top
             }
             case LEFT -> {
-                startY = windowSize.height / 2; // Start vertically in the center
-                startX = (int) (windowSize.width * 0.8); // Start near the right
-                endX = (int) (windowSize.width * 0.2); // End near the left
+                startY = top + targetSize.height / 2; // Start vertically in the center
+                startX = left + (int) (targetSize.width * 0.8); // Start near the right
+                endX = left + (int) (targetSize.width * 0.2); // End near the left
             }
             case RIGHT -> {
-                startY = windowSize.height / 2; // Start vertically in the center
-                startX = (int) (windowSize.width * 0.2); // Start near the left
-                endX = (int) (windowSize.width * 0.8); // End near the right
+                startY = top + targetSize.height / 2; // Start vertically in the center
+                startX = left + (int) (targetSize.width * 0.2); // Start near the left
+                endX = left + (int) (targetSize.width * 0.8); // End near the right
             }
         }
 
@@ -120,18 +138,30 @@ public class SwipeAction implements Interaction {
     }
 
     public static SwipeAction toDown() {
-        return new SwipeAction(SwipeDirection.DOWN);
+        return new SwipeAction(null, SwipeDirection.DOWN);
     }
 
     public static SwipeAction toUp() {
-        return new SwipeAction(SwipeDirection.UP);
+        return new SwipeAction(null, SwipeDirection.UP);
+    }
+
+    public static SwipeAction overTargetToUp(Target target) {
+        return new SwipeAction(target, SwipeDirection.UP);
     }
 
     public static SwipeAction toLeft() {
-        return new SwipeAction(SwipeDirection.LEFT);
+        return new SwipeAction(null, SwipeDirection.LEFT);
+    }
+
+    public static SwipeAction overTargetToLeft(Target target) {
+        return new SwipeAction(target, SwipeDirection.LEFT);
     }
 
     public static SwipeAction toRight() {
-        return new SwipeAction(SwipeDirection.RIGHT);
+        return new SwipeAction(null, SwipeDirection.RIGHT);
+    }
+
+    public static SwipeAction overTargetToRight(Target target) {
+        return new SwipeAction(target, SwipeDirection.RIGHT);
     }
 }

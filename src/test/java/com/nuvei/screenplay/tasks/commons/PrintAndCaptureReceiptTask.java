@@ -20,7 +20,7 @@ import com.nuvei.screenplay.ui.CommonObjects;
 import com.nuvei.screenplay.ui.common.PrintingScreen;
 import com.nuvei.utils.LogcatUtility;
 import com.nuvei.utils.ReceiptUtility;
-import com.nuvei.utils.ReportUtility;
+import com.nuvei.utils.SerenityReportHelper;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Performable;
 import net.serenitybdd.screenplay.Task;
@@ -70,7 +70,7 @@ public class PrintAndCaptureReceiptTask implements Task {
 
         String logcat = logcatUtility.stopLogcat();
         String receipt = ReceiptUtility.getMerchantReceipt(logcat);
-        ReportUtility.saveReceipt(receipt);
+        SerenityReportHelper.saveData("Merchant Receipt", receipt);
 
         String description = "The transaction result: '%s'";
         actor.attemptsTo(

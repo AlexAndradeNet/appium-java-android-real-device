@@ -29,7 +29,8 @@ public class ReturnToDashboardScreenTask implements Task {
     @Step("{0} navigates back to the main screen")
     public <T extends Actor> void performAs(T actor) {
         try {
-            while (actor.asksFor(VisibilityQuestion.isPresent(BUTTON_ARROW_BACK))) {
+            while (Boolean.TRUE.equals(
+                    actor.asksFor(VisibilityQuestion.isPresent(BUTTON_ARROW_BACK)))) {
                 actor.attemptsTo(ClickAction.on(BUTTON_ARROW_BACK));
             }
         } catch (NoSuchElementException ignored) {
